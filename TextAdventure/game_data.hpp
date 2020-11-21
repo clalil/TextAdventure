@@ -10,24 +10,25 @@
 #include <vector>
 
 struct LocationChoice {
-    LocationChoice(const std::string& next_id, const std::string& a_text);
-    std::string location_id;
-    std::string text;
+    LocationChoice(const std::string& choice_id, const std::string& choice_description);
+    std::string next_location_id;
+    std::string next_location_text;
 };
 
 struct Location {
-    Location(const std::string& an_id, const std::string& a_text);
-    std::string id;
-    std::string text;
+    Location(const std::string& id, const std::string& descriptive_text);
+    std::string location_id;
+    std::string location_text;
     std::vector<LocationChoice> choices;
 };
 
 class GameData {
 public:
     GameData();
-    void debugLocations();
+    void DebugLocations();
 
 private:
-    void createLocations();
+    void CreateLocations();
+    bool LocationExistsWithId(const std::string& id);
     std::vector<Location> locations;
 };

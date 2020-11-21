@@ -10,5 +10,5 @@
 
 int main() {
     GameData data;
-    data.debugLocations();
+    data.DebugLocations();
 }
