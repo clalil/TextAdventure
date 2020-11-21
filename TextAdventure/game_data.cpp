@@ -7,6 +7,8 @@
 //
 
 #include "game_data.hpp"
+#include <algorithm>
+#include <vector>
 #include <string>
 #include <iostream>
 
@@ -35,8 +37,16 @@ GameData::GameData() {
 }
 
 void GameData::debugLocations() {
+    std::vector<std::string> ids = {};
+
+    std::cout << "Number of available locations: " << locations.size() << "\n";
+
     for(int i = 0; i < locations.size(); ++i) {
         Location location = locations[i];
-        std::cout << location.id << location.text << "\n";
+        ids.push_back(location.id);
     }
+
+    const auto duplicate = std::adjacent_find(ids.begin(), ids.end());
+    if (duplicate != ids.end())
+        std::cout << "Warning, an ID named '" << *duplicate << "' is a duplicate." << "\n";
 }
