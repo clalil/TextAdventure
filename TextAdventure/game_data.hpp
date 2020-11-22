@@ -1,5 +1,5 @@
 //
-//  location_choice.hpp
+//  game_data.hpp
 //  TextAdventure
 //
 //  Created by Clarissa Liljander on 2020-11-19.

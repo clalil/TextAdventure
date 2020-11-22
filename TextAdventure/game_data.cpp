@@ -1,5 +1,5 @@
 //
-//  location_choice.cpp
+//  game_data.cpp
 //  TextAdventure
 //
 //  Created by Clarissa Liljander on 2020-11-19.
@@ -24,10 +24,24 @@ Location::Location(const std::string& id, const std::string& descriptive_text) {
 
 void GameData::CreateLocations() {
     Location room1("start", "You are in the first room of this story.");
-    room1.choices.push_back(LocationChoice("room2", "Go North"));
-    room1.choices.push_back(LocationChoice("exit", "Exit"));
-    locations.push_back(room1);
+    
+    for(int i = 0; i < 4; i++) {
+        std::string room_text = std::string("room") + std::to_string(i);
+        std::string choice_text = std::string("choice") + std::to_string(i);
+        std::string descriptive_text = std::string("Description: ") + std::to_string(i);
 
+        Location room[i](room_text, descriptive_text);
+
+        room[i].choices.push_back(LocationChoice(choice_text, descriptive_text));
+        room[i].choices.push_back(LocationChoice(choice_text, descriptive_text));
+        room[i].choices.push_back(LocationChoice(choice_text, descriptive_text));
+
+        locations.push_back(room[i]);
+    }
+    
+    Location room4("choice3", "You are in the final room of the story.");
+    room4.choices.push_back(LocationChoice("exit", "Exit"));
+    
     Location exit("exit", "This is the exit! :o");
     locations.push_back(exit);
 }
