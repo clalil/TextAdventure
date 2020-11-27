@@ -20,4 +20,4 @@
 The game instructions are provided within the game itself.  
 
 ## Acknowledgement  
-Thank you to Paradox Interactive's [GamesByHer](https://gamedevcourse.paradoxinteractive.com/) initiative for creating this challenge for me.
+Thank you to Paradox Interactive's [GamesByHer](https://gamedevcourse.paradoxinteractive.com/) initiative for creating this challenge.
