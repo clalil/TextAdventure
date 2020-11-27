@@ -22,6 +22,10 @@ Location::Location(const std::string& id, const std::string& descriptive_text) {
     location_text = descriptive_text;
 }
 
+GameData::GameData() {
+    CreateLocations();
+}
+
 void GameData::CreateLocations() {
     Location room1("start", "You are in the first room of this story.");
     room1.choices.push_back(LocationChoice("room2", "Go North"));
@@ -36,8 +40,23 @@ void GameData::CreateLocations() {
     locations.push_back(exit);
 }
 
-GameData::GameData() {
-    CreateLocations();
+Location* GameData::GetStartLocation() {
+    if(locations.size() != 0) {
+        return &locations.front();
+    }
+    
+    std::cout << "Sorry, something went wrong & this game will now exit.\n";
+    return nullptr;
+}
+
+Location* GameData::GetLocationWithId(const std::string& id) {
+    for(int i = 0; i < locations.size(); ++i) {
+        if(locations[i].location_id == id) {
+            return &locations[i];
+        }
+    }
+    
+    return nullptr;
 }
 
 bool GameData::LocationExistsWithId(const std::string& id) {

@@ -23,12 +23,13 @@ struct Location {
 };
 
 class GameData {
-public:
-    GameData();
-    void DebugLocations();
-
-private:
     void CreateLocations();
     bool LocationExistsWithId(const std::string& id);
     std::vector<Location> locations;
+
+public:
+    GameData();
+    void DebugLocations();
+    Location* GetStartLocation();
+    Location* GetLocationWithId(const std::string& id);
 };
