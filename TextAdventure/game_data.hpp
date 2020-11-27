@@ -1,5 +1,5 @@
 //
-//  location_choice.hpp
+//  game_data.hpp
 //  TextAdventure
 //
 //  Created by Clarissa Liljander on 2020-11-19.
@@ -23,12 +23,13 @@ struct Location {
 };
 
 class GameData {
-public:
-    GameData();
-    void DebugLocations();
-
-private:
     void CreateLocations();
     bool LocationExistsWithId(const std::string& id);
     std::vector<Location> locations;
+
+public:
+    GameData();
+    void DebugLocations();
+    Location* GetStartLocation();
+    Location* GetLocationWithId(const std::string& id);
 };
