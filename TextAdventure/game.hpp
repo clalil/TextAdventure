@@ -10,11 +10,11 @@
 #include "player.hpp"
 
 class Game {
-    bool is_running = true;
+    bool is_running;
 
 public:
-    GameData game_data;
+    GameData gamedata;
     Player player;
     
-    void run();
+    void Run();
 };
