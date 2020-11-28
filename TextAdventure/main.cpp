@@ -11,6 +11,5 @@
 Game game;
 
 int main() {
-    GameData game_data;
     game.Run();
 }
