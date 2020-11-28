@@ -59,6 +59,19 @@ Location* GameData::GetLocationWithId(const std::string& id) {
     return nullptr;
 }
 
+int GameData::IsInvalidInput(int input) {
+    while(std::cin.fail()) {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        
+        std::cout << "Please enter a valid choice." << "\n";
+        return 1;
+    }
+    return 0;
+}
+
+//Code below only used for debugging purposes
+
 bool GameData::LocationExistsWithId(const std::string& id) {
      for(int i = 0; i < locations.size(); ++i) {
         Location location = locations[i];
@@ -92,15 +105,4 @@ void GameData::DebugLocations() {
     if (duplicate != location_ids.end()) {
         std::cout << "[WARNING] An ID named '" << *duplicate << "' is a duplicate." << "\n";
     }
-}
-
-int GameData::InvalidInput(int input) {
-    while(std::cin.fail()) {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        
-        std::cout << "Please enter a valid choice." << "\n";
-        return 1;
-    }
-    return 0;
 }

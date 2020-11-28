@@ -40,7 +40,7 @@ void Game::Run() {
 
             while(is_valid_input || choice < 0 || choice >= player.current_location->choices.size()) {
                 std::cin >> choice;
-                is_valid_input = gamedata.InvalidInput(choice);
+                is_valid_input = gamedata.IsInvalidInput(choice);
             }
             
             const std::string& upcoming_location_id = player.current_location->choices[choice].next_location_id;
