@@ -93,3 +93,14 @@ void GameData::DebugLocations() {
         std::cout << "[WARNING] An ID named '" << *duplicate << "' is a duplicate." << "\n";
     }
 }
+
+int GameData::InvalidInput(int input) {
+    while(std::cin.fail()) {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        
+        std::cout << "Please enter a valid choice." << "\n";
+        return 1;
+    }
+    return 0;
+}

@@ -30,6 +30,7 @@ class GameData {
 public:
     GameData();
     void DebugLocations();
+    int InvalidInput(int input);
     Location* GetStartLocation();
     Location* GetLocationWithId(const std::string& id);
 };
