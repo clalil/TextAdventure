@@ -6,8 +6,6 @@
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
 #include "game.hpp"
-#include <string>
-#include <iostream>
 
 void Game::Run() {
     std::cout << "*******************\n";
@@ -25,12 +23,17 @@ void Game::Run() {
 
         } else if (player.current_location->choices.size() == 0) {
             std::cout << "Game Over.\n";
-            std::cout << "You made a total of " << player.moves << " moves this time.\n";
+            std::cout << "You made a total of " << player.moves << " moves and visited the following game locations: \n";
+            for(int i = 0; i < player.locations_visited.size(); ++i) {
+                std::cout << player.locations_visited[i]->location_id << "\n";
+            }
+
             is_running = false;
 
         } else {
             bool is_valid_input = false;
             int choice = -1;
+            player.locations_visited.push_back(player.current_location);
 
             std::cout << "Current location is: " << player.current_location->location_text << "\n";
             std::cout << "Where do you wish to proceed next?\n";

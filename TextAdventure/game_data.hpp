@@ -6,8 +6,9 @@
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
 #pragma once
-#include <string>
+#include <iostream>
 #include <vector>
+#include <string>
 
 struct LocationChoice {
     LocationChoice(const std::string& choice_id, const std::string& choice_description);

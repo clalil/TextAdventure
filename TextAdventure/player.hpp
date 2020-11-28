@@ -10,6 +10,7 @@
 
 struct Player {
 public:
+    std::vector<Location*> locations_visited;
     Location* current_location = nullptr;
     int moves = 0;
 };
