@@ -80,9 +80,9 @@ std::string GameData::GetPlayerName(std::string& user_name) {
 
 std::string GameData::PersonalizeText(const std::string player_name, std::string& location_text) {
     size_t match = location_text.find("%%NAME%%");
-    std::regex name_regex("%%NAME%%");
 
     if (match != std::string::npos) {
+        std::regex name_regex("%%NAME%%");
         std::string personalized_text = std::regex_replace (location_text, name_regex, player_name);
         location_text = personalized_text;
 
