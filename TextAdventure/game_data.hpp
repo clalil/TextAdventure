@@ -33,7 +33,7 @@ public:
     void DebugLocations();
     std::string GetPlayerName(std::string& user_name);
     int IsInvalidInput(int input);
-    std::string AddUserName(const std::string player_name, std::string& location_text);
+    std::string PersonalizeText(const std::string player_name, std::string& location_text);
 
     Location* GetStartLocation();
     Location* GetLocationWithId(const std::string& id);
