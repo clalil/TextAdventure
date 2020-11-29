@@ -7,9 +7,10 @@
 //
 #include "game.hpp"
 #include "game_data.hpp"
-#include <iostream>
 Game game;
 
 int main() {
     game.Run();
+    
+    return 0;
 }

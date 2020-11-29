@@ -6,8 +6,9 @@
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
 #pragma once
-#include <string>
+#include <iostream>
 #include <vector>
+#include <string>
 
 struct LocationChoice {
     LocationChoice(const std::string& choice_id, const std::string& choice_description);
@@ -23,14 +24,17 @@ struct Location {
 };
 
 class GameData {
+    std::vector<Location> locations;
     void CreateLocations();
     bool LocationExistsWithId(const std::string& id);
-    std::vector<Location> locations;
 
 public:
     GameData();
     void DebugLocations();
+    std::string GetPlayerName(std::string& user_name);
     int IsInvalidInput(int input);
+    std::string AddUserName(const std::string player_name, std::string& location_text);
+
     Location* GetStartLocation();
     Location* GetLocationWithId(const std::string& id);
 };

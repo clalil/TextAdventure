@@ -6,17 +6,18 @@
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
 #include "game.hpp"
-#include <string>
-#include <iostream>
 
 void Game::Run() {
-    std::cout << "*******************\n";
-    std::cout << "House of Illusions\n";
-    std::cout << "*******************\n";
-    gamedata.DebugLocations();
-
-    player.current_location = gamedata.GetStartLocation();
     is_running = true;
+    std::string name;
+    
+    std::cout << "*******************\n";
+    std::cout << "House of the Haunted\n";
+    std::cout << "*******************\n";
+
+    gamedata.DebugLocations();
+    player.name = gamedata.GetPlayerName(name);
+    player.current_location = gamedata.GetStartLocation();
     
     while(is_running) {
         if(player.current_location == nullptr) {
@@ -25,14 +26,19 @@ void Game::Run() {
 
         } else if (player.current_location->choices.size() == 0) {
             std::cout << "Game Over.\n";
-            std::cout << "You made a total of " << player.moves << " moves this time.\n";
+            std::cout << "You made a total of " << player.moves << " moves and visited the following game locations: \n";
+            for(int i = 0; i < player.locations_visited.size(); ++i) {
+                std::cout << player.locations_visited[i]->location_id << "\n";
+            }
+
             is_running = false;
 
         } else {
             bool is_valid_input = false;
             int choice = -1;
+            player.locations_visited.push_back(player.current_location);
 
-            std::cout << "Current location is: " << player.current_location->location_text << "\n";
+            std::cout << "Current location is: " << gamedata.AddUserName(player.name, player.current_location->location_text) << "\n";
             std::cout << "Where do you wish to proceed next?\n";
             for(int i = 0; i < player.current_location->choices.size(); ++i) {
                 std::cout << "[" << i << "] " << player.current_location->choices[i].next_location_text << "\n";
