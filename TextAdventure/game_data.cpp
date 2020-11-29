@@ -78,7 +78,7 @@ std::string GameData::GetPlayerName(std::string& user_name) {
     return user_name;
 }
 
-std::string GameData::AddUserName(const std::string player_name, std::string& location_text) {
+std::string GameData::PersonalizeText(const std::string player_name, std::string& location_text) {
     size_t match = location_text.find("%%NAME%%");
     std::regex name_regex("%%NAME%%");
 
