@@ -11,6 +11,8 @@
 struct Player {
 public:
     std::vector<Location*> locations_visited;
-    Location* current_location = nullptr;
+    std::string name;
     int moves = 0;
+    
+    Location* current_location = nullptr;
 };

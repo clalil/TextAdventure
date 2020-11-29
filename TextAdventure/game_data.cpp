@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <vector>
 #include <string>
+#include <regex>
 #include <iostream>
 
 LocationChoice::LocationChoice(const std::string& choice_id, const std::string& choice_description) {
@@ -27,7 +28,7 @@ GameData::GameData() {
 }
 
 void GameData::CreateLocations() {
-    Location room1("start", "You are in the first room of this story.");
+    Location room1("start", "Hello %%NAME%%! You are in the first room of this story.");
     room1.choices.push_back(LocationChoice("room2", "Go North"));
     room1.choices.push_back(LocationChoice("exit", "Exit"));
     locations.push_back(room1);
@@ -68,6 +69,27 @@ int GameData::IsInvalidInput(int input) {
         return 1;
     }
     return 0;
+}
+
+std::string GameData::GetPlayerName(std::string& user_name) {
+    std::cout << "Please enter your name: \n";
+    std::getline(std::cin, user_name);
+    
+    return user_name;
+}
+
+std::string GameData::AddUserName(const std::string player_name, std::string& location_text) {
+    size_t match = location_text.find("%%NAME%%");
+    std::regex name_regex("%%NAME%%");
+
+    if (match != std::string::npos) {
+        std::string personalized_text = std::regex_replace (location_text, name_regex, player_name);
+        location_text = personalized_text;
+
+        return location_text;
+    }
+
+    return location_text;
 }
 
 //Code below only used for debugging purposes

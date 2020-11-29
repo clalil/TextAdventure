@@ -8,13 +8,16 @@
 #include "game.hpp"
 
 void Game::Run() {
-    std::cout << "*******************\n";
-    std::cout << "House of Illusions\n";
-    std::cout << "*******************\n";
-    gamedata.DebugLocations();
-
-    player.current_location = gamedata.GetStartLocation();
     is_running = true;
+    std::string name;
+    
+    std::cout << "*******************\n";
+    std::cout << "House of the Haunted\n";
+    std::cout << "*******************\n";
+
+    gamedata.DebugLocations();
+    player.name = gamedata.GetPlayerName(name);
+    player.current_location = gamedata.GetStartLocation();
     
     while(is_running) {
         if(player.current_location == nullptr) {
@@ -35,7 +38,7 @@ void Game::Run() {
             int choice = -1;
             player.locations_visited.push_back(player.current_location);
 
-            std::cout << "Current location is: " << player.current_location->location_text << "\n";
+            std::cout << "Current location is: " << gamedata.AddUserName(player.name, player.current_location->location_text) << "\n";
             std::cout << "Where do you wish to proceed next?\n";
             for(int i = 0; i < player.current_location->choices.size(); ++i) {
                 std::cout << "[" << i << "] " << player.current_location->choices[i].next_location_text << "\n";
