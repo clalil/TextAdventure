@@ -21,7 +21,7 @@ void Game::Run() {
     
     while(is_running) {
         if(player.current_location == nullptr) {
-            std::cout << "[ERROR] No such player location. Ending game. \n";
+            std::cout << "[ERROR] No such location. Ending game. \n";
             is_running = false;
 
         } else if (player.current_location->choices.size() == 0) {
@@ -38,7 +38,7 @@ void Game::Run() {
             int choice = -1;
             player.locations_visited.push_back(player.current_location);
 
-            std::cout << "Current location is: " << gamedata.AddUserName(player.name, player.current_location->location_text) << "\n";
+            std::cout << "Current location is: " << gamedata.PersonalizeText(player.name, player.current_location->location_text) << "\n";
             std::cout << "Where do you wish to proceed next?\n";
             for(int i = 0; i < player.current_location->choices.size(); ++i) {
                 std::cout << "[" << i << "] " << player.current_location->choices[i].next_location_text << "\n";
