@@ -25,16 +25,17 @@ struct Location {
 
 class GameData {
     std::vector<Location> locations;
-    void CreateLocations();
+    void CreateLocations(void);
     bool LocationExistsWithId(const std::string& id);
 
 public:
     GameData();
-    void DebugLocations();
+    void Introduction(void);
+    void DebugLocations(void);
     std::string GetPlayerName(std::string& user_name);
     int IsInvalidInput(int input);
     std::string PersonalizeText(const std::string player_name, std::string& location_text);
 
-    Location* GetStartLocation();
+    Location* GetStartLocation(void);
     Location* GetLocationWithId(const std::string& id);
 };

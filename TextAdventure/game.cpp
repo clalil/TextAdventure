@@ -10,11 +10,8 @@
 void Game::Run() {
     is_running = true;
     std::string name;
-    
-    std::cout << "*******************\n";
-    std::cout << "House of the Haunted\n";
-    std::cout << "*******************\n";
 
+    gamedata.Introduction();
     gamedata.DebugLocations();
     player.name = gamedata.GetPlayerName(name);
     player.current_location = gamedata.GetStartLocation();
@@ -27,6 +24,7 @@ void Game::Run() {
         } else if (player.current_location->choices.size() == 0) {
             std::cout << "Game Over.\n";
             std::cout << "You made a total of " << player.moves << " moves and visited the following game locations: \n";
+
             for(int i = 0; i < player.locations_visited.size(); ++i) {
                 std::cout << player.locations_visited[i]->location_id << "\n";
             }
@@ -40,6 +38,7 @@ void Game::Run() {
 
             std::cout << "Current location is: " << gamedata.PersonalizeText(player.name, player.current_location->location_text) << "\n";
             std::cout << "Where do you wish to proceed next?\n";
+
             for(int i = 0; i < player.current_location->choices.size(); ++i) {
                 std::cout << "[" << i << "] " << player.current_location->choices[i].next_location_text << "\n";
             }

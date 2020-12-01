@@ -27,7 +27,7 @@ GameData::GameData() {
     CreateLocations();
 }
 
-void GameData::CreateLocations() {
+void GameData::CreateLocations(void) {
     Location room1("start", "Hello %%NAME%%! You are in the first room of this story.");
     room1.choices.push_back(LocationChoice("room2", "Go North"));
     room1.choices.push_back(LocationChoice("exit", "Exit"));
@@ -41,7 +41,7 @@ void GameData::CreateLocations() {
     locations.push_back(exit);
 }
 
-Location* GameData::GetStartLocation() {
+Location* GameData::GetStartLocation(void) {
     if(locations.size() != 0) {
         return &locations.front();
     }
@@ -92,6 +92,12 @@ std::string GameData::PersonalizeText(const std::string player_name, std::string
     return location_text;
 }
 
+void GameData::Introduction(void) {
+    std::cout << "*******************\n";
+    std::cout << "House of the Haunted\n";
+    std::cout << "*******************\n";
+}
+
 //Code below only used for debugging purposes
 
 bool GameData::LocationExistsWithId(const std::string& id) {
@@ -104,7 +110,7 @@ bool GameData::LocationExistsWithId(const std::string& id) {
     return false;
 }
 
-void GameData::DebugLocations() {
+void GameData::DebugLocations(void) {
     std::vector<std::string> location_ids = {};
 
     std::cout << "Number of available locations: " << locations.size() << "\n";
