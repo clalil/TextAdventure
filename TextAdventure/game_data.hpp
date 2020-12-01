@@ -31,6 +31,7 @@ class GameData {
 public:
     GameData();
     void Introduction(void);
+    void WaitAMinute(void);
     void DebugLocations(void);
     std::string GetPlayerName(std::string& user_name);
     int IsInvalidInput(int input);

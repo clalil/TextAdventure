@@ -7,11 +7,14 @@
 //
 
 #include "game_data.hpp"
+#include <chrono>
+#include <thread>
 #include <algorithm>
 #include <vector>
 #include <string>
 #include <regex>
 #include <iostream>
+using namespace std::chrono_literals;
 
 LocationChoice::LocationChoice(const std::string& choice_id, const std::string& choice_description) {
     next_location_id = choice_id;
@@ -96,6 +99,10 @@ void GameData::Introduction(void) {
     std::cout << "*******************\n";
     std::cout << "House of the Haunted\n";
     std::cout << "*******************\n";
+}
+
+void GameData::WaitAMinute(void) {
+    std::this_thread::sleep_until(std::chrono::system_clock::now() + 2s);
 }
 
 //Code below only used for debugging purposes

@@ -36,7 +36,8 @@ void Game::Run() {
             int choice = -1;
             player.locations_visited.push_back(player.current_location);
 
-            std::cout << "Current location is: " << gamedata.PersonalizeText(player.name, player.current_location->location_text) << "\n";
+            gamedata.WaitAMinute();
+            std::cout << "-> " << gamedata.PersonalizeText(player.name, player.current_location->location_text) << "\n";
             std::cout << "Where do you wish to proceed next?\n";
 
             for(int i = 0; i < player.current_location->choices.size(); ++i) {
