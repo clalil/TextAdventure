@@ -37,20 +37,21 @@ void Game::Run() {
             player.locations_visited.push_back(player.current_location);
 
             gamedata.WaitAMinute();
+            std::cout << "---\n";
             std::cout << "-> " << gamedata.PersonalizeText(player.name, player.current_location->location_text) << "\n";
             std::cout << "---\n";
             std::cout << "Where do you wish to proceed next?\n";
 
             for(int i = 0; i < player.current_location->choices.size(); ++i) {
-                std::cout << "[" << i << "] " << player.current_location->choices[i].next_location_text << "\n";
+                std::cout << "[" << i+1 << "] " << player.current_location->choices[i].next_location_text << "\n";
             }
 
-            while(is_valid_input || choice < 0 || choice >= player.current_location->choices.size()) {
+            while(is_valid_input || choice < 0 || choice >= player.current_location->choices.size()+1) {
                 std::cin >> choice;
                 is_valid_input = gamedata.IsInvalidInput(choice);
             }
             
-            const std::string& upcoming_location_id = player.current_location->choices[choice].next_location_id;
+            const std::string& upcoming_location_id = player.current_location->choices[choice-1].next_location_id;
             player.current_location = gamedata.GetLocationWithId(upcoming_location_id);
             
             player.moves++;

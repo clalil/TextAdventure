@@ -102,7 +102,7 @@ void GameData::Introduction(void) {
 }
 
 void GameData::WaitAMinute(void) {
-    std::this_thread::sleep_until(std::chrono::system_clock::now() + 1.5s);
+    std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
 }
 
 //Code below only used for debugging purposes
