@@ -38,6 +38,7 @@ void Game::Run() {
 
             gamedata.WaitAMinute();
             std::cout << "-> " << gamedata.PersonalizeText(player.name, player.current_location->location_text) << "\n";
+            std::cout << "---\n";
             std::cout << "Where do you wish to proceed next?\n";
 
             for(int i = 0; i < player.current_location->choices.size(); ++i) {

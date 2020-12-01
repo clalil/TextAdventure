@@ -31,12 +31,12 @@ GameData::GameData() {
 }
 
 void GameData::CreateLocations(void) {
-    Location room1("start", "Hello %%NAME%%! You are in the first room of this story.");
-    room1.choices.push_back(LocationChoice("room2", "Go North"));
+    Location room1("start", "Hello %%NAME%%! You are about to embark on a great adventure.");
+    room1.choices.push_back(LocationChoice("begin", "I'm psyched! Let's play 'House of the Haunted'."));
     room1.choices.push_back(LocationChoice("exit", "Exit"));
     locations.push_back(room1);
 
-    Location room2("room2", "You are in the second room of this story.");
+    Location room2("begin", "You wake up in the middle of a forest, not remembering how you got there in the first place. You are wearing your favourite clothes: a t-shirt and shorts. Perhaps you shouldn't be - it's about 10 degrees celcius in the woods. You feel kind of cold...and hungry, so hungry.");
     room2.choices.push_back(LocationChoice("exit", "Exit"));
     locations.push_back(room2);
 
@@ -102,7 +102,7 @@ void GameData::Introduction(void) {
 }
 
 void GameData::WaitAMinute(void) {
-    std::this_thread::sleep_until(std::chrono::system_clock::now() + 2s);
+    std::this_thread::sleep_until(std::chrono::system_clock::now() + 1.5s);
 }
 
 //Code below only used for debugging purposes
