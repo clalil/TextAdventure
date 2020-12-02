@@ -63,7 +63,7 @@ Location* GameData::GetLocationWithId(const std::string& id) {
     return nullptr;
 }
 
-int GameData::IsInvalidInput(int input) {
+const int GameData::IsInvalidInput(int input) {
     while(std::cin.fail()) {
         std::cin.clear();
         std::cin.ignore(10000, '\n');
@@ -95,19 +95,19 @@ std::string GameData::PersonalizeText(const std::string player_name, std::string
     return location_text;
 }
 
-void GameData::Introduction(void) {
+const void GameData::Introduction(void) {
     std::cout << "*******************\n";
     std::cout << "House of the Haunted\n";
     std::cout << "*******************\n";
 }
 
-void GameData::WaitAMinute(void) {
+const void GameData::WaitAMinute(void) {
     std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
 }
 
 //Code below only used for debugging purposes
 
-bool GameData::LocationExistsWithId(const std::string& id) {
+const bool GameData::LocationExistsWithId(const std::string id) {
      for(int i = 0; i < locations.size(); ++i) {
         Location location = locations[i];
         if (location.location_id == id) {
@@ -117,7 +117,7 @@ bool GameData::LocationExistsWithId(const std::string& id) {
     return false;
 }
 
-void GameData::DebugLocations(void) {
+const void GameData::DebugLocations(void) {
     std::vector<std::string> location_ids = {};
 
     std::cout << "Number of available locations: " << locations.size() << "\n";
