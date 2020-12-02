@@ -1,20 +1,22 @@
-#location01
+#start
 Hello %%NAME%%! You are about to embark on a great adventure.
-Some text for this location
-Some more text for this location
-&location02: I'm psyched! Let's play 'House of the Haunted'.
+&beginGame: I'm psyched! Let's play 'House of the Haunted'.
 &exit: Go to exit
 ===
-#location02
+#beginGame
 You wake up in the middle of a forest, not remembering how you got there in the first place.
 You are wearing your favourite clothes: a t-shirt and shorts. Perhaps you shouldn't be - 
 it's about 10 degrees celcius in the woods. You feel kind of cold...and hungry, so hungry.
-&location03: Go to location 3
+&goNorth: The darkness is surrounding you, creeping you out. You decide to get a move on.
+&stay: You decide to stay where you are. Perhaps someone will come by soon and rescue you.
 &exit: Go to exit
 ===
-#location03
-You are at location 3
+#goNorth
+You start walking deeper into the woods. You feel a slight drizzle of rain and pick up the pace.
 &exit: Go to exit
+===
+#stay
+You sit down on the cold, hard ground. Awaiting rescue that might never come.
 ===
 #exit
 You leave the location
