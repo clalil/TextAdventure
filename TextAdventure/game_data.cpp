@@ -13,6 +13,7 @@
 #include <vector>
 #include <string>
 #include <regex>
+#include <fstream>
 #include <iostream>
 using namespace std::chrono_literals;
 
@@ -30,18 +31,45 @@ GameData::GameData() {
     CreateLocations();
 }
 
+int GameData::LoadLocationData(const std::string path) {
+    int locations_added = 0;
+    std::ifstream location_file(path);
+    std::string line;
+
+    if (location_file.is_open() == false) {
+        return 0;
+    }
+
+    Location working_location("", "");
+    
+    while(std::getline(location_file, line)) {
+        size_t match_location_id = line.find("#");
+        size_t match_location_choice_id = line.find("&");
+        size_t match_location_choice_description = line.find(":");
+        size_t match_location_endline = line.find("=");
+        
+        if (match_location_id != std::string::npos) {
+            working_location.location_id = line.substr(match_location_id + 1);
+        } else if (match_location_choice_id != std::string::npos) {
+        working_location.choices.push_back(LocationChoice((line.substr((match_location_choice_id + 1), match_location_choice_description - 1)), (line.substr(match_location_choice_description + 2))));
+        } else if (match_location_endline != std::string::npos) {
+            locations.push_back(working_location);
+
+            working_location.location_id = "";
+            working_location.location_text = "";
+            working_location.choices.clear();
+            
+        } else {
+            working_location.location_text += line;
+            working_location.location_text += "\n";
+        }
+    }
+    
+    return locations_added;
+}
+
 void GameData::CreateLocations(void) {
-    Location room1("start", "Hello %%NAME%%! You are about to embark on a great adventure.");
-    room1.choices.push_back(LocationChoice("begin", "I'm psyched! Let's play 'House of the Haunted'."));
-    room1.choices.push_back(LocationChoice("exit", "Exit"));
-    locations.push_back(room1);
-
-    Location room2("begin", "You wake up in the middle of a forest, not remembering how you got there in the first place. You are wearing your favourite clothes: a t-shirt and shorts. Perhaps you shouldn't be - it's about 10 degrees celcius in the woods. You feel kind of cold...and hungry, so hungry.");
-    room2.choices.push_back(LocationChoice("exit", "Exit"));
-    locations.push_back(room2);
-
-    Location exit("exit", "This is the exit! :o");
-    locations.push_back(exit);
+    LoadLocationData("Content/game_locations.txt");
 }
 
 Location* GameData::GetStartLocation(void) {
@@ -63,7 +91,7 @@ Location* GameData::GetLocationWithId(const std::string& id) {
     return nullptr;
 }
 
-int GameData::IsInvalidInput(int input) {
+const int GameData::IsInvalidInput(int input) {
     while(std::cin.fail()) {
         std::cin.clear();
         std::cin.ignore(10000, '\n');
@@ -95,19 +123,19 @@ std::string GameData::PersonalizeText(const std::string player_name, std::string
     return location_text;
 }
 
-void GameData::Introduction(void) {
+const void GameData::Introduction(void) {
     std::cout << "*******************\n";
     std::cout << "House of the Haunted\n";
     std::cout << "*******************\n";
 }
 
-void GameData::WaitAMinute(void) {
+const void GameData::WaitAMinute(void) {
     std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
 }
 
 //Code below only used for debugging purposes
 
-bool GameData::LocationExistsWithId(const std::string& id) {
+const bool GameData::LocationExistsWithId(const std::string id) {
      for(int i = 0; i < locations.size(); ++i) {
         Location location = locations[i];
         if (location.location_id == id) {
@@ -117,7 +145,7 @@ bool GameData::LocationExistsWithId(const std::string& id) {
     return false;
 }
 
-void GameData::DebugLocations(void) {
+const void GameData::DebugLocations(void) {
     std::vector<std::string> location_ids = {};
 
     std::cout << "Number of available locations: " << locations.size() << "\n";
@@ -128,7 +156,7 @@ void GameData::DebugLocations(void) {
 
         for(int j = 0; j < location.choices.size(); ++j) {
             LocationChoice choice = location.choices[j];
-            
+
             if (LocationExistsWithId(choice.next_location_id) == false) {
                 std::cout << "[WARNING] Choice '" << (j+1) << "' on location '" << location.location_id << "' points to '" << choice.next_location_id << "' which doesn't exist.\n";
             }
