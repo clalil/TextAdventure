@@ -27,6 +27,7 @@ struct Location {
 
 class GameData {
     void CreateLocations(void);
+    int LoadLocationData(const std::string path);
     const bool LocationExistsWithId(const std::string id);
     
     std::vector<Location> locations;

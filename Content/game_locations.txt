@@ -1,0 +1,21 @@
+#location01
+Hello %%NAME%%! You are about to embark on a great adventure.
+Some text for this location
+Some more text for this location
+&location02: I'm psyched! Let's play 'House of the Haunted'.
+&exit: Go to exit
+===
+#location02
+You wake up in the middle of a forest, not remembering how you got there in the first place.
+You are wearing your favourite clothes: a t-shirt and shorts. Perhaps you shouldn't be - 
+it's about 10 degrees celcius in the woods. You feel kind of cold...and hungry, so hungry.
+&location03: Go to location 3
+&exit: Go to exit
+===
+#location03
+You are at location 3
+&exit: Go to exit
+===
+#exit
+You leave the location
+===
