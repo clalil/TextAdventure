@@ -136,6 +136,27 @@ const void GameData::WaitAMinute(void) {
     std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
 }
 
+const int GameData::GameMenu(int& menu_options) {
+    char view_menu{};
+    
+    while(view_menu != 'm') {
+        std::cout << "[m] Menu \n";
+        std::cin >> view_menu;
+    }
+
+    if (view_menu == 'm') {
+        std::cout << "=================\n";
+        std::cout << "[1] Resume game\n";
+        std::cout << "[2] Exit game\n";
+        std::cout << "=================\n";
+        std::cin >> menu_options;
+    } else {
+        std::cout << "That's not an option.\n";
+    }
+    
+    return 0;
+}
+
 //Code below only used for debugging purposes
 
 const bool GameData::LocationExistsWithId(const std::string id) {

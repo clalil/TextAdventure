@@ -36,6 +36,7 @@ public:
     GameData();
     const void Introduction(void);
     const void WaitAMinute(void);
+    const int GameMenu(int& menu_options);
     const void DebugLocations(void);
     const int IsInvalidInput(int input);
     std::string GetPlayerName(std::string& user_name);
