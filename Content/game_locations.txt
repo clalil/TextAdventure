@@ -1,3 +1,4 @@
+//Chapter One
 #start
 Hello %%NAME%%! You are about to embark on a great adventure.
 &beginGame: I'm psyched! Let's play 'House of the Haunted'.

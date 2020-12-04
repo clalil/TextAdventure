@@ -43,12 +43,15 @@ int GameData::LoadLocationData(const std::string path) {
     Location working_location("", "");
     
     while(std::getline(location_file, line)) {
+        size_t match_location_comment = line.find("//");
         size_t match_location_id = line.find("#");
         size_t match_location_choice_id = line.find("&");
         size_t match_location_choice_description = line.find(":");
         size_t match_location_endline = line.find("=");
         
-        if (match_location_id != std::string::npos) {
+        if (match_location_comment != std::string::npos) {
+            continue;
+        } else if (match_location_id != std::string::npos) {
             working_location.location_id = line.substr(match_location_id + 1);
         } else if (match_location_choice_id != std::string::npos) {
         working_location.choices.push_back(LocationChoice((line.substr((match_location_choice_id + 1), match_location_choice_description - 1)), (line.substr(match_location_choice_description + 2))));
