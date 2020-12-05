@@ -10,7 +10,6 @@
 void Game::Run() {
     is_running = true;
     std::string name;
-    int menu_options{};
 
     gamedata.Introduction();
     gamedata.DebugLocations();
@@ -47,17 +46,11 @@ void Game::Run() {
                 std::cout << "[" << i+1 << "] " << player.current_location->choices[i].next_location_text << "\n";
             }
             
-            gamedata.GameMenu(menu_options);
-            gamedata.IsInvalidInput(menu_options);
-
-            if (menu_options == 1) {
-                std::cout << "Where do you wish to proceed next?\n";
-            } else if (menu_options == 2) {
-                break;
-            }
+            gamedata.GameMenu();
 
             while(is_valid_input || choice < 0 || choice >= player.current_location->choices.size()+1) {
                 std::cin >> choice;
+
                 is_valid_input = gamedata.IsInvalidInput(choice);
             }
             
