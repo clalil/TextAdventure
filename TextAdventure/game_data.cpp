@@ -99,8 +99,8 @@ const int GameData::IsInvalidInput(int& choice, std::string input) {
     // to fit in an int, e.g. "11111111111111111111111111111111111"
     try {
         choice = std::stoi(input);
-    } catch (std::exception const &exc) {
-        std::cout << exc.what() << "\n";
+    } catch (std::exception const exc) {
+        std::cout << "You've entered an invalid input. Please try again." << "\n";
         return 1;
     }
     
@@ -152,7 +152,11 @@ const int GameData::GameMenu(void) {
       IsInvalidInput(choice, line);
     }
     
-    return choice;
+    if (choice == 1 || choice == 2) {
+        return choice;
+    }
+    
+    return 2;
 }
 
 //Code below only used for debugging purposes
