@@ -46,12 +46,28 @@ void Game::Run() {
                 std::cout << "[" << i+1 << "] " << player.current_location->choices[i].next_location_text << "\n";
             }
             
-            gamedata.GameMenu();
+            std::cout << "[m] Menu\n";
 
             while(is_valid_input || choice < 0 || choice >= player.current_location->choices.size()+1) {
-                std::cin >> choice;
+                std::string line;
+                std::getline(std::cin, line);
+                
+                if (line.size() > 0 && line[0] == 'm') {
+                    int input = gamedata.GameMenu();
 
-                is_valid_input = gamedata.IsInvalidInput(choice);
+                    if (input == 1) {
+                        std::cout << "Where do you wish to proceed next?\n";
+                        std::getline(std::cin, line);
+                        is_valid_input = gamedata.IsInvalidInput(choice, line);
+
+                    } else if (input == 2) {
+                        std::cout << "Exiting game\n";
+                        is_running = false;
+                        break;
+                    }
+                } else {
+                    is_valid_input = gamedata.IsInvalidInput(choice, line);
+                }
             }
             
             const std::string& upcoming_location_id = player.current_location->choices[choice-1].next_location_id;

@@ -94,16 +94,16 @@ Location* GameData::GetLocationWithId(const std::string& id) {
     return nullptr;
 }
 
-const int GameData::IsInvalidInput(int input) {
-    while(std::cin.fail()) {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        
-        std::cout << "You've entered: " << input << "\n";
-        std::cout << "That's not an option.\n";
-
+const int GameData::IsInvalidInput(int& choice, std::string input) {
+    // line is not a number, e.g. "abc" or "abc123", or the number is too big
+    // to fit in an int, e.g. "11111111111111111111111111111111111"
+    try {
+        choice = std::stoi(input);
+    } catch (std::exception const &exc) {
+        std::cout << exc.what() << "\n";
         return 1;
     }
+    
     return 0;
 }
 
@@ -139,37 +139,20 @@ const void GameData::WaitAMinute(void) {
 }
 
 const int GameData::GameMenu(void) {
-    std::string menu;
-    std::cout << "[m] Menu\n";
-    std::getline(std::cin, menu);
+    int choice = 0;
     
-    if(menu.length() > 0 && menu[0] == 'm') {
-        int input = 0;
+    std::cout << "=================\n";
+    std::cout << "[1] Resume game\n";
+    std::cout << "[2] Exit game\n";
+    std::cout << "=================\n";
 
-        while(input == 0) {
-          std::string line;
-          std::getline(std::cin, line);
-          input = std::stoi(line);
-            
-            std::cout << "=================\n";
-            std::cout << "[r] Resume game\n";
-            std::cout << "[e] Exit game\n";
-            std::cout << "=================\n";
-
-          if (input < 0 || input > 2) {
-              continue;
-          } else if(input == 1) {
-              std::cout << "Where do you wish to proceed next?\n";
-          } else if(input == 2) {
-              std::cout << "Exited game.\n";
-              break;
-          }
-        }
-    } else {
-        return -1;
+    while(choice == 0) {
+      std::string line;
+      std::getline(std::cin, line);
+      IsInvalidInput(choice, line);
     }
     
-    return -1;
+    return choice;
 }
 
 //Code below only used for debugging purposes
