@@ -52,9 +52,9 @@ int GameData::LoadLocationData(const std::string path) {
         if (match_location_comment != std::string::npos) {
             continue;
         } else if (match_location_id != std::string::npos) {
-            working_location.location_id = line.substr(match_location_id + 1);
+            working_location.location_id = line.substr(1);
         } else if (match_location_choice_id != std::string::npos) {
-        working_location.choices.push_back(LocationChoice((line.substr((match_location_choice_id + 1), match_location_choice_description - 1)), (line.substr(match_location_choice_description + 2))));
+        working_location.choices.push_back(LocationChoice((line.substr(1, match_location_choice_description - 1)), (line.substr(match_location_choice_description + 2))));
         } else if (match_location_endline != std::string::npos) {
             locations.push_back(working_location);
 
