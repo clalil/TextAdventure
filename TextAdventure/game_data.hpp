@@ -36,8 +36,9 @@ public:
     GameData();
     const void Introduction(void);
     const void WaitAMinute(void);
+    const int GameMenu(void);
     const void DebugLocations(void);
-    const int IsInvalidInput(int input);
+    const int IsInvalidInput(int& choice, std::string input);
     std::string GetPlayerName(std::string& user_name);
     std::string PersonalizeText(const std::string player_name, std::string& location_text);
 

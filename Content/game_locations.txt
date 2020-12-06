@@ -1,7 +1,7 @@
+//Chapter One
 #start
 Hello %%NAME%%! You are about to embark on a great adventure.
 &beginGame: I'm psyched! Let's play 'House of the Haunted'.
-&exit: Go to exit
 ===
 #beginGame
 You wake up in the middle of a forest, not remembering how you got there in the first place.

@@ -43,12 +43,15 @@ int GameData::LoadLocationData(const std::string path) {
     Location working_location("", "");
     
     while(std::getline(location_file, line)) {
+        size_t match_location_comment = line.find("//");
         size_t match_location_id = line.find("#");
         size_t match_location_choice_id = line.find("&");
         size_t match_location_choice_description = line.find(":");
         size_t match_location_endline = line.find("=");
         
-        if (match_location_id != std::string::npos) {
+        if (match_location_comment != std::string::npos) {
+            continue;
+        } else if (match_location_id != std::string::npos) {
             working_location.location_id = line.substr(match_location_id + 1);
         } else if (match_location_choice_id != std::string::npos) {
         working_location.choices.push_back(LocationChoice((line.substr((match_location_choice_id + 1), match_location_choice_description - 1)), (line.substr(match_location_choice_description + 2))));
@@ -91,14 +94,16 @@ Location* GameData::GetLocationWithId(const std::string& id) {
     return nullptr;
 }
 
-const int GameData::IsInvalidInput(int input) {
-    while(std::cin.fail()) {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        
-        std::cout << "Please enter a valid choice." << "\n";
+const int GameData::IsInvalidInput(int& choice, std::string input) {
+    // line is not a number, e.g. "abc" or "abc123", or the number is too big
+    // to fit in an int, e.g. "11111111111111111111111111111111111"
+    try {
+        choice = std::stoi(input);
+    } catch (std::exception const exc) {
+        std::cout << "You've entered an invalid input. Please try again." << "\n";
         return 1;
     }
+    
     return 0;
 }
 
@@ -131,6 +136,27 @@ const void GameData::Introduction(void) {
 
 const void GameData::WaitAMinute(void) {
     std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
+}
+
+const int GameData::GameMenu(void) {
+    int choice = 0;
+    
+    std::cout << "=================\n";
+    std::cout << "[1] Resume game\n";
+    std::cout << "[2] Exit game\n";
+    std::cout << "=================\n";
+
+    while(choice == 0) {
+      std::string line;
+      std::getline(std::cin, line);
+      IsInvalidInput(choice, line);
+    }
+    
+    if (choice == 1 || choice == 2) {
+        return choice;
+    }
+    
+    return 2;
 }
 
 //Code below only used for debugging purposes
