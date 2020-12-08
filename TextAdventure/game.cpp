@@ -6,8 +6,56 @@
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
 #include "game.hpp"
+#include <fstream>
 
-void Game::Run() {
+const void Game::SaveGame(void) {
+    std::ofstream save_file("Content/game_save.txt", std::ios::trunc);
+
+    if (save_file.is_open()) {
+        save_file << player.current_location->location_id << "\n";
+        save_file << player.moves << "\n";
+    } else {
+        std::cout << "[ERROR] Could not open game_save.txt file.\n";
+    }
+}
+
+const void Game::LoadGame(void) {
+    std::ifstream load_file("Content/game_save.txt");
+    std::string line;
+
+    if (load_file.is_open()) {
+        while(std::getline(load_file, line)) {
+            player.current_location = gamedata.GetLocationWithId(line);
+            player.moves = std::stoi(line);
+        }
+    } else {
+        std::cout << "[ERROR] Could not open game_save.txt file.\n";
+    }
+}
+
+const void Game::GameStart(void) {
+    std::string line;
+    int choice;
+
+    std::cout << "Do you want to:\n";
+    std::cout << "[1] Start new game\n";
+    std::cout << "[2] Load saved game\n";
+    std::getline(std::cin, line);
+    choice = std::stoi(line);
+
+    gamedata.IsInvalidInput(choice, line);
+    
+    if (choice == 1) {
+        player.current_location = gamedata.GetStartLocation();
+        player.moves = 0;
+        Run();
+    } else if (choice == 2) {
+        LoadGame();
+        Run();
+    }
+}
+
+void Game::Run(void) {
     is_running = true;
     std::string name;
 
@@ -74,6 +122,7 @@ void Game::Run() {
             player.current_location = gamedata.GetLocationWithId(upcoming_location_id);
             
             player.moves++;
+            SaveGame();
         }
     }
 }

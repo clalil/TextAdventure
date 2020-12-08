@@ -10,5 +10,5 @@
 Game game;
 
 int main() {
-    game.Run();
+    game.GameStart();
 }

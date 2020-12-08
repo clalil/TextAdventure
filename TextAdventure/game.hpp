@@ -16,5 +16,8 @@ public:
     GameData gamedata;
     Player player;
     
-    void Run();
+    void Run(void);
+    const void SaveGame(void);
+    const void LoadGame(void);
+    const void GameStart(void);
 };
