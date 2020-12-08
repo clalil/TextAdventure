@@ -12,7 +12,12 @@ const void Game::SaveGame(void) {
     std::ofstream save_file("Content/game_save.txt", std::ios::trunc);
 
     if (save_file.is_open()) {
-        save_file << player.current_location->location_id << "\n";
+        if(player.current_location != nullptr) {
+            save_file << player.current_location->location_id << "\n";
+        } else {
+            save_file << "beginGame" << "\n";
+        }
+
         save_file << player.moves << "\n";
     } else {
         std::cout << "[ERROR] Could not open game_save.txt file.\n";
@@ -24,10 +29,11 @@ const void Game::LoadGame(void) {
     std::string line;
 
     if (load_file.is_open()) {
-        while(std::getline(load_file, line)) {
+        std::getline(load_file, line);
             player.current_location = gamedata.GetLocationWithId(line);
+            player.current_location;
+        std::getline(load_file, line);
             player.moves = std::stoi(line);
-        }
     } else {
         std::cout << "[ERROR] Could not open game_save.txt file.\n";
     }
@@ -62,7 +68,6 @@ void Game::Run(void) {
     gamedata.Introduction();
     gamedata.DebugLocations();
     player.name = gamedata.GetPlayerName(name);
-    player.current_location = gamedata.GetStartLocation();
     
     while(is_running) {
         if(player.current_location == nullptr) {
@@ -110,6 +115,7 @@ void Game::Run(void) {
 
                     } else if (input == 2) {
                         std::cout << "Exiting game\n";
+                        SaveGame();
                         is_running = false;
                         break;
                     }
@@ -118,11 +124,12 @@ void Game::Run(void) {
                 }
             }
             
-            const std::string& upcoming_location_id = player.current_location->choices[choice-1].next_location_id;
-            player.current_location = gamedata.GetLocationWithId(upcoming_location_id);
-            
-            player.moves++;
-            SaveGame();
+            if (choice >= 0 && choice < player.current_location->choices.size()+1) {
+                const std::string& upcoming_location_id = player.current_location->choices[choice-1].next_location_id;
+                player.current_location = gamedata.GetLocationWithId(upcoming_location_id);
+                
+                player.moves++;
+            }
         }
     }
 }
