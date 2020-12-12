@@ -93,7 +93,7 @@ std::shared_ptr<Location> GameData::GetStartLocation(void) {
         return locations.front();
     }
     
-    std::cout << "Sorry, something went wrong & this game will now exit.\n";
+    std::cout << "[ERROR] The game locations did not load properly. \n";
 
     return nullptr;
 }
