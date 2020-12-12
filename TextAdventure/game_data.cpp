@@ -74,13 +74,15 @@ int GameData::LoadLocationData(const std::string path) {
 
 void GameData::CreateLocations(void) {
     namespace fs = std::__fs::filesystem;
-    fs::path path_to_load("Content/Locations");
+    std::string directory_path = "Content/Locations/";
+    fs::path path_to_load(directory_path);
     
     if(fs::exists(path_to_load)) {
         for (const auto& entry : fs::directory_iterator(path_to_load)) {
-            auto filename = entry.path().filename();
-            std::cout << filename << "\n";
-            LoadLocationData(path_to_load);
+            std::string filename = entry.path().filename();
+            std::string file_to_load = directory_path + filename;
+
+            LoadLocationData(file_to_load);
         }
     }
 }
