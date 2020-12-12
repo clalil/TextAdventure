@@ -8,13 +8,20 @@
 #include <string>
 
 class BaseItem {
-    std::string id;
-    std::string title;
-    
 public:
     BaseItem(const std::string& item_id, const std::string& item_title);
     virtual void UseItem() = 0;
     
-    const std::string& GetId();
-    const std::string& GetTitle();
+protected:
+    std::string id;
+    std::string title;
+};
+
+class TeleportScroll : public BaseItem {
+    std::string teleport_location_id;
+    
+public:
+    TeleportScroll(const std::string& item_id, const std::string& item_title, const std::string& location_id);
+    
+    virtual void UseItem();
 };
