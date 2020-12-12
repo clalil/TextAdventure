@@ -1,2 +1,2 @@
-goNorth
-2
+beginGame
+1

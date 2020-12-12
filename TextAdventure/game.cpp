@@ -31,7 +31,7 @@ const void Game::LoadGame(void) {
     if (load_file.is_open()) {
         std::getline(load_file, line);
             player.current_location = gamedata.GetLocationWithId(line);
-            player.current_location;
+
         std::getline(load_file, line);
             player.moves = std::stoi(line);
     } else {
