@@ -40,8 +40,8 @@ int GameData::LoadLocationData(const std::string path) {
         return 0;
     }
 
-    Location working_location("", "");
-    
+    std::shared_ptr<Location> working_location = std::make_shared<Location>("", "");
+
     while(std::getline(location_file, line)) {
         size_t match_location_comment = line.find("//");
         size_t match_location_id = line.find("#");
@@ -52,19 +52,19 @@ int GameData::LoadLocationData(const std::string path) {
         if (match_location_comment != std::string::npos) {
             continue;
         } else if (match_location_id != std::string::npos) {
-            working_location.location_id = line.substr(1);
+            working_location->location_id = line.substr(1);
         } else if (match_location_choice_id != std::string::npos) {
-        working_location.choices.push_back(LocationChoice((line.substr(1, match_location_choice_description - 1)), (line.substr(match_location_choice_description + 2))));
+        working_location->choices.push_back(LocationChoice((line.substr(1, match_location_choice_description - 1)), (line.substr(match_location_choice_description + 2))));
         } else if (match_location_endline != std::string::npos) {
             locations.push_back(working_location);
 
-            working_location.location_id = "";
-            working_location.location_text = "";
-            working_location.choices.clear();
+            working_location->location_id = "";
+            working_location->location_text = "";
+            working_location->choices.clear();
             
         } else {
-            working_location.location_text += line;
-            working_location.location_text += "\n";
+            working_location->location_text += line;
+            working_location->location_text += "\n";
         }
     }
     
@@ -75,19 +75,19 @@ void GameData::CreateLocations(void) {
     LoadLocationData("Content/game_locations.txt");
 }
 
-Location* GameData::GetStartLocation(void) {
+std::shared_ptr<Location> GameData::GetStartLocation(void) {
     if(locations.size() != 0) {
-        return &locations.front();
+        return locations.front();
     }
     
     std::cout << "Sorry, something went wrong & this game will now exit.\n";
     return nullptr;
 }
 
-Location* GameData::GetLocationWithId(const std::string& id) {
+std::shared_ptr<Location> GameData::GetLocationWithId(const std::string& id) {
     for(int i = 0; i < locations.size(); ++i) {
-        if(locations[i].location_id == id) {
-            return &locations[i];
+        if(locations[i]->location_id == id) {
+            return locations[i];
         }
     }
     
@@ -163,8 +163,8 @@ const int GameData::GameMenu(void) {
 
 const bool GameData::LocationExistsWithId(const std::string id) {
      for(int i = 0; i < locations.size(); ++i) {
-        Location location = locations[i];
-        if (location.location_id == id) {
+         std::shared_ptr<Location> location = locations[i];
+        if (location->location_id == id) {
             return true;
         }
     }
@@ -177,14 +177,14 @@ const void GameData::DebugLocations(void) {
     std::cout << "Number of available locations: " << locations.size() << "\n";
 
     for(int i = 0; i < locations.size(); ++i) {
-        Location location = locations[i];
-        location_ids.push_back(location.location_id);
+        std::shared_ptr<Location> location = locations[i];
+        location_ids.push_back(location->location_id);
 
-        for(int j = 0; j < location.choices.size(); ++j) {
-            LocationChoice choice = location.choices[j];
+        for(int j = 0; j < location->choices.size(); ++j) {
+            LocationChoice choice = location->choices[j];
 
             if (LocationExistsWithId(choice.next_location_id) == false) {
-                std::cout << "[WARNING] Choice '" << (j+1) << "' on location '" << location.location_id << "' points to '" << choice.next_location_id << "' which doesn't exist.\n";
+                std::cout << "[WARNING] Choice '" << (j+1) << "' on location '" << location->location_id << "' points to '" << choice.next_location_id << "' which doesn't exist.\n";
             }
         }
     }

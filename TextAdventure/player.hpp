@@ -12,7 +12,7 @@ struct Player {
 public:
     int moves = 0;
     std::string name;
-    std::vector<Location*> locations_visited;
+    std::vector<std::shared_ptr<Location>> locations_visited;
     
-    Location* current_location = nullptr;
+    std::shared_ptr<Location> current_location = nullptr;
 };
