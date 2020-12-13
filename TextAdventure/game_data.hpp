@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <memory>
 
 struct LocationChoice {
     LocationChoice(const std::string& choice_id, const std::string& choice_description);
@@ -22,7 +23,7 @@ struct Location {
 
     std::string location_id;
     std::string location_text;
-    std::vector<LocationChoice> choices;
+    std::vector<std::shared_ptr<LocationChoice>> choices;
 };
 
 class GameData {
@@ -30,7 +31,7 @@ class GameData {
     int LoadLocationData(const std::string path);
     const bool LocationExistsWithId(const std::string id);
     
-    std::vector<Location> locations;
+    std::vector<std::shared_ptr<Location>> locations;
 
 public:
     GameData();
@@ -40,8 +41,8 @@ public:
     const void DebugLocations(void);
     const int IsInvalidInput(int& choice, std::string input);
     std::string GetPlayerName(std::string& user_name);
-    std::string PersonalizeText(const std::string player_name, std::string& location_text);
+    std::string PersonalizeText(const std::string& player_name, std::string& location_text);
 
-    Location* GetStartLocation(void);
-    Location* GetLocationWithId(const std::string& id);
+    std::shared_ptr<Location> GetStartLocation(void);
+    std::shared_ptr<Location> GetLocationWithId(const std::string& id);
 };
