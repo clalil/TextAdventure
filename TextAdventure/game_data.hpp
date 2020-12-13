@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include "items.hpp"
 
 struct LocationChoice {
     LocationChoice(const std::string& choice_id, const std::string& choice_description);
@@ -32,6 +33,7 @@ class GameData {
     const bool LocationExistsWithId(const std::string id);
     
     std::vector<std::shared_ptr<Location>> locations;
+    std::vector<std::shared_ptr<BaseItem>> items;
 
 public:
     GameData();
@@ -40,9 +42,11 @@ public:
     const int GameMenu(void);
     const void DebugLocations(void);
     const int IsInvalidInput(int& choice, std::string input);
+    const void InitializeItems();
     std::string GetPlayerName(std::string& user_name);
     std::string PersonalizeText(const std::string& player_name, std::string& location_text);
 
+    std::shared_ptr<BaseItem> GetItemsById(const std::string& item_id);
     std::shared_ptr<Location> GetStartLocation(void);
     std::shared_ptr<Location> GetLocationWithId(const std::string& id);
 };

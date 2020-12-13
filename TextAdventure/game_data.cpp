@@ -29,6 +29,24 @@ Location::Location(const std::string& id, const std::string& descriptive_text) {
 
 GameData::GameData() {
     CreateLocations();
+    InitializeItems();
+}
+
+const void GameData::InitializeItems() {
+    std::shared_ptr<BaseItem> scroll01{ new TeleportScroll("scroll01", "Teleport Scroll", "beginGame") };
+
+    items.push_back(scroll01);
+}
+
+std::shared_ptr<BaseItem> GameData::GetItemsById(const std::string& item_id) {
+    for(int i = 0; i < items.size(); ++i) {
+        if (items[i]->id == item_id) {
+
+            return items[i];
+        }
+    }
+
+    return nullptr;
 }
 
 int GameData::LoadLocationData(const std::string path) {
