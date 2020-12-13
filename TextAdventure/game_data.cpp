@@ -13,6 +13,7 @@
 #include <string>
 #include <regex>
 #include <fstream>
+#include <filesystem>
 #include <iostream>
 using namespace std::chrono_literals;
 
@@ -73,7 +74,18 @@ int GameData::LoadLocationData(const std::string path) {
 }
 
 void GameData::CreateLocations(void) {
-    LoadLocationData("Content/game_locations.txt");
+    namespace fs = std::__fs::filesystem;
+    std::string directory_path = "Content/Locations/";
+    fs::path path_to_load(directory_path);
+    
+    if(fs::exists(path_to_load)) {
+        for (const auto& entry : fs::directory_iterator(path_to_load)) {
+            std::string filename = entry.path().filename();
+            std::string file_to_load = directory_path + filename;
+
+            LoadLocationData(file_to_load);
+        }
+    }
 }
 
 std::shared_ptr<Location> GameData::GetStartLocation(void) {
