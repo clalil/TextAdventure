@@ -5,7 +5,6 @@
 //  Created by Clarissa Liljander on 2020-11-19.
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
-
 #include "game_data.hpp"
 #include <chrono>
 #include <thread>
@@ -54,13 +53,15 @@ int GameData::LoadLocationData(const std::string path) {
         } else if (match_location_id != std::string::npos) {
             working_location->location_id = line.substr(1);
         } else if (match_location_choice_id != std::string::npos) {
-        working_location->choices.push_back(LocationChoice((line.substr(1, match_location_choice_description - 1)), (line.substr(match_location_choice_description + 2))));
+            std::shared_ptr<LocationChoice> working_location_choice = std::make_shared<LocationChoice>(line.substr(1, match_location_choice_description - 1), line.substr(match_location_choice_description + 2));
+            
+            working_location->choices.push_back(working_location_choice);
+            
+            working_location_choice = std::make_shared<LocationChoice>("", "");
         } else if (match_location_endline != std::string::npos) {
             locations.push_back(working_location);
 
-            working_location->location_id = "";
-            working_location->location_text = "";
-            working_location->choices.clear();
+            working_location = std::make_shared<Location>("", "");
             
         } else {
             working_location->location_text += line;
@@ -81,6 +82,7 @@ std::shared_ptr<Location> GameData::GetStartLocation(void) {
     }
     
     std::cout << "Sorry, something went wrong & this game will now exit.\n";
+
     return nullptr;
 }
 
@@ -114,7 +116,7 @@ std::string GameData::GetPlayerName(std::string& user_name) {
     return user_name;
 }
 
-std::string GameData::PersonalizeText(const std::string player_name, std::string& location_text) {
+std::string GameData::PersonalizeText(const std::string& player_name, std::string& location_text) {
     size_t match = location_text.find("%%NAME%%");
 
     if (match != std::string::npos) {
@@ -168,6 +170,7 @@ const bool GameData::LocationExistsWithId(const std::string id) {
             return true;
         }
     }
+
     return false;
 }
 
@@ -181,10 +184,10 @@ const void GameData::DebugLocations(void) {
         location_ids.push_back(location->location_id);
 
         for(int j = 0; j < location->choices.size(); ++j) {
-            LocationChoice choice = location->choices[j];
+            std::shared_ptr<LocationChoice> choice = location->choices[j];
 
-            if (LocationExistsWithId(choice.next_location_id) == false) {
-                std::cout << "[WARNING] Choice '" << (j+1) << "' on location '" << location->location_id << "' points to '" << choice.next_location_id << "' which doesn't exist.\n";
+            if (LocationExistsWithId(choice->next_location_id) == false) {
+                std::cout << "[WARNING] Choice '" << (j+1) << "' on location '" << location->location_id << "' points to '" << choice->next_location_id << "' which doesn't exist.\n";
             }
         }
     }

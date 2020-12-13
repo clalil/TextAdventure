@@ -95,7 +95,7 @@ void Game::Run(void) {
             std::cout << "Where do you wish to proceed next?\n";
 
             for(int i = 0; i < player.current_location->choices.size(); ++i) {
-                std::cout << "[" << i+1 << "] " << player.current_location->choices[i].next_location_text << "\n";
+                std::cout << "[" << i+1 << "] " << player.current_location->choices[i]->next_location_text << "\n";
             }
             
             std::cout << "[m] Menu\n";
@@ -124,7 +124,7 @@ void Game::Run(void) {
             }
             
             if (choice >= 0 && choice < player.current_location->choices.size()+1) {
-                const std::string& upcoming_location_id = player.current_location->choices[choice-1].next_location_id;
+                const std::string& upcoming_location_id = player.current_location->choices[choice-1]->next_location_id;
                 player.current_location = gamedata.GetLocationWithId(upcoming_location_id);
                 
                 player.moves++;

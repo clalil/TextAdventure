@@ -23,7 +23,7 @@ struct Location {
 
     std::string location_id;
     std::string location_text;
-    std::vector<LocationChoice> choices;
+    std::vector<std::shared_ptr<LocationChoice>> choices;
 };
 
 class GameData {
@@ -41,7 +41,7 @@ public:
     const void DebugLocations(void);
     const int IsInvalidInput(int& choice, std::string input);
     std::string GetPlayerName(std::string& user_name);
-    std::string PersonalizeText(const std::string player_name, std::string& location_text);
+    std::string PersonalizeText(const std::string& player_name, std::string& location_text);
 
     std::shared_ptr<Location> GetStartLocation(void);
     std::shared_ptr<Location> GetLocationWithId(const std::string& id);
