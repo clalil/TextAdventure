@@ -1,2 +1,2 @@
-beginGame
-1
+start
+0

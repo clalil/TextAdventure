@@ -30,6 +30,7 @@ Location::Location(const std::string& id, const std::string& descriptive_text) {
 GameData::GameData() {
     CreateLocations();
     InitializeItems();
+    //player.addItem('scroll01', 1);
 }
 
 const void GameData::InitializeItems() {
