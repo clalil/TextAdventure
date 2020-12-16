@@ -64,6 +64,7 @@ void Game::Run(void) {
     is_running = true;
     std::string name;
 
+    
     gamedata.Introduction();
     gamedata.DebugLocations();
     player.name = gamedata.GetPlayerName(name);
@@ -98,6 +99,7 @@ void Game::Run(void) {
                 std::cout << "[" << i+1 << "] " << player.current_location->choices[i]->next_location_text << "\n";
             }
             
+            std::cout << "[i] Inventory\n";
             std::cout << "[m] Menu\n";
 
             while(is_valid_input || choice < 0 || choice >= player.current_location->choices.size()+1) {
@@ -117,6 +119,17 @@ void Game::Run(void) {
                         SaveGame();
                         is_running = false;
                         break;
+                    }
+                } else if (line.size() > 0 && line[0] == 'i') {
+                    int input = gamedata.InventoryMenu();
+
+                    if (input != -1) {
+                        std::shared_ptr<BaseItem> item = player.inventory[input].item;
+                        item->UseItem();
+                    } else {
+                        std::cout << "Where do you wish to proceed next?\n";
+                        std::getline(std::cin, line);
+                        is_valid_input = gamedata.IsInvalidInput(choice, line);
                     }
                 } else {
                     is_valid_input = gamedata.IsInvalidInput(choice, line);

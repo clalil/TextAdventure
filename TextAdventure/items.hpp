@@ -11,6 +11,7 @@
 class BaseItem {
 public:
     BaseItem(const std::string& item_id, const std::string& item_title);
+    virtual ~BaseItem();
     virtual void UseItem() = 0;
 
     std::string id;

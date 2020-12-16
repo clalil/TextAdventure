@@ -14,6 +14,9 @@ BaseItem::BaseItem(const std::string& item_id, const std::string& item_title) {
     title = item_title;
 }
 
+BaseItem::~BaseItem()
+{ }
+
 TeleportScroll::TeleportScroll(const std::string& item_id, const std::string& item_title, const std::string& location_id) : BaseItem(item_id, item_title) {
     teleport_location_id = location_id;
 };

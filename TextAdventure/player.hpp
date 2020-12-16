@@ -9,7 +9,7 @@
 #include "game_data.hpp"
 
 struct InventoryItem {
-    std::string item_id;
+    std::shared_ptr<BaseItem> item;
     int inventory_amount = 1;
 };
 
