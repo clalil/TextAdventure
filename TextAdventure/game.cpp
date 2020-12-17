@@ -53,6 +53,8 @@ const void Game::GameStart(void) {
     if (choice == 1) {
         player.current_location = gamedata.GetStartLocation();
         player.moves = 0;
+        player.AddItem("scroll01", 1);
+        //player.inventory.size();
         Run();
     } else if (choice == 2) {
         LoadGame();
@@ -64,7 +66,6 @@ void Game::Run(void) {
     is_running = true;
     std::string name;
 
-    
     gamedata.Introduction();
     gamedata.DebugLocations();
     player.name = gamedata.GetPlayerName(name);

@@ -31,7 +31,6 @@ Location::Location(const std::string& id, const std::string& descriptive_text) {
 GameData::GameData() {
     CreateLocations();
     InitializeItems();
-    game.player.AddItem("scroll01", 1);
 }
 
 const void GameData::InitializeItems() {
@@ -199,13 +198,18 @@ const int GameData::GameMenu(void) {
 
 const int GameData::InventoryMenu(void) {
     int choice = 0;
+    
+    if(game.player.inventory.size() == 0) {
+        std::cout << "You have no items in your inventory.\n";
+        return -1;
+    }
 
     std::cout << "=================\n";
     std::cout << "You have the following items in your inventory:\n";
     for(int i = 0; i < game.player.inventory.size(); ++i) {
-        std::cout << "[" << i+1 << "] " << game.player.inventory[i-1].item->title << "\n";
+        std::cout << "[" << i+1 << "] " << game.player.inventory[i].item->title << " (x" << game.player.inventory[i].inventory_amount << ")" << "\n";
     }
-    std::cout << "[" << game.player.inventory.size()+1 << "]" << "Exit inventory\n";
+    std::cout << "[" << game.player.inventory.size()+1 << "] " << "Exit inventory\n";
     std::cout << "=================\n";
     
     while(choice == 0) {
@@ -218,7 +222,7 @@ const int GameData::InventoryMenu(void) {
         return -1;
     }
 
-    return choice;
+    return choice-1;
 }
 
 //Code below only used for debugging purposes
