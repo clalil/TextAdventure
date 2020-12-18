@@ -53,6 +53,8 @@ const void Game::GameStart(void) {
     if (choice == 1) {
         player.current_location = gamedata.GetStartLocation();
         player.moves = 0;
+        player.AddItem("scroll01", 1);
+        //player.inventory.size();
         Run();
     } else if (choice == 2) {
         LoadGame();
@@ -98,6 +100,7 @@ void Game::Run(void) {
                 std::cout << "[" << i+1 << "] " << player.current_location->choices[i]->next_location_text << "\n";
             }
             
+            std::cout << "[i] Inventory\n";
             std::cout << "[m] Menu\n";
 
             while(is_valid_input || choice < 0 || choice >= player.current_location->choices.size()+1) {
@@ -108,6 +111,7 @@ void Game::Run(void) {
                     int input = gamedata.GameMenu();
 
                     if (input == 1) {
+                        std::cout << player.current_location->location_text << "\n";
                         std::cout << "Where do you wish to proceed next?\n";
                         std::getline(std::cin, line);
                         is_valid_input = gamedata.IsInvalidInput(choice, line);
@@ -117,6 +121,22 @@ void Game::Run(void) {
                         SaveGame();
                         is_running = false;
                         break;
+                    }
+                } else if (line.size() > 0 && line[0] == 'i') {
+                    int input = gamedata.InventoryMenu();
+
+                    if (input != -1) {
+                        std::shared_ptr<BaseItem> item = player.inventory[input].item;
+                        
+                        if(item != nullptr) {
+                            item->UseItem();
+                            break;
+                        }
+                    } else {
+                        std::cout << player.current_location->location_text << "\n";
+                        std::cout << "Where do you wish to proceed next?\n";
+                        std::getline(std::cin, line);
+                        is_valid_input = gamedata.IsInvalidInput(choice, line);
                     }
                 } else {
                     is_valid_input = gamedata.IsInvalidInput(choice, line);
