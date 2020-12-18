@@ -111,6 +111,7 @@ void Game::Run(void) {
                     int input = gamedata.GameMenu();
 
                     if (input == 1) {
+                        std::cout << player.current_location->location_text << "\n";
                         std::cout << "Where do you wish to proceed next?\n";
                         std::getline(std::cin, line);
                         is_valid_input = gamedata.IsInvalidInput(choice, line);
@@ -126,8 +127,13 @@ void Game::Run(void) {
 
                     if (input != -1) {
                         std::shared_ptr<BaseItem> item = player.inventory[input].item;
-                        item->UseItem();
+                        
+                        if(item != nullptr) {
+                            item->UseItem();
+                            break;
+                        }
                     } else {
+                        std::cout << player.current_location->location_text << "\n";
                         std::cout << "Where do you wish to proceed next?\n";
                         std::getline(std::cin, line);
                         is_valid_input = gamedata.IsInvalidInput(choice, line);
