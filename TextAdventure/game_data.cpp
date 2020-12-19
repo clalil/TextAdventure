@@ -83,6 +83,7 @@ int GameData::LoadLocationData(const std::string path) {
             working_location_choice = std::make_shared<LocationChoice>("", "");
         } else if (match_location_endline != std::string::npos) {
             locations.push_back(working_location);
+            location_index[working_location->location_id] = working_location;
 
             working_location = std::make_shared<Location>("", "");
             
@@ -120,11 +121,9 @@ std::shared_ptr<Location> GameData::GetStartLocation(void) {
     return nullptr;
 }
 
-std::shared_ptr<Location> GameData::GetLocationWithId(const std::string& id) {
-    for (int i = 0; i < locations.size(); ++i) {
-        if(locations[i]->location_id == id) {
-            return locations[i];
-        }
+std::shared_ptr<Location> GameData::GetLocationById(const std::string& id) {
+    if (location_index.find(id) != location_index.end()) {
+        return location_index[id];
     }
     
     return nullptr;
@@ -174,10 +173,6 @@ const void GameData::WaitAMinute(void) {
     std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
 }
 
-//In this method, you should print a list of the items the user has in their inventory with amount > 0, just like when you are presenting choices for the user to select from at a location.
-//If the user enters a valid number for an item they can use - get the item from GameData and call “use()” on that item. After you have used the item, reduce the “amount” of this item in the inventory.
-//When done, return to the main game as per usual.
-
 const int GameData::InventoryMenu(void) {
     int choice = 0;
     
@@ -209,19 +204,6 @@ const int GameData::InventoryMenu(void) {
     return choice-1;
 }
 
-//Code below only used for debugging purposes
-
-const bool GameData::LocationExistsWithId(const std::string id) {
-     for (int i = 0; i < locations.size(); ++i) {
-         std::shared_ptr<Location> location = locations[i];
-        if (location->location_id == id) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 const void GameData::ReducePlayerSatiety(void) {
     auto hunger_level = Game::InstanceOf().player.satiation;
 
@@ -242,6 +224,16 @@ const void GameData::ReducePlayerSatiety(void) {
     Game::InstanceOf().player.satiation -= random_hunger_reducer(random_generator);
 }
 
+//Code below only used for debugging purposes
+
+const bool GameData::LocationExistsWithId(const std::string id) {
+    if (location_index.find(id) != location_index.end()) {
+        return true;
+    }
+
+    return false;
+}
+
 const void GameData::DebugLocations(void) {
     std::vector<std::string> location_ids = {};
 
@@ -259,7 +251,7 @@ const void GameData::DebugLocations(void) {
             }
         }
     }
-    
+
     const auto duplicate = std::adjacent_find(location_ids.begin(), location_ids.end());
 
     if (duplicate != location_ids.end()) {

@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <unordered_map>
 #include "items.hpp"
 
 struct LocationChoice {
@@ -43,7 +44,7 @@ public:
 
     std::shared_ptr<BaseItem> GetItemsById(const std::string& item_id);
     std::shared_ptr<Location> GetStartLocation(void);
-    std::shared_ptr<Location> GetLocationWithId(const std::string& id);
+    std::shared_ptr<Location> GetLocationById(const std::string& id);
     
 private:
     void CreateLocations(void);
@@ -51,5 +52,6 @@ private:
     const bool LocationExistsWithId(const std::string id);
     
     std::vector<std::shared_ptr<Location>> locations;
+    std::unordered_map<std::string, std::shared_ptr<Location>> location_index;
     std::vector<std::shared_ptr<BaseItem>> items;
 };
