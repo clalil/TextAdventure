@@ -22,10 +22,10 @@ TeleportScroll::TeleportScroll(const std::string& item_id, const std::string& it
 };
 
 void TeleportScroll::UseItem() {
-    std::shared_ptr<Location> new_location = game.gamedata.GetLocationWithId(teleport_location_id);
+    std::shared_ptr<Location> new_location = Game::InstanceOf().gamedata.GetLocationWithId(teleport_location_id);
 
     if (new_location != nullptr) {
-        game.player.current_location = new_location;
+        Game::InstanceOf().player.current_location = new_location;
 
         std::cout << "You read the words on the scroll and when you've reached its final word  you find yourself back where you started! \n";
     }
