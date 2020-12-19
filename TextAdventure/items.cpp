@@ -21,7 +21,7 @@ TeleportScroll::TeleportScroll(const std::string& item_id, const std::string& it
     teleport_location_id = location_id;
 };
 
-void TeleportScroll::UseItem() {
+void TeleportScroll::UseItem(void) {
     std::shared_ptr<Location> new_location = Game::InstanceOf().gamedata.GetLocationWithId(teleport_location_id);
 
     if (new_location != nullptr) {
@@ -29,4 +29,15 @@ void TeleportScroll::UseItem() {
 
         std::cout << "You read the words on the scroll and when you've reached its final word  you find yourself back where you started! \n";
     }
+}
+
+FoodItem::FoodItem(const std::string& item_id, const std::string& item_title, int satiety_level) : BaseItem(item_id, item_title) {
+    food_satiety_level = satiety_level;
+    food_title = item_title;
+}
+
+void FoodItem::UseItem(void) {
+    Game::InstanceOf().player.satiation += food_satiety_level;
+
+    std::cout << "You swallow the " << food_title << " and feel your satiety level increased by at least " << food_satiety_level << ".\n";
 }

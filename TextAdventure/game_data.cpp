@@ -8,6 +8,7 @@
 #include "globals.hpp"
 #include "game_data.hpp"
 #include <chrono>
+#include <random>
 #include <thread>
 #include <algorithm>
 #include <vector>
@@ -35,8 +36,10 @@ GameData::GameData() {
 
 const void GameData::InitializeItems() {
     std::shared_ptr<BaseItem> scroll01{ new TeleportScroll("scroll01", "Teleport Scroll", "beginGame") };
+    std::shared_ptr<BaseItem> fooditem1{ new FoodItem("fooditem1", "Lollipop", 10) };
 
     items.push_back(scroll01);
+    items.push_back(fooditem1);
 }
 
 std::shared_ptr<BaseItem> GameData::GetItemsById(const std::string& item_id) {
@@ -140,14 +143,14 @@ const int GameData::ValidateUserInput(int& choice, const std::string& input) {
     return 0;
 }
 
-std::string GameData::GetPlayerName(std::string& user_name) {
+const std::string GameData::GetPlayerName(std::string& user_name) {
     std::cout << "Please enter your name: \n";
     std::getline(std::cin, user_name);
     
     return user_name;
 }
 
-std::string GameData::PersonalizeText(const std::string& player_name, std::string& location_text) {
+const std::string GameData::PersonalizeText(const std::string& player_name, std::string& location_text) {
     size_t match = location_text.find("%%NAME%%");
 
     if (match != std::string::npos) {
@@ -217,6 +220,26 @@ const bool GameData::LocationExistsWithId(const std::string id) {
     }
 
     return false;
+}
+
+const void GameData::ReducePlayerSatiety(void) {
+    auto hunger_level = Game::InstanceOf().player.satiation;
+
+    if(hunger_level <= 50) {
+        std::cout << "You are hungry. You should eat something.\n";
+    } else if (hunger_level == 20) {
+        std::cout << "You are really hungey. You should really eat something.\n";
+    } else if (hunger_level < 20 ) {
+        std::cout << "You are starving. You need to eat something to sustain you.\n";
+    } else if (hunger_level <= 0) {
+        std::cout << "You're about to starve to death and decide to go home and eat something.\n";
+    }
+    
+    unsigned int seed = (unsigned int)std::chrono::system_clock::now().time_since_epoch().count();
+    std::mt19937 random_generator = std::mt19937(seed);
+    std::uniform_int_distribution<int> random_hunger_reducer(1, 10);
+    
+    Game::InstanceOf().player.satiation -= random_hunger_reducer(random_generator);
 }
 
 const void GameData::DebugLocations(void) {

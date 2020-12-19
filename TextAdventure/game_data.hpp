@@ -37,8 +37,9 @@ public:
     const void DebugLocations(void);
     const int ValidateUserInput(int& choice, const std::string& input);
     const void InitializeItems();
-    std::string GetPlayerName(std::string& user_name);
-    std::string PersonalizeText(const std::string& player_name, std::string& location_text);
+    const void ReducePlayerSatiety(void);
+    const std::string GetPlayerName(std::string& user_name);
+    const std::string PersonalizeText(const std::string& player_name, std::string& location_text);
 
     std::shared_ptr<BaseItem> GetItemsById(const std::string& item_id);
     std::shared_ptr<Location> GetStartLocation(void);

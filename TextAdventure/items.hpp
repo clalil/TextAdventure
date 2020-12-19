@@ -8,12 +8,11 @@
 #pragma once
 #include <string>
 
-class BaseItem {
-
-public:
+struct BaseItem {
     BaseItem(const std::string& item_id, const std::string& item_title);
+
     virtual ~BaseItem();
-    virtual void UseItem() = 0;
+    virtual void UseItem(void) = 0;
 
     std::string id;
     std::string title;
@@ -24,8 +23,20 @@ class TeleportScroll : public BaseItem {
 public:
     TeleportScroll(const std::string& item_id, const std::string& item_title, const std::string& location_id);
     
-    virtual void UseItem();
+    virtual void UseItem(void);
     
 private:
     std::string teleport_location_id;
+};
+
+class FoodItem : public BaseItem {
+
+public:
+    FoodItem(const std::string& item_id, const std::string& item_title, int satiety_level);
+    
+    virtual void UseItem(void);
+    
+private:
+    std::string food_title;
+    int food_satiety_level;
 };

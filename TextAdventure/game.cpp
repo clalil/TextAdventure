@@ -87,6 +87,7 @@ const void Game::MainMenu(void) {
             player.current_location = gamedata.GetStartLocation();
             player.moves = 0;
             player.AddItem("scroll01", 1);
+            player.AddItem("fooditem1", 1);
             game_mode = GameMode::IsRunning;
 
             Run();
@@ -158,8 +159,10 @@ const void Game::Run(void) {
                 std::cout << "[" << i+1 << "] " << player.current_location->choices[i]->next_location_text << "\n";
             }
             
+            std::cout << ".............\n";
             std::cout << "[i] Inventory\n";
             std::cout << "[m] Menu\n";
+            std::cout << "(Food HP): " << player.satiation << "\n";
 
             while (is_valid_input || choice < 0 || choice >= player.current_location->choices.size()+1) {
                 std::string line;
@@ -206,6 +209,11 @@ const void Game::Run(void) {
                 player.current_location = gamedata.GetLocationWithId(upcoming_location_id);
                 
                 player.moves++;
+                gamedata.ReducePlayerSatiety();
+            }
+            
+            if (player.satiation <= 0) {
+                game_mode = GameMode::Exit;
             }
         }
     }
