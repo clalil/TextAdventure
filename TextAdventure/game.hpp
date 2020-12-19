@@ -10,7 +10,7 @@
 #include "player.hpp"
 
 enum class GameMode {
-    Menu, InGameMenu, IsRunning, Exit
+    Menu, IsRunning, Exit
 };
 
 class Game {
@@ -25,7 +25,7 @@ public:
 private:
     GameMode game_mode = GameMode::Menu;
 
-    void Run(void);
+    const void Run(void);
     const void MainMenu(void);
     const int InGameMenu(void);
     const void SaveGame(void);

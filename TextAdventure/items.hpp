@@ -9,6 +9,7 @@
 #include <string>
 
 class BaseItem {
+
 public:
     BaseItem(const std::string& item_id, const std::string& item_title);
     virtual ~BaseItem();
@@ -19,10 +20,12 @@ public:
 };
 
 class TeleportScroll : public BaseItem {
-    std::string teleport_location_id;
-    
+
 public:
     TeleportScroll(const std::string& item_id, const std::string& item_title, const std::string& location_id);
     
     virtual void UseItem();
+    
+private:
+    std::string teleport_location_id;
 };

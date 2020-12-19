@@ -15,9 +15,12 @@ Game& Game::InstanceOf() {
 }
 
 const void Game::GameStart(void) {
+    std::string name;
     gamedata.Introduction();
+
+    player.name = gamedata.GetPlayerName(name);
     
-    while(game_mode != GameMode::Exit) {
+    while (game_mode != GameMode::Exit) {
         switch(game_mode) {
             case GameMode::Menu:
                 MainMenu();
@@ -111,7 +114,7 @@ const int Game::InGameMenu(void) {
     std::cout << "[2] Save and Exit game\n";
     std::cout << "=================\n";
 
-    while(choice == 0) {
+    while (choice == 0) {
       std::string line;
       std::getline(std::cin, line);
       gamedata.ValidateUserInput(choice, line);
@@ -124,14 +127,9 @@ const int Game::InGameMenu(void) {
     return 2;
 }
 
-void Game::Run(void) {
-    std::string name;
-
-    gamedata.Introduction();
-    player.name = gamedata.GetPlayerName(name);
-    
-    while(is_running) {
-        if(player.current_location == nullptr) {
+const void Game::Run(void) {
+    while (game_mode == GameMode::IsRunning) {
+        if (player.current_location == nullptr) {
             std::cout << "[ERROR] No such location. Ending game. \n";
             game_mode = GameMode::Exit;
 
@@ -163,7 +161,7 @@ void Game::Run(void) {
             std::cout << "[i] Inventory\n";
             std::cout << "[m] Menu\n";
 
-            while(is_valid_input || choice < 0 || choice >= player.current_location->choices.size()+1) {
+            while (is_valid_input || choice < 0 || choice >= player.current_location->choices.size()+1) {
                 std::string line;
                 std::getline(std::cin, line);
                 

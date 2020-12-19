@@ -28,12 +28,6 @@ struct Location {
 };
 
 class GameData {
-    void CreateLocations(void);
-    int LoadLocationData(const std::string path);
-    const bool LocationExistsWithId(const std::string id);
-    
-    std::vector<std::shared_ptr<Location>> locations;
-    std::vector<std::shared_ptr<BaseItem>> items;
 
 public:
     GameData();
@@ -49,4 +43,12 @@ public:
     std::shared_ptr<BaseItem> GetItemsById(const std::string& item_id);
     std::shared_ptr<Location> GetStartLocation(void);
     std::shared_ptr<Location> GetLocationWithId(const std::string& id);
+    
+private:
+    void CreateLocations(void);
+    int LoadLocationData(const std::string path);
+    const bool LocationExistsWithId(const std::string id);
+    
+    std::vector<std::shared_ptr<Location>> locations;
+    std::vector<std::shared_ptr<BaseItem>> items;
 };

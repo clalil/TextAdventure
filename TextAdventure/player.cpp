@@ -8,7 +8,7 @@
 #include "player.hpp"
 
 void Player::AddItem(const std::string& id, int amount) {
-    for(int i = 0; i < inventory.size(); ++i) {
+    for (int i = 0; i < inventory.size(); ++i) {
         if (inventory[i].item->id == id) {
             inventory[i].inventory_amount += amount;
             return;
@@ -19,7 +19,7 @@ void Player::AddItem(const std::string& id, int amount) {
 }
 
 void Player::RemoveItem(const std::string& id, int amount) {
-    for(int i = 0; i < inventory.size(); ++i) {
+    for (int i = 0; i < inventory.size(); ++i) {
         if (inventory[i].item->id == id) {
             inventory[i].inventory_amount -= amount;
 
