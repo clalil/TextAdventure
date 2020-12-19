@@ -7,9 +7,38 @@
 //
 #include "game.hpp"
 #include <fstream>
+const std::string GAME_SAVE_FILE = "Content/game_save.txt";
+
+Game& Game::InstanceOf() {
+    static Game game;
+    return game;
+}
+
+const void Game::GameStart(void) {
+    std::string name;
+    gamedata.Introduction();
+
+    player.name = gamedata.GetPlayerName(name);
+    
+    while (game_mode != GameMode::Exit) {
+        switch(game_mode) {
+            case GameMode::Menu:
+                MainMenu();
+                break;
+            case GameMode::IsRunning:
+                Run();
+                break;
+            default:
+                break;
+        }
+    }
+    
+    std::cout << "Hope you enjoyed the game!\n";
+    
+}
 
 const void Game::SaveGame(void) {
-    std::ofstream save_file("Content/game_save.txt", std::ios::trunc);
+    std::ofstream save_file(GAME_SAVE_FILE, std::ios::trunc);
 
     if (save_file.is_open()) {
         if(player.current_location != nullptr) {
@@ -25,7 +54,7 @@ const void Game::SaveGame(void) {
 }
 
 const void Game::LoadGame(void) {
-    std::ifstream load_file("Content/game_save.txt");
+    std::ifstream load_file(GAME_SAVE_FILE);
     std::string line;
 
     if (load_file.is_open()) {
@@ -38,42 +67,71 @@ const void Game::LoadGame(void) {
     }
 }
 
-const void Game::GameStart(void) {
+const void Game::MainMenu(void) {
     std::string line;
     int choice;
 
     std::cout << "Do you want to:\n";
     std::cout << "[1] Start new game\n";
     std::cout << "[2] Load saved game\n";
+    std::cout << "[3] Debug game locations\n";
+    std::cout << "[4] Exit game\n";
+
     std::getline(std::cin, line);
     choice = std::stoi(line);
 
-    gamedata.IsInvalidInput(choice, line);
+    gamedata.ValidateUserInput(choice, line);
     
-    if (choice == 1) {
-        player.current_location = gamedata.GetStartLocation();
-        player.moves = 0;
-        player.AddItem("scroll01", 1);
-        //player.inventory.size();
-        Run();
-    } else if (choice == 2) {
-        LoadGame();
-        Run();
+    switch(choice) {
+        case 1:
+            player.current_location = gamedata.GetStartLocation();
+            player.moves = 0;
+            player.AddItem("scroll01", 1);
+            game_mode = GameMode::IsRunning;
+
+            Run();
+            break;
+        case 2:
+            game_mode = GameMode::IsRunning;
+
+            LoadGame();
+            Run();
+            break;
+        case 3:
+            gamedata.DebugLocations();
+            break;
+        default:
+            game_mode = GameMode::Exit;
+            break;
     }
 }
 
-void Game::Run(void) {
-    is_running = true;
-    std::string name;
-
-    gamedata.Introduction();
-    gamedata.DebugLocations();
-    player.name = gamedata.GetPlayerName(name);
+const int Game::InGameMenu(void) {
+    int choice = 0;
     
-    while(is_running) {
-        if(player.current_location == nullptr) {
+    std::cout << "=================\n";
+    std::cout << "[1] Resume game\n";
+    std::cout << "[2] Save and Exit game\n";
+    std::cout << "=================\n";
+
+    while (choice == 0) {
+      std::string line;
+      std::getline(std::cin, line);
+      gamedata.ValidateUserInput(choice, line);
+    }
+    
+    if (choice == 1 || choice == 2) {
+        return choice;
+    }
+    
+    return 2;
+}
+
+const void Game::Run(void) {
+    while (game_mode == GameMode::IsRunning) {
+        if (player.current_location == nullptr) {
             std::cout << "[ERROR] No such location. Ending game. \n";
-            is_running = false;
+            game_mode = GameMode::Exit;
 
         } else if (player.current_location->choices.size() == 0) {
             std::cout << "Game Over.\n";
@@ -83,7 +141,7 @@ void Game::Run(void) {
                 std::cout << player.locations_visited[i]->location_id << "\n";
             }
 
-            is_running = false;
+            game_mode = GameMode::Exit;
 
         } else {
             bool is_valid_input = false;
@@ -103,23 +161,23 @@ void Game::Run(void) {
             std::cout << "[i] Inventory\n";
             std::cout << "[m] Menu\n";
 
-            while(is_valid_input || choice < 0 || choice >= player.current_location->choices.size()+1) {
+            while (is_valid_input || choice < 0 || choice >= player.current_location->choices.size()+1) {
                 std::string line;
                 std::getline(std::cin, line);
                 
                 if (line.size() > 0 && line[0] == 'm') {
-                    int input = gamedata.GameMenu();
+                    int input = InGameMenu();
 
                     if (input == 1) {
                         std::cout << player.current_location->location_text << "\n";
                         std::cout << "Where do you wish to proceed next?\n";
                         std::getline(std::cin, line);
-                        is_valid_input = gamedata.IsInvalidInput(choice, line);
+                        is_valid_input = gamedata.ValidateUserInput(choice, line);
 
                     } else if (input == 2) {
                         std::cout << "Exiting game\n";
                         SaveGame();
-                        is_running = false;
+                        game_mode = GameMode::Exit;
                         break;
                     }
                 } else if (line.size() > 0 && line[0] == 'i') {
@@ -136,10 +194,10 @@ void Game::Run(void) {
                         std::cout << player.current_location->location_text << "\n";
                         std::cout << "Where do you wish to proceed next?\n";
                         std::getline(std::cin, line);
-                        is_valid_input = gamedata.IsInvalidInput(choice, line);
+                        is_valid_input = gamedata.ValidateUserInput(choice, line);
                     }
                 } else {
-                    is_valid_input = gamedata.IsInvalidInput(choice, line);
+                    is_valid_input = gamedata.ValidateUserInput(choice, line);
                 }
             }
             

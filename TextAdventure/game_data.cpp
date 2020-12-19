@@ -40,7 +40,7 @@ const void GameData::InitializeItems() {
 }
 
 std::shared_ptr<BaseItem> GameData::GetItemsById(const std::string& item_id) {
-    for(int i = 0; i < items.size(); ++i) {
+    for (int i = 0; i < items.size(); ++i) {
         if (items[i]->id == item_id) {
 
             return items[i];
@@ -61,7 +61,7 @@ int GameData::LoadLocationData(const std::string path) {
 
     std::shared_ptr<Location> working_location = std::make_shared<Location>("", "");
 
-    while(std::getline(location_file, line)) {
+    while (std::getline(location_file, line)) {
         size_t match_location_comment = line.find("//");
         size_t match_location_id = line.find("#");
         size_t match_location_choice_id = line.find("&");
@@ -97,7 +97,7 @@ void GameData::CreateLocations(void) {
     std::string directory_path = "Content/Locations/";
     fs::path path_to_load(directory_path);
     
-    if(fs::exists(path_to_load)) {
+    if (fs::exists(path_to_load)) {
         for (const auto& entry : fs::directory_iterator(path_to_load)) {
             std::string filename = entry.path().filename();
             std::string file_to_load = directory_path + filename;
@@ -108,7 +108,7 @@ void GameData::CreateLocations(void) {
 }
 
 std::shared_ptr<Location> GameData::GetStartLocation(void) {
-    if(locations.size() != 0) {
+    if (locations.size() != 0) {
         return locations.front();
     }
     
@@ -118,7 +118,7 @@ std::shared_ptr<Location> GameData::GetStartLocation(void) {
 }
 
 std::shared_ptr<Location> GameData::GetLocationWithId(const std::string& id) {
-    for(int i = 0; i < locations.size(); ++i) {
+    for (int i = 0; i < locations.size(); ++i) {
         if(locations[i]->location_id == id) {
             return locations[i];
         }
@@ -127,7 +127,7 @@ std::shared_ptr<Location> GameData::GetLocationWithId(const std::string& id) {
     return nullptr;
 }
 
-const int GameData::IsInvalidInput(int& choice, const std::string& input) {
+const int GameData::ValidateUserInput(int& choice, const std::string& input) {
     // line is not a number, e.g. "abc" or "abc123", or the number is too big
     // to fit in an int, e.g. "11111111111111111111111111111111111"
     try {
@@ -171,27 +171,6 @@ const void GameData::WaitAMinute(void) {
     std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
 }
 
-const int GameData::GameMenu(void) {
-    int choice = 0;
-    
-    std::cout << "=================\n";
-    std::cout << "[1] Resume game\n";
-    std::cout << "[2] Exit game\n";
-    std::cout << "=================\n";
-
-    while(choice == 0) {
-      std::string line;
-      std::getline(std::cin, line);
-      IsInvalidInput(choice, line);
-    }
-    
-    if (choice == 1 || choice == 2) {
-        return choice;
-    }
-    
-    return 2;
-}
-
 //In this method, you should print a list of the items the user has in their inventory with amount > 0, just like when you are presenting choices for the user to select from at a location.
 //If the user enters a valid number for an item they can use - get the item from GameData and call “use()” on that item. After you have used the item, reduce the “amount” of this item in the inventory.
 //When done, return to the main game as per usual.
@@ -199,26 +178,28 @@ const int GameData::GameMenu(void) {
 const int GameData::InventoryMenu(void) {
     int choice = 0;
     
-    if(game.player.inventory.size() == 0) {
+    if (Game::InstanceOf().player.inventory.size() == 0) {
         std::cout << "You have no items in your inventory.\n";
         return -1;
     }
 
     std::cout << "=================\n";
     std::cout << "You have the following items in your inventory:\n";
-    for(int i = 0; i < game.player.inventory.size(); ++i) {
-        std::cout << "[" << i+1 << "] " << game.player.inventory[i].item->title << " (x" << game.player.inventory[i].inventory_amount << ")" << "\n";
+
+    for (int i = 0; i < Game::InstanceOf().player.inventory.size(); ++i) {
+        std::cout << "[" << i+1 << "] " << Game::InstanceOf().player.inventory[i].item->title << " (x" << Game::InstanceOf().player.inventory[i].inventory_amount << ")" << "\n";
     }
-    std::cout << "[" << game.player.inventory.size()+1 << "] " << "Exit inventory\n";
+
+    std::cout << "[" << Game::InstanceOf().player.inventory.size()+1 << "] " << "Exit inventory\n";
     std::cout << "=================\n";
     
-    while(choice == 0) {
+    while (choice == 0) {
       std::string line;
       std::getline(std::cin, line);
-      IsInvalidInput(choice, line);
+      ValidateUserInput(choice, line);
     }
     
-    if(choice == game.player.inventory.size()+1) {
+    if (choice == Game::InstanceOf().player.inventory.size()+1) {
         return -1;
     }
 
@@ -228,7 +209,7 @@ const int GameData::InventoryMenu(void) {
 //Code below only used for debugging purposes
 
 const bool GameData::LocationExistsWithId(const std::string id) {
-     for(int i = 0; i < locations.size(); ++i) {
+     for (int i = 0; i < locations.size(); ++i) {
          std::shared_ptr<Location> location = locations[i];
         if (location->location_id == id) {
             return true;
@@ -243,11 +224,11 @@ const void GameData::DebugLocations(void) {
 
     std::cout << "Number of available locations: " << locations.size() << "\n";
 
-    for(int i = 0; i < locations.size(); ++i) {
+    for (int i = 0; i < locations.size(); ++i) {
         std::shared_ptr<Location> location = locations[i];
         location_ids.push_back(location->location_id);
 
-        for(int j = 0; j < location->choices.size(); ++j) {
+        for (int j = 0; j < location->choices.size(); ++j) {
             std::shared_ptr<LocationChoice> choice = location->choices[j];
 
             if (LocationExistsWithId(choice->next_location_id) == false) {

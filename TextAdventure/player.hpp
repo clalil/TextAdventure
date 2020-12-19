@@ -14,14 +14,12 @@ struct InventoryItem {
 };
 
 struct Player {
-public:
     int moves = 0;
     std::string name;
     std::vector<std::shared_ptr<Location>> locations_visited;
+    std::vector<InventoryItem> inventory;
+    std::shared_ptr<Location> current_location = nullptr;
     
     void AddItem(const std::string& id, int amount);
     void RemoveItem(const std::string& id, int amount);
-    
-    std::vector<InventoryItem> inventory;
-    std::shared_ptr<Location> current_location = nullptr;
 };

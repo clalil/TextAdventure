@@ -9,15 +9,25 @@
 #include "game_data.hpp"
 #include "player.hpp"
 
+enum class GameMode {
+    Menu, IsRunning, Exit
+};
+
 class Game {
-    bool is_running;
 
 public:
+    static Game& InstanceOf();
     GameData gamedata;
     Player player;
     
-    void Run(void);
+    const void GameStart(void);
+    
+private:
+    GameMode game_mode = GameMode::Menu;
+
+    const void Run(void);
+    const void MainMenu(void);
+    const int InGameMenu(void);
     const void SaveGame(void);
     const void LoadGame(void);
-    const void GameStart(void);
 };
