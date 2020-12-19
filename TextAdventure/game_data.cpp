@@ -251,7 +251,7 @@ const void GameData::DebugLocations(void) {
             }
         }
     }
-    
+
     const auto duplicate = std::adjacent_find(location_ids.begin(), location_ids.end());
 
     if (duplicate != location_ids.end()) {

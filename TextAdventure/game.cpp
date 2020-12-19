@@ -15,11 +15,8 @@ Game& Game::InstanceOf() {
 }
 
 const void Game::GameStart(void) {
-    std::string name;
     gamedata.Introduction();
 
-    player.name = gamedata.GetPlayerName(name);
-    
     while (game_mode != GameMode::Exit) {
         switch(game_mode) {
             case GameMode::Menu:
@@ -47,7 +44,8 @@ const void Game::SaveGame(void) {
             save_file << "beginGame" << "\n";
         }
 
-        save_file << player.moves << "\n"; 
+        save_file << player.moves << "\n";
+        save_file << player.name << "\n";
     } else {
         std::cout << "[ERROR] Could not open game_save.txt file.\n";
     }
@@ -62,6 +60,8 @@ const void Game::LoadGame(void) {
             player.current_location = gamedata.GetLocationById(line);
         std::getline(load_file, line);
             player.moves = std::stoi(line);
+        std::getline(load_file, line);
+            player.name = line;
     } else {
         std::cout << "[ERROR] Could not open game_save.txt file.\n";
     }
@@ -129,7 +129,14 @@ const int Game::InGameMenu(void) {
 }
 
 const void Game::Run(void) {
+    std::string name = "";
+
     while (game_mode == GameMode::IsRunning) {
+        
+        if (player.name == "") {
+            player.name = gamedata.GetPlayerName(name);
+        }
+
         if (player.current_location == nullptr) {
             std::cout << "[ERROR] No such location. Ending game. \n";
             game_mode = GameMode::Exit;
