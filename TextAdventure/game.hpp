@@ -14,7 +14,6 @@ enum class GameMode {
 };
 
 class Game {
-    bool is_running;
 
 public:
     static Game& InstanceOf();

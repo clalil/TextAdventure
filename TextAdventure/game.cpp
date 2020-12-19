@@ -125,7 +125,6 @@ const int Game::InGameMenu(void) {
 }
 
 void Game::Run(void) {
-    is_running = true;
     std::string name;
 
     gamedata.Introduction();
@@ -134,7 +133,7 @@ void Game::Run(void) {
     while(is_running) {
         if(player.current_location == nullptr) {
             std::cout << "[ERROR] No such location. Ending game. \n";
-            is_running = false;
+            game_mode = GameMode::Exit;
 
         } else if (player.current_location->choices.size() == 0) {
             std::cout << "Game Over.\n";
@@ -144,7 +143,7 @@ void Game::Run(void) {
                 std::cout << player.locations_visited[i]->location_id << "\n";
             }
 
-            is_running = false;
+            game_mode = GameMode::Exit;
 
         } else {
             bool is_valid_input = false;
@@ -180,7 +179,7 @@ void Game::Run(void) {
                     } else if (input == 2) {
                         std::cout << "Exiting game\n";
                         SaveGame();
-                        is_running = false;
+                        game_mode = GameMode::Exit;
                         break;
                     }
                 } else if (line.size() > 0 && line[0] == 'i') {
