@@ -47,7 +47,7 @@ const void Game::SaveGame(void) {
             save_file << "beginGame" << "\n";
         }
 
-        save_file << player.moves << "\n";
+        save_file << player.moves << "\n"; 
     } else {
         std::cout << "[ERROR] Could not open game_save.txt file.\n";
     }
@@ -59,7 +59,7 @@ const void Game::LoadGame(void) {
 
     if (load_file.is_open()) {
         std::getline(load_file, line);
-            player.current_location = gamedata.GetLocationWithId(line);
+            player.current_location = gamedata.GetLocationById(line);
         std::getline(load_file, line);
             player.moves = std::stoi(line);
     } else {
@@ -206,7 +206,7 @@ const void Game::Run(void) {
             
             if (choice >= 0 && choice < player.current_location->choices.size()+1) {
                 const std::string& upcoming_location_id = player.current_location->choices[choice-1]->next_location_id;
-                player.current_location = gamedata.GetLocationWithId(upcoming_location_id);
+                player.current_location = gamedata.GetLocationById(upcoming_location_id);
                 
                 player.moves++;
                 gamedata.ReducePlayerSatiety();

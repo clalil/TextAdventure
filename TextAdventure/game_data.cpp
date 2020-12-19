@@ -83,6 +83,7 @@ int GameData::LoadLocationData(const std::string path) {
             working_location_choice = std::make_shared<LocationChoice>("", "");
         } else if (match_location_endline != std::string::npos) {
             locations.push_back(working_location);
+            location_index[working_location->location_id] = working_location;
 
             working_location = std::make_shared<Location>("", "");
             
@@ -120,11 +121,9 @@ std::shared_ptr<Location> GameData::GetStartLocation(void) {
     return nullptr;
 }
 
-std::shared_ptr<Location> GameData::GetLocationWithId(const std::string& id) {
-    for (int i = 0; i < locations.size(); ++i) {
-        if(locations[i]->location_id == id) {
-            return locations[i];
-        }
+std::shared_ptr<Location> GameData::GetLocationById(const std::string& id) {
+    if (location_index.find(id) != location_index.end()) {
+        return location_index[id];
     }
     
     return nullptr;

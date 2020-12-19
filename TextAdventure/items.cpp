@@ -22,7 +22,7 @@ TeleportScroll::TeleportScroll(const std::string& item_id, const std::string& it
 };
 
 void TeleportScroll::UseItem(void) {
-    std::shared_ptr<Location> new_location = Game::InstanceOf().gamedata.GetLocationWithId(teleport_location_id);
+    std::shared_ptr<Location> new_location = Game::InstanceOf().gamedata.GetLocationById(teleport_location_id);
 
     if (new_location != nullptr) {
         Game::InstanceOf().player.current_location = new_location;
