@@ -36,8 +36,10 @@ GameData::GameData() {
 
 const void GameData::InitializeItems() {
     std::shared_ptr<BaseItem> scroll01{ new TeleportScroll("scroll01", "Teleport Scroll", "beginGame") };
+    std::shared_ptr<BaseItem> fooditem1{ new FoodItem("fooditem1", "Lollipop", 10) };
 
     items.push_back(scroll01);
+    items.push_back(fooditem1);
 }
 
 std::shared_ptr<BaseItem> GameData::GetItemsById(const std::string& item_id) {
