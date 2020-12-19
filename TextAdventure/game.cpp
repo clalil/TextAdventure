@@ -160,6 +160,7 @@ const void Game::Run(void) {
             
             std::cout << "[i] Inventory\n";
             std::cout << "[m] Menu\n";
+            std::cout << "Player satiety: " << player.satiation << "\n";
 
             while (is_valid_input || choice < 0 || choice >= player.current_location->choices.size()+1) {
                 std::string line;
@@ -206,6 +207,11 @@ const void Game::Run(void) {
                 player.current_location = gamedata.GetLocationWithId(upcoming_location_id);
                 
                 player.moves++;
+                gamedata.ReducePlayerSatiety();
+            }
+            
+            if (player.satiation <= 0) {
+                game_mode = GameMode::Exit;
             }
         }
     }
