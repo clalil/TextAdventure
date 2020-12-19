@@ -42,7 +42,7 @@ const void GameData::InitializeItems() {
     items.push_back(fooditem1);
 }
 
-std::shared_ptr<BaseItem> GameData::GetItemsById(const std::string& item_id) {
+std::shared_ptr<BaseItem> GameData::GetItemById(const std::string& item_id) {
     for (int i = 0; i < items.size(); ++i) {
         if (items[i]->id == item_id) {
 
@@ -62,11 +62,12 @@ int GameData::LoadLocationData(const std::string path) {
         return 0;
     }
 
-    std::shared_ptr<Location> working_location = std::make_shared<Location>("", "");
+    std::shared_ptr<Location> current_location = std::make_shared<Location>("", "");
 
     while (std::getline(location_file, line)) {
         size_t match_location_comment = line.find("//");
         size_t match_location_id = line.find("#");
+        size_t match_item_id = line.find("^");
         size_t match_location_choice_id = line.find("&");
         size_t match_location_choice_description = line.find(":");
         size_t match_location_endline = line.find("=");
@@ -74,22 +75,24 @@ int GameData::LoadLocationData(const std::string path) {
         if (match_location_comment != std::string::npos) {
             continue;
         } else if (match_location_id != std::string::npos) {
-            working_location->location_id = line.substr(1);
+            current_location->location_id = line.substr(1);
+        } else if (match_item_id != std::string::npos) {
+            current_location->location_items.push_back(line.substr(1));
         } else if (match_location_choice_id != std::string::npos) {
-            std::shared_ptr<LocationChoice> working_location_choice = std::make_shared<LocationChoice>(line.substr(1, match_location_choice_description - 1), line.substr(match_location_choice_description + 2));
+            std::shared_ptr<LocationChoice> current_location_choice = std::make_shared<LocationChoice>(line.substr(1, match_location_choice_description - 1), line.substr(match_location_choice_description + 2));
             
-            working_location->choices.push_back(working_location_choice);
+            current_location->choices.push_back(current_location_choice);
             
-            working_location_choice = std::make_shared<LocationChoice>("", "");
+            current_location_choice = std::make_shared<LocationChoice>("", "");
         } else if (match_location_endline != std::string::npos) {
-            locations.push_back(working_location);
-            location_index[working_location->location_id] = working_location;
+            locations.push_back(current_location);
+            location_index[current_location->location_id] = current_location;
 
-            working_location = std::make_shared<Location>("", "");
+            current_location = std::make_shared<Location>("", "");
             
         } else {
-            working_location->location_text += line;
-            working_location->location_text += "\n";
+            current_location->location_text += line;
+            current_location->location_text += "\n";
         }
     }
     

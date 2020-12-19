@@ -87,7 +87,6 @@ const void Game::MainMenu(void) {
             player.current_location = gamedata.GetStartLocation();
             player.moves = 0;
             player.AddItem("scroll01", 1);
-            player.AddItem("fooditem1", 1);
             game_mode = GameMode::IsRunning;
 
             Run();
@@ -159,6 +158,16 @@ const void Game::Run(void) {
             gamedata.WaitAMinute();
             std::cout << "---\n";
             std::cout << "-> " << gamedata.PersonalizeText(player.name, player.current_location->location_text) << "\n";
+            
+            for (size_t i = 0; i < player.current_location->location_items.size(); ++i) {
+                std::shared_ptr<BaseItem> item = gamedata.GetItemById(player.current_location->location_items[i]);
+
+                if (item != nullptr) {
+                    std::cout << "You found: " << item->title << "\n";
+                    player.AddItem(item->id, 1);
+                }
+            }
+
             std::cout << "---\n";
             std::cout << "Where do you wish to proceed next?\n";
 

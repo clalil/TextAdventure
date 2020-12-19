@@ -15,7 +15,7 @@ void Player::AddItem(const std::string& id, int amount) {
         }
     }
 
-    inventory.push_back(InventoryItem { .item = Game::InstanceOf().gamedata.GetItemsById(id), .inventory_amount = amount } );
+    inventory.push_back(InventoryItem { .item = Game::InstanceOf().gamedata.GetItemById(id), .inventory_amount = amount } );
 }
 
 void Player::RemoveItem(const std::string& id, int amount) {
