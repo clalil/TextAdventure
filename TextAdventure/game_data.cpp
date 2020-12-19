@@ -173,10 +173,6 @@ const void GameData::WaitAMinute(void) {
     std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
 }
 
-//In this method, you should print a list of the items the user has in their inventory with amount > 0, just like when you are presenting choices for the user to select from at a location.
-//If the user enters a valid number for an item they can use - get the item from GameData and call “use()” on that item. After you have used the item, reduce the “amount” of this item in the inventory.
-//When done, return to the main game as per usual.
-
 const int GameData::InventoryMenu(void) {
     int choice = 0;
     
@@ -208,19 +204,6 @@ const int GameData::InventoryMenu(void) {
     return choice-1;
 }
 
-//Code below only used for debugging purposes
-
-const bool GameData::LocationExistsWithId(const std::string id) {
-     for (int i = 0; i < locations.size(); ++i) {
-         std::shared_ptr<Location> location = locations[i];
-        if (location->location_id == id) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 const void GameData::ReducePlayerSatiety(void) {
     auto hunger_level = Game::InstanceOf().player.satiation;
 
@@ -239,6 +222,16 @@ const void GameData::ReducePlayerSatiety(void) {
     std::uniform_int_distribution<int> random_hunger_reducer(1, 10);
     
     Game::InstanceOf().player.satiation -= random_hunger_reducer(random_generator);
+}
+
+//Code below only used for debugging purposes
+
+const bool GameData::LocationExistsWithId(const std::string id) {
+    if (location_index.find(id) != location_index.end()) {
+        return true;
+    }
+
+    return false;
 }
 
 const void GameData::DebugLocations(void) {
