@@ -202,6 +202,7 @@ const void Game::Run(void) {
                         
                         if(item != nullptr) {
                             item->UseItem();
+                            player.RemoveItem(item->id, 1);
                             break;
                         }
                     } else {
