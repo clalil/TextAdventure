@@ -31,3 +31,13 @@ void Player::RemoveItem(const std::string& id, int amount) {
         }
     }
 }
+
+bool Player::HasVisitedLocation(void) {
+    for (size_t i = 0; i < locations_visited.size(); ++i) {
+        if (locations_visited[i]->location_id == current_location->location_id) {
+            return true;
+        }
+    }
+
+    return false;
+}

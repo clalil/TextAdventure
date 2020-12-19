@@ -41,6 +41,7 @@ public:
     const int ValidateUserInput(int& choice, const std::string& input);
     const void InitializeItems();
     const void ReducePlayerSatiety(void);
+    const void CheckForLocationItems(void);
     const std::string GetPlayerName(std::string& user_name);
     const std::string PersonalizeText(const std::string& player_name, std::string& location_text);
 

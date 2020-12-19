@@ -53,6 +53,17 @@ std::shared_ptr<BaseItem> GameData::GetItemById(const std::string& item_id) {
     return nullptr;
 }
 
+const void GameData::CheckForLocationItems(void) {
+    for (size_t i = 0; i < Game::InstanceOf().player.current_location->location_items.size(); ++i) {
+        std::shared_ptr<BaseItem> item = GetItemById(Game::InstanceOf().player.current_location->location_items[i]);
+
+        if (item != nullptr) {
+            std::cout << "You found: " << item->title << "\n";
+            Game::InstanceOf().player.AddItem(item->id, 1);
+        }
+    }
+}
+
 int GameData::LoadLocationData(const std::string path) {
     int locations_added = 0;
     std::ifstream location_file(path);

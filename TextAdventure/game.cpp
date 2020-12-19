@@ -153,19 +153,14 @@ const void Game::Run(void) {
         } else {
             bool is_valid_input = false;
             int choice = -1;
-            player.locations_visited.push_back(player.current_location);
 
             gamedata.WaitAMinute();
             std::cout << "---\n";
             std::cout << "-> " << gamedata.PersonalizeText(player.name, player.current_location->location_text) << "\n";
             
-            for (size_t i = 0; i < player.current_location->location_items.size(); ++i) {
-                std::shared_ptr<BaseItem> item = gamedata.GetItemById(player.current_location->location_items[i]);
-
-                if (item != nullptr) {
-                    std::cout << "You found: " << item->title << "\n";
-                    player.AddItem(item->id, 1);
-                }
+            if (player.HasVisitedLocation() == false) {
+                gamedata.CheckForLocationItems();
+                player.locations_visited.push_back(player.current_location);
             }
 
             std::cout << "---\n";
