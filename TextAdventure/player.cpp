@@ -25,10 +25,10 @@ void Player::RemoveItem(const std::string& id, int amount) {
             
             if (inventory[i].inventory_amount <= 0) {
                 inventory[i].inventory_amount = 0;
+                
+                auto remove_item = (inventory.begin() + i);
+                inventory.erase(remove_item);
             }
-
-            auto remove_item = (inventory.begin() + i);
-            inventory.erase(remove_item);
 
             return;
         }

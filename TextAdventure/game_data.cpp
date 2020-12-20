@@ -110,6 +110,14 @@ int GameData::LoadLocationData(const std::string path) {
     return locations_added;
 }
 
+ //create items logic
+ //switch(classType) {
+ // case(TeleportScroll) {
+ // classType = new TeleportScroll();
+ //enum ClassType {
+ // TeleportScroll...
+ //static void const string...
+
 void GameData::CreateLocations(void) {
     namespace fs = std::__fs::filesystem;
     std::string directory_path = "Content/Locations/";
