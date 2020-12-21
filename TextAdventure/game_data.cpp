@@ -151,7 +151,14 @@ const int GameData::LoadItemData(const std::string path) {
     std::string line;
     
         while(std::getline(file, line)) {
+            size_t match_location_comment = line.find("//");
+
+            if (match_location_comment != std::string::npos) {
+                continue;
+            }
+
             std::vector<std::string> tokens = SplitString(line, '-');
+            std::cout << tokens[0] << "\n";
             
             switch(DeStringify(tokens[0])) {
                 case Food: {
