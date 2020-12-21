@@ -5,6 +5,7 @@
 //  Created by Clarissa Liljander on 2020-11-19.
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
+#include "utils.hpp"
 #include "globals.hpp"
 #include "game_data.hpp"
 #include <chrono>
@@ -14,6 +15,7 @@
 #include <vector>
 #include <string>
 #include <regex>
+#include <sstream>
 #include <fstream>
 #include <filesystem>
 #include <iostream>
@@ -30,19 +32,11 @@ Location::Location(const std::string& id, const std::string& descriptive_text) {
 }
 
 GameData::GameData() {
-    CreateLocations();
+    InitializeLocations();
     InitializeItems();
 }
 
-const void GameData::InitializeItems() {
-    std::shared_ptr<BaseItem> scroll01{ new TeleportScroll("scroll01", "Teleport Scroll", "beginGame") };
-    std::shared_ptr<BaseItem> fooditem1{ new FoodItem("fooditem1", "Lollipop", 10) };
-
-    items.push_back(scroll01);
-    items.push_back(fooditem1);
-}
-
-std::shared_ptr<BaseItem> GameData::GetItemsById(const std::string& item_id) {
+std::shared_ptr<BaseItem> GameData::GetItemById(const std::string& item_id) {
     for (int i = 0; i < items.size(); ++i) {
         if (items[i]->id == item_id) {
 
@@ -53,50 +47,18 @@ std::shared_ptr<BaseItem> GameData::GetItemsById(const std::string& item_id) {
     return nullptr;
 }
 
-int GameData::LoadLocationData(const std::string path) {
-    int locations_added = 0;
-    std::ifstream location_file(path);
-    std::string line;
+const void GameData::CheckForLocationItems(void) {
+    for (size_t i = 0; i < Game::InstanceOf().player.current_location->location_items.size(); ++i) {
+        std::shared_ptr<BaseItem> item = GetItemById(Game::InstanceOf().player.current_location->location_items[i]);
 
-    if (location_file.is_open() == false) {
-        return 0;
-    }
-
-    std::shared_ptr<Location> working_location = std::make_shared<Location>("", "");
-
-    while (std::getline(location_file, line)) {
-        size_t match_location_comment = line.find("//");
-        size_t match_location_id = line.find("#");
-        size_t match_location_choice_id = line.find("&");
-        size_t match_location_choice_description = line.find(":");
-        size_t match_location_endline = line.find("=");
-        
-        if (match_location_comment != std::string::npos) {
-            continue;
-        } else if (match_location_id != std::string::npos) {
-            working_location->location_id = line.substr(1);
-        } else if (match_location_choice_id != std::string::npos) {
-            std::shared_ptr<LocationChoice> working_location_choice = std::make_shared<LocationChoice>(line.substr(1, match_location_choice_description - 1), line.substr(match_location_choice_description + 2));
-            
-            working_location->choices.push_back(working_location_choice);
-            
-            working_location_choice = std::make_shared<LocationChoice>("", "");
-        } else if (match_location_endline != std::string::npos) {
-            locations.push_back(working_location);
-            location_index[working_location->location_id] = working_location;
-
-            working_location = std::make_shared<Location>("", "");
-            
-        } else {
-            working_location->location_text += line;
-            working_location->location_text += "\n";
+        if (item != nullptr) {
+            std::cout << "You found: " << item->title << "\n";
+            Game::InstanceOf().player.AddItem(item->id, 1);
         }
     }
-    
-    return locations_added;
 }
 
-void GameData::CreateLocations(void) {
+const void GameData::InitializeLocations(void) {
     namespace fs = std::__fs::filesystem;
     std::string directory_path = "Content/Locations/";
     fs::path path_to_load(directory_path);
@@ -108,7 +70,114 @@ void GameData::CreateLocations(void) {
 
             LoadLocationData(file_to_load);
         }
+    } else {
+        std::cout << "File(s) does not exist. If you're a Mac user, the path to the working directory might be incorrect.\n";
     }
+}
+
+const void GameData::InitializeItems() {
+    namespace fs = std::__fs::filesystem;
+    std::string directory_path = "Content/Items/";
+    fs::path path_to_load(directory_path);
+    
+    if (fs::exists(path_to_load)) {
+        for (const auto& entry : fs::directory_iterator(path_to_load)) {
+            std::string filename = entry.path().filename();
+            std::string file_to_load = directory_path + filename;
+
+            LoadItemData(file_to_load);
+        }
+    } else {
+        std::cout << "File(s) does not exist. If you're a Mac user, the path to the working directory might be incorrect.\n";
+    }
+}
+
+const int GameData::LoadLocationData(const std::string path) {
+    int locations_added = 0;
+    std::ifstream location_file(path);
+    std::string line;
+
+    if (location_file.is_open() == false) {
+        return 0;
+    }
+
+    std::shared_ptr<Location> current_location = std::make_shared<Location>("", "");
+
+    while (std::getline(location_file, line)) {
+        size_t match_location_comment = line.find("//");
+        size_t match_location_id = line.find("#");
+        size_t match_item_id = line.find("^");
+        size_t match_location_choice_id = line.find("&");
+        size_t match_location_choice_description = line.find(":");
+        size_t match_location_endline = line.find("=");
+        
+        if (match_location_comment != std::string::npos) {
+            continue;
+        } else if (match_location_id != std::string::npos) {
+            current_location->location_id = line.substr(1);
+        } else if (match_item_id != std::string::npos) {
+            current_location->location_items.push_back(line.substr(1));
+        } else if (match_location_choice_id != std::string::npos) {
+            std::shared_ptr<LocationChoice> current_location_choice = std::make_shared<LocationChoice>(line.substr(1, match_location_choice_description - 1), line.substr(match_location_choice_description + 2));
+            
+            current_location->choices.push_back(current_location_choice);
+            
+            current_location_choice = std::make_shared<LocationChoice>("", "");
+        } else if (match_location_endline != std::string::npos) {
+            locations.push_back(current_location);
+            location_index[current_location->location_id] = current_location;
+
+            current_location = std::make_shared<Location>("", "");
+            
+        } else {
+            current_location->location_text += line;
+            current_location->location_text += "\n";
+        }
+    }
+    
+    return locations_added;
+}
+
+const int GameData::DeStringify(const std::string& string_value) {
+    if (string_value == "food") return Food;
+    if (string_value == "teleport") return Scroll;
+    
+    return 0;
+}
+
+const int GameData::LoadItemData(const std::string path) {
+    int items_added = 0;
+    std::ifstream file(path);
+    std::string line;
+    
+        while(std::getline(file, line)) {
+            size_t match_location_comment = line.find("//");
+
+            if (match_location_comment != std::string::npos) {
+                continue;
+            }
+
+            std::vector<std::string> tokens = SplitString(line, '-');
+            std::cout << tokens[0] << "\n";
+            
+            switch(DeStringify(tokens[0])) {
+                case Food: {
+                    std::shared_ptr<BaseItem> food { new FoodItem(tokens[1], tokens[2], std::stoi(tokens[3])) };
+                    items.push_back(food);
+                    break;
+                }
+                case Scroll: {
+                    std::shared_ptr<BaseItem> scroll { new TeleportScroll(tokens[1], tokens[2], tokens[3]) };
+                    items.push_back(scroll);
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
+
+    return items_added;
 }
 
 std::shared_ptr<Location> GameData::GetStartLocation(void) {
@@ -219,9 +288,9 @@ const void GameData::ReducePlayerSatiety(void) {
     
     unsigned int seed = (unsigned int)std::chrono::system_clock::now().time_since_epoch().count();
     std::mt19937 random_generator = std::mt19937(seed);
-    std::uniform_int_distribution<int> random_hunger_reducer(1, 10);
+    std::uniform_int_distribution<int> satiety_reduced_by(1, 10);
     
-    Game::InstanceOf().player.satiation -= random_hunger_reducer(random_generator);
+    Game::InstanceOf().player.satiation -= satiety_reduced_by(random_generator);
 }
 
 //Code below only used for debugging purposes

@@ -86,8 +86,6 @@ const void Game::MainMenu(void) {
         case 1:
             player.current_location = gamedata.GetStartLocation();
             player.moves = 0;
-            player.AddItem("scroll01", 1);
-            player.AddItem("fooditem1", 1);
             game_mode = GameMode::IsRunning;
 
             Run();
@@ -154,11 +152,16 @@ const void Game::Run(void) {
         } else {
             bool is_valid_input = false;
             int choice = -1;
-            player.locations_visited.push_back(player.current_location);
 
             gamedata.WaitAMinute();
             std::cout << "---\n";
             std::cout << "-> " << gamedata.PersonalizeText(player.name, player.current_location->location_text) << "\n";
+            
+            if (player.HasVisitedLocation() == false) {
+                gamedata.CheckForLocationItems();
+                player.locations_visited.push_back(player.current_location);
+            }
+
             std::cout << "---\n";
             std::cout << "Where do you wish to proceed next?\n";
 
@@ -198,6 +201,7 @@ const void Game::Run(void) {
                         
                         if(item != nullptr) {
                             item->UseItem();
+                            player.RemoveItem(item->id, 1);
                             break;
                         }
                     } else {

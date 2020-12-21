@@ -15,19 +15,32 @@ void Player::AddItem(const std::string& id, int amount) {
         }
     }
 
-    inventory.push_back(InventoryItem { .item = Game::InstanceOf().gamedata.GetItemsById(id), .inventory_amount = amount } );
+    inventory.push_back(InventoryItem { .item = Game::InstanceOf().gamedata.GetItemById(id), .inventory_amount = amount } );
 }
 
 void Player::RemoveItem(const std::string& id, int amount) {
     for (int i = 0; i < inventory.size(); ++i) {
         if (inventory[i].item->id == id) {
             inventory[i].inventory_amount -= amount;
-
+            
             if (inventory[i].inventory_amount <= 0) {
                 inventory[i].inventory_amount = 0;
+                
+                auto remove_item = (inventory.begin() + i);
+                inventory.erase(remove_item);
             }
 
             return;
         }
     }
+}
+
+bool Player::HasVisitedLocation(void) {
+    for (size_t i = 0; i < locations_visited.size(); ++i) {
+        if (locations_visited[i]->location_id == current_location->location_id) {
+            return true;
+        }
+    }
+
+    return false;
 }

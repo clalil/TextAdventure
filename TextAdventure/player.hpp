@@ -24,4 +24,5 @@ struct Player {
     
     void AddItem(const std::string& id, int amount);
     void RemoveItem(const std::string& id, int amount);
+    bool HasVisitedLocation(void);
 };
