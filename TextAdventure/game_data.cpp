@@ -138,7 +138,7 @@ const int GameData::LoadLocationData(const std::string path) {
     return locations_added;
 }
 
-const int GameData::DeStringify(const std::string& string_value) {
+const int GameData::StringToEnum(const std::string& string_value) {
     if (string_value == "food") return Food;
     if (string_value == "teleport") return Scroll;
     
@@ -160,7 +160,7 @@ const int GameData::LoadItemData(const std::string path) {
             std::vector<std::string> tokens = SplitString(line, '-');
             std::cout << tokens[0] << "\n";
             
-            switch(DeStringify(tokens[0])) {
+            switch(StringToEnum(tokens[0])) {
                 case Food: {
                     std::shared_ptr<BaseItem> food { new FoodItem(tokens[1], tokens[2], std::stoi(tokens[3])) };
                     items.push_back(food);

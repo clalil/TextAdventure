@@ -30,37 +30,38 @@ struct Location {
     std::string location_id;
     std::string location_text;
     
-    std::vector<std::string> location_items;
     std::vector<std::shared_ptr<LocationChoice>> choices;
+    std::vector<std::string> location_items;
 };
 
 class GameData {
 
 public:
     GameData();
-    const int DeStringify(const std::string& string_value);
-    const void Introduction(void);
-    const void WaitAMinute(void);
-    const int InventoryMenu(void);
-    const void DebugLocations(void);
-    const int ValidateUserInput(int& choice, const std::string& input);
-    const void ReducePlayerSatiety(void);
+
     const void CheckForLocationItems(void);
+    const void DebugLocations(void);
+    const int StringToEnum(const std::string& string_value);
     const std::string GetPlayerName(std::string& user_name);
+    const void Introduction(void);
+    const int InventoryMenu(void);
     const std::string PersonalizeText(const std::string& player_name, std::string& location_text);
+    const void ReducePlayerSatiety(void);
+    const int ValidateUserInput(int& choice, const std::string& input);
+    const void WaitAMinute(void);
 
     std::shared_ptr<BaseItem> GetItemById(const std::string& item_id);
-    std::shared_ptr<Location> GetStartLocation(void);
     std::shared_ptr<Location> GetLocationById(const std::string& id);
+    std::shared_ptr<Location> GetStartLocation(void);
     
 private:
-    const void InitializeLocations(void);
     const void InitializeItems(void);
-    const int LoadLocationData(const std::string path);
+    const void InitializeLocations(void);
     const int LoadItemData(const std::string path);
     const bool LocationExistsWithId(const std::string id);
+    const int LoadLocationData(const std::string path);
     
+    std::vector<std::shared_ptr<BaseItem>> items;
     std::vector<std::shared_ptr<Location>> locations;
     std::unordered_map<std::string, std::shared_ptr<Location>> location_index;
-    std::vector<std::shared_ptr<BaseItem>> items;
 };
