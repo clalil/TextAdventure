@@ -288,9 +288,9 @@ const void GameData::ReducePlayerSatiety(void) {
     
     unsigned int seed = (unsigned int)std::chrono::system_clock::now().time_since_epoch().count();
     std::mt19937 random_generator = std::mt19937(seed);
-    std::uniform_int_distribution<int> random_hunger_reducer(1, 10);
+    std::uniform_int_distribution<int> satiety_reduced_by(1, 10);
     
-    Game::InstanceOf().player.satiation -= random_hunger_reducer(random_generator);
+    Game::InstanceOf().player.satiation -= satiety_reduced_by(random_generator);
 }
 
 //Code below only used for debugging purposes
