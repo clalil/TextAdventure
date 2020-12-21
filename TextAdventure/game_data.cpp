@@ -5,6 +5,7 @@
 //  Created by Clarissa Liljander on 2020-11-19.
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
+#include "utils.hpp"
 #include "globals.hpp"
 #include "game_data.hpp"
 #include <chrono>
@@ -14,6 +15,7 @@
 #include <vector>
 #include <string>
 #include <regex>
+#include <sstream>
 #include <fstream>
 #include <filesystem>
 #include <iostream>
@@ -30,16 +32,8 @@ Location::Location(const std::string& id, const std::string& descriptive_text) {
 }
 
 GameData::GameData() {
-    CreateLocations();
+    InitializeLocations();
     InitializeItems();
-}
-
-const void GameData::InitializeItems() {
-    std::shared_ptr<BaseItem> scroll01{ new TeleportScroll("scroll01", "Teleport Scroll", "beginGame") };
-    std::shared_ptr<BaseItem> fooditem1{ new FoodItem("fooditem1", "Lollipop", 10) };
-
-    items.push_back(scroll01);
-    items.push_back(fooditem1);
 }
 
 std::shared_ptr<BaseItem> GameData::GetItemById(const std::string& item_id) {
@@ -64,7 +58,41 @@ const void GameData::CheckForLocationItems(void) {
     }
 }
 
-int GameData::LoadLocationData(const std::string path) {
+const void GameData::InitializeLocations(void) {
+    namespace fs = std::__fs::filesystem;
+    std::string directory_path = "Content/Locations/";
+    fs::path path_to_load(directory_path);
+    
+    if (fs::exists(path_to_load)) {
+        for (const auto& entry : fs::directory_iterator(path_to_load)) {
+            std::string filename = entry.path().filename();
+            std::string file_to_load = directory_path + filename;
+
+            LoadLocationData(file_to_load);
+        }
+    } else {
+        std::cout << "File(s) does not exist. If you're a Mac user, the path to the working directory might be incorrect.\n";
+    }
+}
+
+const void GameData::InitializeItems() {
+    namespace fs = std::__fs::filesystem;
+    std::string directory_path = "Content/Items/";
+    fs::path path_to_load(directory_path);
+    
+    if (fs::exists(path_to_load)) {
+        for (const auto& entry : fs::directory_iterator(path_to_load)) {
+            std::string filename = entry.path().filename();
+            std::string file_to_load = directory_path + filename;
+
+            LoadItemData(file_to_load);
+        }
+    } else {
+        std::cout << "File(s) does not exist. If you're a Mac user, the path to the working directory might be incorrect.\n";
+    }
+}
+
+const int GameData::LoadLocationData(const std::string path) {
     int locations_added = 0;
     std::ifstream location_file(path);
     std::string line;
@@ -110,27 +138,39 @@ int GameData::LoadLocationData(const std::string path) {
     return locations_added;
 }
 
- //create items logic
- //switch(classType) {
- // case(TeleportScroll) {
- // classType = new TeleportScroll();
- //enum ClassType {
- // TeleportScroll...
- //static void const string...
-
-void GameData::CreateLocations(void) {
-    namespace fs = std::__fs::filesystem;
-    std::string directory_path = "Content/Locations/";
-    fs::path path_to_load(directory_path);
+const int GameData::DeStringify(const std::string& string_value) {
+    if (string_value == "food") return Food;
+    if (string_value == "teleport") return Scroll;
     
-    if (fs::exists(path_to_load)) {
-        for (const auto& entry : fs::directory_iterator(path_to_load)) {
-            std::string filename = entry.path().filename();
-            std::string file_to_load = directory_path + filename;
+    return 0;
+}
 
-            LoadLocationData(file_to_load);
+const int GameData::LoadItemData(const std::string path) {
+    int items_added = 0;
+    std::ifstream file(path);
+    std::string line;
+    
+        while(std::getline(file, line)) {
+            std::vector<std::string> tokens = SplitString(line, '-');
+            
+            switch(DeStringify(tokens[0])) {
+                case Food: {
+                    std::shared_ptr<BaseItem> food { new FoodItem(tokens[1], tokens[2], std::stoi(tokens[3])) };
+                    items.push_back(food);
+                    break;
+                }
+                case Scroll: {
+                    std::shared_ptr<BaseItem> scroll { new TeleportScroll(tokens[1], tokens[2], tokens[3]) };
+                    items.push_back(scroll);
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
         }
-    }
+
+    return items_added;
 }
 
 std::shared_ptr<Location> GameData::GetStartLocation(void) {

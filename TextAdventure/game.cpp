@@ -86,7 +86,6 @@ const void Game::MainMenu(void) {
         case 1:
             player.current_location = gamedata.GetStartLocation();
             player.moves = 0;
-            player.AddItem("scroll01", 1);
             game_mode = GameMode::IsRunning;
 
             Run();

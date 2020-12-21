@@ -27,7 +27,7 @@ void TeleportScroll::UseItem(void) {
     if (new_location != nullptr) {
         Game::InstanceOf().player.current_location = new_location;
 
-        std::cout << "You read the words on the scroll and when you've reached its final word  you find yourself back where you started! \n";
+        std::cout << "You read the words on the scroll and when you've reached its final word you find yourself back where you started! \n";
     }
 }
 

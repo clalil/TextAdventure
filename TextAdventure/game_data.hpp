@@ -13,6 +13,10 @@
 #include <unordered_map>
 #include "items.hpp"
 
+enum ItemsCode {
+    Food, Scroll
+};
+
 struct LocationChoice {
     LocationChoice(const std::string& choice_id, const std::string& choice_description);
 
@@ -34,12 +38,12 @@ class GameData {
 
 public:
     GameData();
+    const int DeStringify(const std::string& string_value);
     const void Introduction(void);
     const void WaitAMinute(void);
     const int InventoryMenu(void);
     const void DebugLocations(void);
     const int ValidateUserInput(int& choice, const std::string& input);
-    const void InitializeItems();
     const void ReducePlayerSatiety(void);
     const void CheckForLocationItems(void);
     const std::string GetPlayerName(std::string& user_name);
@@ -50,8 +54,10 @@ public:
     std::shared_ptr<Location> GetLocationById(const std::string& id);
     
 private:
-    void CreateLocations(void);
-    int LoadLocationData(const std::string path);
+    const void InitializeLocations(void);
+    const void InitializeItems(void);
+    const int LoadLocationData(const std::string path);
+    const int LoadItemData(const std::string path);
     const bool LocationExistsWithId(const std::string id);
     
     std::vector<std::shared_ptr<Location>> locations;
