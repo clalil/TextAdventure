@@ -22,7 +22,8 @@ struct Player {
     std::vector<InventoryItem> inventory;
     std::shared_ptr<Location> current_location = nullptr;
     
-    void AddItem(const std::string& id, int amount);
-    bool HasVisitedLocation(void);
-    void RemoveItem(const std::string& id, int amount);
+    const void AddItem(const std::string& id, int amount);
+    const bool HasVisitedLocation(void);
+    const void RemoveItem(const std::string& id, int amount);
+    const void ShowChoicesAndMenu(const int choices) const;
 };
