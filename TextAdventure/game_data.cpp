@@ -24,17 +24,17 @@ GameData::GameData() {
     InitializeItems();
 }
 
-const void GameData::Introduction(void) {
+const void GameData::Introduction(void) const {
     std::cout << "*******************\n";
     std::cout << "House of the Haunted\n";
     std::cout << "*******************\n";
 }
 
-const void GameData::WaitAMinute(void) {
+const void GameData::WaitAMinute(void) const {
     std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
 }
 
-const int GameData::ValidateUserInput(int& choice, const std::string& input) {
+const int GameData::ValidateUserInput(int& choice, const std::string& input) const {
     // line is not a number, e.g. "abc" or "abc123", or the number is too big
     // to fit in an int, e.g. "11111111111111111111111111111111111"
     try {
@@ -67,7 +67,7 @@ const void GameData::ReducePlayerSatiety(void) {
     Game::InstanceOf().player.satiation -= RandomSatietyDrop();
 }
 
-std::shared_ptr<BaseItem> GameData::GetItemById(const std::string& item_id) {
+std::shared_ptr<BaseItem> GameData::GetItemById(const std::string& item_id) const {
     for (int i = 0; i < items.size(); ++i) {
         if (items[i]->id == item_id) {
 
@@ -89,7 +89,7 @@ const void GameData::CheckForLocationItems(void) {
     }
 }
 
-std::shared_ptr<Location> GameData::GetStartLocation(void) {
+std::shared_ptr<Location> GameData::GetStartLocation(void) const {
     if (locations.size() != 0) {
         return locations.front();
     }
@@ -107,14 +107,14 @@ std::shared_ptr<Location> GameData::GetLocationById(const std::string& id) {
     return nullptr;
 }
 
-const std::string GameData::GetPlayerName(std::string& user_name) {
+const std::string GameData::GetPlayerName(std::string& user_name) const {
     std::cout << "Please enter your name: \n";
     std::getline(std::cin, user_name);
     
     return user_name;
 }
 
-const std::string GameData::PersonalizeText(const std::string& player_name, std::string& location_text) {
+const std::string GameData::PersonalizeText(const std::string& player_name, std::string& location_text) const {
     size_t match = location_text.find("%%NAME%%");
 
     if (match != std::string::npos) {
@@ -253,7 +253,7 @@ const int GameData::LoadItemData(const std::string path) {
 
 //Code below only used for debugging purposes
 
-const bool GameData::LocationExistsWithId(const std::string id) {
+const bool GameData::LocationExistsWithId(const std::string id) const {
     if (location_index.find(id) != location_index.end()) {
         return true;
     }
@@ -261,7 +261,7 @@ const bool GameData::LocationExistsWithId(const std::string id) {
     return false;
 }
 
-const void GameData::DebugLocations(void) {
+const void GameData::DebugLocations(void) const {
     std::vector<std::string> location_ids = {};
 
     std::cout << "Number of available locations: " << locations.size() << "\n";

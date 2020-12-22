@@ -1,2 +1,3 @@
-beginGame
-1
+start
+0
+Debra

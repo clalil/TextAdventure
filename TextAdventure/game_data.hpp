@@ -47,23 +47,23 @@ public:
     GameData();
 
     const void CheckForLocationItems(void);
-    const void DebugLocations(void);
-    const std::string GetPlayerName(std::string& user_name);
-    const void Introduction(void);
-    const std::string PersonalizeText(const std::string& player_name, std::string& location_text);
+    const void DebugLocations(void) const;
+    const std::string GetPlayerName(std::string& user_name) const;
+    const void Introduction(void) const;
+    const std::string PersonalizeText(const std::string& player_name, std::string& location_text) const;
     const void ReducePlayerSatiety(void);
-    const int ValidateUserInput(int& choice, const std::string& input);
-    const void WaitAMinute(void);
+    const int ValidateUserInput(int& choice, const std::string& input) const;
+    const void WaitAMinute(void) const;
 
-    std::shared_ptr<BaseItem> GetItemById(const std::string& item_id);
+    std::shared_ptr<BaseItem> GetItemById(const std::string& item_id) const;
     std::shared_ptr<Location> GetLocationById(const std::string& id);
-    std::shared_ptr<Location> GetStartLocation(void);
+    std::shared_ptr<Location> GetStartLocation(void) const;
     
 private:
     const void InitializeItems(void);
     const void InitializeLocations(void);
     const int LoadItemData(const std::string path);
-    const bool LocationExistsWithId(const std::string id);
+    const bool LocationExistsWithId(const std::string id) const;
     const int LoadLocationData(const std::string path);
     
     std::vector<std::shared_ptr<BaseItem>> items;
