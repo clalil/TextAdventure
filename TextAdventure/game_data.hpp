@@ -6,9 +6,16 @@
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
 #pragma once
-#include <iostream>
+#include <chrono>
+#include <random>
+#include <thread>
+#include <algorithm>
 #include <vector>
 #include <string>
+#include <regex>
+#include <fstream>
+#include <filesystem>
+#include <iostream>
 #include <memory>
 #include <unordered_map>
 #include "items.hpp"
@@ -30,37 +37,36 @@ struct Location {
     std::string location_id;
     std::string location_text;
     
-    std::vector<std::string> location_items;
     std::vector<std::shared_ptr<LocationChoice>> choices;
+    std::vector<std::string> location_items;
 };
 
 class GameData {
 
 public:
     GameData();
-    const int DeStringify(const std::string& string_value);
-    const void Introduction(void);
-    const void WaitAMinute(void);
-    const int InventoryMenu(void);
-    const void DebugLocations(void);
-    const int ValidateUserInput(int& choice, const std::string& input);
-    const void ReducePlayerSatiety(void);
-    const void CheckForLocationItems(void);
-    const std::string GetPlayerName(std::string& user_name);
-    const std::string PersonalizeText(const std::string& player_name, std::string& location_text);
 
-    std::shared_ptr<BaseItem> GetItemById(const std::string& item_id);
-    std::shared_ptr<Location> GetStartLocation(void);
+    const void CheckForLocationItems(void);
+    const void DebugLocations(void) const;
+    const std::string GetPlayerName(std::string& user_name) const;
+    const void Introduction(void) const;
+    const std::string PersonalizeText(const std::string& player_name, std::string& location_text) const;
+    const void ReducePlayerSatiety(void);
+    const int ValidateUserInput(int& choice, const std::string& input) const;
+    const void WaitAMinute(void) const;
+
+    std::shared_ptr<BaseItem> GetItemById(const std::string& item_id) const;
     std::shared_ptr<Location> GetLocationById(const std::string& id);
+    std::shared_ptr<Location> GetStartLocation(void) const;
     
 private:
-    const void InitializeLocations(void);
     const void InitializeItems(void);
-    const int LoadLocationData(const std::string path);
+    const void InitializeLocations(void);
     const int LoadItemData(const std::string path);
-    const bool LocationExistsWithId(const std::string id);
+    const bool LocationExistsWithId(const std::string id) const;
+    const int LoadLocationData(const std::string path);
     
+    std::vector<std::shared_ptr<BaseItem>> items;
     std::vector<std::shared_ptr<Location>> locations;
     std::unordered_map<std::string, std::shared_ptr<Location>> location_index;
-    std::vector<std::shared_ptr<BaseItem>> items;
 };

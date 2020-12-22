@@ -1,2 +1,3 @@
-#  <#Title#>
-
+//Chapter One Items
+food-food01-Apple-10
+teleport-scroll01-Teleport Scroll-beginGame

@@ -8,6 +8,7 @@
 #pragma once
 #include "game_data.hpp"
 #include "player.hpp"
+#include <fstream>
 
 enum class GameMode {
     Menu, IsRunning, Exit
@@ -17,6 +18,7 @@ class Game {
 
 public:
     static Game& InstanceOf();
+
     GameData gamedata;
     Player player;
     
@@ -25,9 +27,10 @@ public:
 private:
     GameMode game_mode = GameMode::Menu;
 
-    const void Run(void);
-    const void MainMenu(void);
     const int InGameMenu(void);
-    const void SaveGame(void);
+    const int InventoryMenu(void);
     const void LoadGame(void);
+    const void MainMenu(void);
+    const void SaveGame(void);
+    const void Run(void);
 };

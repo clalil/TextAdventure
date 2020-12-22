@@ -33,11 +33,10 @@ void TeleportScroll::UseItem(void) {
 
 FoodItem::FoodItem(const std::string& item_id, const std::string& item_title, int satiety_level) : BaseItem(item_id, item_title) {
     food_satiety_level = satiety_level;
-    food_title = item_title;
 }
 
 void FoodItem::UseItem(void) {
     Game::InstanceOf().player.satiation += food_satiety_level;
 
-    std::cout << "You swallow the " << food_title << " and feel your satiety level increased by at least " << food_satiety_level << ".\n";
+    std::cout << "You swallow the " << GetItemTitle() << " and feel your satiety level increased by at least " << food_satiety_level << ".\n";
 }
