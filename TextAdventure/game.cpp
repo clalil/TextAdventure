@@ -6,7 +6,7 @@
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
 #include "game.hpp"
-#include <fstream>
+
 const std::string GAME_SAVE_FILE = "Content/game_save.txt";
 
 Game& Game::InstanceOf() {
@@ -129,6 +129,7 @@ const int Game::InGameMenu(void) {
 
 const void Game::Run(void) {
     std::string name = "";
+    player.AddItem("food01", 1);
 
     while (game_mode == GameMode::IsRunning) {
         

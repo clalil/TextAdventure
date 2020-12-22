@@ -8,18 +8,6 @@
 #include "utils.hpp"
 #include "globals.hpp"
 #include "game_data.hpp"
-#include <chrono>
-#include <random>
-#include <thread>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <regex>
-#include <sstream>
-#include <fstream>
-#include <filesystem>
-#include <iostream>
-using namespace std::chrono_literals;
 
 LocationChoice::LocationChoice(const std::string& choice_id, const std::string& choice_description) {
     next_location_id = choice_id;
@@ -138,13 +126,6 @@ const int GameData::LoadLocationData(const std::string path) {
     return locations_added;
 }
 
-const int GameData::StringToEnum(const std::string& string_value) {
-    if (string_value == "food") return Food;
-    if (string_value == "teleport") return Scroll;
-    
-    return 0;
-}
-
 const int GameData::LoadItemData(const std::string path) {
     int items_added = 0;
     std::ifstream file(path);
@@ -158,16 +139,15 @@ const int GameData::LoadItemData(const std::string path) {
             }
 
             std::vector<std::string> tokens = SplitString(line, '-');
-            std::cout << tokens[0] << "\n";
             
             switch(StringToEnum(tokens[0])) {
                 case Food: {
-                    std::shared_ptr<BaseItem> food { new FoodItem(tokens[1], tokens[2], std::stoi(tokens[3])) };
+                    std::shared_ptr<FoodItem> food = std::make_shared<FoodItem>(tokens[1], tokens[2], std::stoi(tokens[3]));
                     items.push_back(food);
                     break;
                 }
                 case Scroll: {
-                    std::shared_ptr<BaseItem> scroll { new TeleportScroll(tokens[1], tokens[2], tokens[3]) };
+                    std::shared_ptr<TeleportScroll> scroll = std::make_shared<TeleportScroll>(tokens[1], tokens[2], tokens[3]);
                     items.push_back(scroll);
                     break;
                 }
@@ -285,12 +265,8 @@ const void GameData::ReducePlayerSatiety(void) {
     } else if (hunger_level <= 0) {
         std::cout << "You're about to starve to death and decide to go home and eat something.\n";
     }
-    
-    unsigned int seed = (unsigned int)std::chrono::system_clock::now().time_since_epoch().count();
-    std::mt19937 random_generator = std::mt19937(seed);
-    std::uniform_int_distribution<int> satiety_reduced_by(1, 10);
-    
-    Game::InstanceOf().player.satiation -= satiety_reduced_by(random_generator);
+
+    Game::InstanceOf().player.satiation -= RandomSatietyDrop();
 }
 
 //Code below only used for debugging purposes

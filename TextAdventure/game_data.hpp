@@ -6,9 +6,16 @@
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
 #pragma once
-#include <iostream>
+#include <chrono>
+#include <random>
+#include <thread>
+#include <algorithm>
 #include <vector>
 #include <string>
+#include <regex>
+#include <fstream>
+#include <filesystem>
+#include <iostream>
 #include <memory>
 #include <unordered_map>
 #include "items.hpp"
@@ -41,7 +48,6 @@ public:
 
     const void CheckForLocationItems(void);
     const void DebugLocations(void);
-    const int StringToEnum(const std::string& string_value);
     const std::string GetPlayerName(std::string& user_name);
     const void Introduction(void);
     const int InventoryMenu(void);

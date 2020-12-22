@@ -13,6 +13,7 @@ struct BaseItem {
 
     virtual ~BaseItem();
     virtual void UseItem(void) = 0;
+    virtual std::string GetItemTitle() { return title; }
 
     std::string id;
     std::string title;
@@ -33,10 +34,9 @@ class FoodItem : public BaseItem {
 
 public:
     FoodItem(const std::string& item_id, const std::string& item_title, int satiety_level);
-    
+
     virtual void UseItem(void);
     
 private:
-    std::string food_title;
     int food_satiety_level;
 };

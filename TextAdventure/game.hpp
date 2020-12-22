@@ -8,6 +8,7 @@
 #pragma once
 #include "game_data.hpp"
 #include "player.hpp"
+#include <fstream>
 
 enum class GameMode {
     Menu, IsRunning, Exit
