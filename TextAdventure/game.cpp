@@ -86,6 +86,7 @@ const void Game::MainMenu(void) {
         case 1:
             player.current_location = gamedata.GetStartLocation();
             player.moves = 0;
+            player.AddItem("food01", 1);
             game_mode = GameMode::IsRunning;
 
             Run();
@@ -120,16 +121,69 @@ const int Game::InGameMenu(void) {
       gamedata.ValidateUserInput(choice, line);
     }
     
-    if (choice == 1 || choice == 2 || choice == 3) {
-        return choice;
+    if (choice == 1 ) {
+        return 0;
+
+    } else if (choice == 2) {
+        std::cout << "Saving game...\n";
+        gamedata.WaitAMinute();
+        SaveGame();
+        std::cout << "Your game was saved. \n";
+        return 0;
+
+    } else if (choice == 3) {
+        std::cout << "Exiting game..\n";
+        gamedata.WaitAMinute();
+        game_mode = GameMode::Exit;
     }
     
-    return 3;
+    return 0;
+}
+
+const int Game::InventoryMenu(void) {
+    int choice = 0;
+    
+    if (Game::InstanceOf().player.inventory.size() == 0) {
+        std::cout << "You have no items in your inventory.\n";
+
+        return 0;
+    }
+
+    std::cout << "=================\n";
+    std::cout << "You have the following items in your inventory:\n";
+
+    for (int i = 0; i < Game::InstanceOf().player.inventory.size(); ++i) {
+        std::cout << "[" << i+1 << "] " << Game::InstanceOf().player.inventory[i].item->title << " (x" << Game::InstanceOf().player.inventory[i].inventory_amount << ")" << "\n";
+    }
+
+    std::cout << "[" << Game::InstanceOf().player.inventory.size()+1 << "] " << "Exit inventory\n";
+    std::cout << "=================\n";
+    
+    while (choice == 0) {
+      std::string line;
+      std::getline(std::cin, line);
+      gamedata.ValidateUserInput(choice, line);
+    }
+    
+    if (choice == Game::InstanceOf().player.inventory.size()+1) {
+        return 0;
+    }
+
+    if (choice != 0 && (choice <= Game::InstanceOf().player.inventory.size())) {
+        std::shared_ptr<BaseItem> item = player.inventory[choice-1].item;
+        
+        if(item != nullptr) {
+            item->UseItem();
+            player.RemoveItem(item->id, 1);
+        }
+
+    }
+
+    return 0;
 }
 
 const void Game::Run(void) {
     std::string name = "";
-    player.AddItem("food01", 1);
 
     while (game_mode == GameMode::IsRunning) {
         
@@ -166,45 +220,19 @@ const void Game::Run(void) {
             std::cout << "---\n";
 
             while (is_valid_input || choice < 0 || choice >= player.current_location->choices.size()+1) {
+
                 player.ShowChoicesAndMenu(choice);
 
                 std::string line;
                 std::getline(std::cin, line);
                 
-                if (line.size() > 0 && line[0] == 'm') {
-                    int input = InGameMenu();
+                if (line.size() > 0 && (line[0] == 'm' || line[0] == 'M')) {
+                    InGameMenu();
+                    return;
 
-                    if (input == 1) {
-                        return;
-
-                    } else if (input == 2) {
-                        std::cout << "Saving game...\n";
-                        gamedata.WaitAMinute();
-                        SaveGame();
-                        std::cout << "Your game was saved. \n";
-                        return;
-
-                    } else if (input == 3) {
-                        std::cout << "Exiting game\n";
-                        game_mode = GameMode::Exit;
-                        break;
-                    }
-
-                } else if (line.size() > 0 && line[0] == 'i') {
-                    int input = gamedata.InventoryMenu();
-
-                    if (input != -1) {
-                        std::shared_ptr<BaseItem> item = player.inventory[input].item;
-                        
-                        if(item != nullptr) {
-                            item->UseItem();
-                            player.RemoveItem(item->id, 1);
-                            return;
-                        }
-
-                    } else {
-                        return;
-                    }
+                } else if (line.size() > 0 && (line[0] == 'i' || line[0] == 'I')) {
+                    InventoryMenu();
+                    return;
 
                 } else {
                     is_valid_input = gamedata.ValidateUserInput(choice, line);

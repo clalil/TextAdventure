@@ -50,7 +50,6 @@ public:
     const void DebugLocations(void);
     const std::string GetPlayerName(std::string& user_name);
     const void Introduction(void);
-    const int InventoryMenu(void);
     const std::string PersonalizeText(const std::string& player_name, std::string& location_text);
     const void ReducePlayerSatiety(void);
     const int ValidateUserInput(int& choice, const std::string& input);
