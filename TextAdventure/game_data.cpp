@@ -227,7 +227,7 @@ const int GameData::LoadItemData(const std::string path) {
                 continue;
             }
 
-            std::vector<std::string> tokens = SplitString(line, '-');
+            std::vector<std::string> tokens = SplitString(line);
             
             switch(StringToEnum(tokens[0])) {
                 case Food: {

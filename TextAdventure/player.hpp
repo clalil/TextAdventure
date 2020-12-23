@@ -18,7 +18,7 @@ struct Player {
     int satiation = 100;
     std::string name;
 
-    std::vector<std::shared_ptr<Location>> locations_visited;
+    std::vector<std::string> locations_visited;
     std::vector<InventoryItem> inventory;
     std::shared_ptr<Location> current_location = nullptr;
     

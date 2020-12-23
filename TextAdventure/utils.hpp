@@ -13,4 +13,4 @@ using namespace std::chrono_literals;
 
 const int RandomSatietyDrop(void);
 const int StringToEnum(const std::string& string_value);
-std::vector<std::string> SplitString(const std::string& text, char separator);
+std::vector<std::string> SplitString(const std::string& text);
