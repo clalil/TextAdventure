@@ -38,14 +38,24 @@ const void Game::SaveGame(void) {
     std::ofstream save_file(GAME_SAVE_FILE, std::ios::trunc);
 
     if (save_file.is_open()) {
+        save_file << player.name << "\n";
+
         if(player.current_location != nullptr) {
-            save_file << player.current_location->location_id << "\n";
+            save_file << "#" << player.current_location->location_id << "\n";
         } else {
-            save_file << "beginGame" << "\n";
+            save_file << "#beginGame" << "\n";
         }
 
-        save_file << player.moves << "\n";
-        save_file << player.name << "\n";
+        save_file << "&" << player.moves << "\n";
+        
+        for(int i = 0; i < player.inventory.size(); ++i) {
+            save_file << "*" << player.inventory[i].item->id << ":" << player.inventory[i].inventory_amount << "\n";
+        }
+        
+        for(int i = 0; i < player.locations_visited.size(); ++i) {
+            save_file << "=" << player.locations_visited[i] << "\n";
+        }
+
     } else {
         std::cout << "[ERROR] Could not open game_save.txt file.\n";
     }
@@ -54,14 +64,36 @@ const void Game::SaveGame(void) {
 const void Game::LoadGame(void) {
     std::ifstream load_file(GAME_SAVE_FILE);
     std::string line;
-
+    
     if (load_file.is_open()) {
-        std::getline(load_file, line);
-            player.current_location = gamedata.GetLocationById(line);
-        std::getline(load_file, line);
-            player.moves = std::stoi(line);
-        std::getline(load_file, line);
-            player.name = line;
+
+        while (std::getline(load_file, line)) {
+            size_t match_start_location = line.find("#");
+            size_t match_player_moves = line.find("&");
+            size_t match_locations_visited = line.find("=");
+            size_t match_item_type = line.find("*");
+            size_t match_item_amount = line.find(":");
+            
+            if (match_start_location != std::string::npos) {
+                player.current_location = gamedata.GetLocationById(line.substr(1));
+
+            } else if (match_player_moves != std::string::npos) {
+                player.moves = std::stoi(line.substr(1));
+
+            } else if (match_locations_visited != std::string::npos) {
+                player.locations_visited.push_back(line.substr(1));
+
+            } else if (match_item_type != std::string::npos) {
+                std::string item = line.substr(1, match_item_amount - 1);
+                int amount = std::stoi(line.substr(match_item_amount + 1));
+
+                player.AddItem(item, amount);
+
+            } else {
+                player.name = line;
+            }
+        }
+
     } else {
         std::cout << "[ERROR] Could not open game_save.txt file.\n";
     }
@@ -86,8 +118,8 @@ const void Game::MainMenu(void) {
         case 1:
             player.current_location = gamedata.GetStartLocation();
             player.moves = 0;
-            player.AddItem("food01", 1);
             game_mode = GameMode::IsRunning;
+            player.AddItem("food01", 2);
 
             Run();
             break;
@@ -111,7 +143,7 @@ const int Game::InGameMenu(void) {
     
     std::cout << "=================\n";
     std::cout << "[1] Resume game\n";
-    std::cout << "[2] Save game\n";
+    std::cout << "[2] Save & resume game\n";
     std::cout << "[3] Exit game\n";
     std::cout << "=================\n";
 
@@ -200,7 +232,7 @@ const void Game::Run(void) {
             std::cout << "You made a total of " << player.moves << " moves and visited the following game locations: \n";
 
             for(int i = 0; i < player.locations_visited.size(); ++i) {
-                std::cout << player.locations_visited[i]->location_id << "\n";
+                std::cout << player.locations_visited[i] << "\n";
             }
 
             game_mode = GameMode::Exit;
@@ -215,7 +247,7 @@ const void Game::Run(void) {
             
             if (player.HasVisitedLocation() == false) {
                 gamedata.CheckForLocationItems();
-                player.locations_visited.push_back(player.current_location);
+                player.locations_visited.push_back(player.current_location->location_id);
             }
             std::cout << "---\n";
 

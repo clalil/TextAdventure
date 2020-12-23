@@ -1,3 +1,7 @@
-start
-0
 Debra
+#goNorth
+&2
+*food01:2
+=start
+=beginGame
+=goNorth

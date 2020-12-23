@@ -57,7 +57,7 @@ const void Player::RemoveItem(const std::string& id, int amount) {
 
 const bool Player::HasVisitedLocation(void) const {
     for (size_t i = 0; i < locations_visited.size(); ++i) {
-        if (locations_visited[i]->location_id == current_location->location_id) {
+        if (locations_visited[i] == current_location->location_id) {
             return true;
         }
     }
