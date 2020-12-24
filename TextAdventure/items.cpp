@@ -55,7 +55,7 @@ void JewelItem::UseItem(void) {
 
     if ((player_has_pendant && (jewel_magic == "key")) || (player_has_key && (jewel_magic == "keyhole"))) {
         std::cout << "You insert the tiny key into the keyhole of the glowing red pendant and hear a faint clicking sound.\n";
-        std::cout << "The pendant is open. Inside lies a tiny piece of paper with the words 'Teleport Scroll' written on it.\n";
+        std::cout << "The pendant is open. Inside lies a tiny piece of paper with the words: '" << Game::InstanceOf().player.name << " : Teleport Scroll' written on it.\n";
         std::cout << "You put the scroll back into your pocket and decide to leave the pendant. There is no further use for it.\n";
 
         Game::InstanceOf().player.RemoveItem("pendant01", 1);

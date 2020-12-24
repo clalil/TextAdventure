@@ -83,7 +83,6 @@ const void GameData::CheckForLocationItems(void) {
         std::shared_ptr<BaseItem> item = GetItemById(Game::InstanceOf().player.current_location->location_items[i]);
 
         if (item != nullptr) {
-            std::cout << "You found: " << item->title << "\n";
             Game::InstanceOf().player.AddItem(item->id, 1);
         }
     }
