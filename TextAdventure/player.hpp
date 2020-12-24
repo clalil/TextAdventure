@@ -23,6 +23,7 @@ struct Player {
     std::shared_ptr<Location> current_location = nullptr;
     
     const void AddItem(const std::string& id, int amount);
+    const bool HasItem(const std::string& id) const;
     const bool HasVisitedLocation(void) const;
     const void RemoveItem(const std::string& id, int amount);
     const void ShowChoicesAndMenu(const int choice) const;

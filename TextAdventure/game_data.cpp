@@ -236,11 +236,16 @@ const int GameData::LoadItemData(const std::string path) {
                     items_added++;
                     break;
                 }
-                case Scroll: {
-                    std::shared_ptr<TeleportScroll> scroll = std::make_shared<TeleportScroll>(tokens[1], tokens[2], tokens[3]);
+                case Teleport: {
+                    std::shared_ptr<TeleportItem> scroll = std::make_shared<TeleportItem>(tokens[1], tokens[2], tokens[3]);
                     items.push_back(scroll);
                     items_added++;
                     break;
+                }
+                case Jewel: {
+                    std::shared_ptr<JewelItem> jewel = std::make_shared<JewelItem>(tokens[1], tokens[2], tokens[3]);
+                    items.push_back(jewel);
+                    items_added++;
                 }
                 default: {
                     break;

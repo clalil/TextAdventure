@@ -2,22 +2,32 @@
 #start
 Hello %%NAME%%! You are about to embark on a great adventure.
 &beginGame: I'm psyched! Let's play 'House of the Haunted'.
+&exit: No way - I'm too spooked already.
+===
+#exit
+I guess the game ends before it begins then.
 ===
 #beginGame
 You wake up in the middle of a forest, not remembering how you got there in the first place.
 You are wearing your favourite clothes: a t-shirt and shorts. Perhaps you shouldn't be - 
-it's about 10 degrees celcius in the woods. You feel kind of cold...and hungry, so hungry.
+it's about 10 degrees celcius in these woods. You feel kind of cold...and hungry, so hungry.
 &goNorth: The darkness is surrounding you, creeping you out. You decide to get a move on.
 &stay: You decide to stay where you are. Perhaps someone will come by soon and rescue you.
-&exit: Go to exit
-===
-#goNorth
-You start walking deeper into the woods. You feel a slight drizzle of rain and pick up the pace.
-&exit: Go to exit
 ===
 #stay
-You sit down on the cold, hard ground. Awaiting rescue that might never come.
+You sit down on the cold, hard ground. Awaiting rescue that might never come. While sitting down you look up towards the sky. It must be a cloudy night because you see no stars. You start to shiver, it's really cold!
+&goNorth: You decide that enough is enough - you need to get going if you're ever going to get out of here.
 ===
-#exit
-You leave the location
+#goNorth
+You start walking deeper into the woods. Feeling a slight drizzle of rain you pick up the pace. Suddenly you notice something glimmer in the darkness out of the corner of your eye.
+&lookCloser: You stop right in your tracks, and hesitate slightly, before taking a turn to the right. Towards the glimmering red light on the ground in the middle of the darkness.
+&lookAway: You decide not the get distracted by it and continue on forwards.
 ===
+#lookCloser
+You approach the red light and bend down, upon taking a closer look at it, you notice that it is an oval pendant with large red stone on it. The stone is slightly glowing but feels cold to the touch. It has the shape of a keyhole on the back of it.
+&pickUpPendant: You pick up the pendant and put it inside of your right pocket.
+&lookAway: You leave the pendant where it is.
+#pickUpPendant
+^pendant01
+&lookAway: You
+

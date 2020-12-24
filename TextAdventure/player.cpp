@@ -64,3 +64,13 @@ const bool Player::HasVisitedLocation(void) const {
 
     return false;
 }
+
+const bool Player::HasItem(const std::string& id) const {
+    for (size_t i = 0; i < inventory.size(); ++i) {
+        if (inventory[i].item->id == id) {
+            return true;
+        }
+    }
+
+    return false;
+}

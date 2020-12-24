@@ -119,7 +119,6 @@ const void Game::MainMenu(void) {
             player.current_location = gamedata.GetStartLocation();
             player.moves = 0;
             game_mode = GameMode::IsRunning;
-            player.AddItem("food01", 2);
 
             Run();
             break;
@@ -206,7 +205,6 @@ const int Game::InventoryMenu(void) {
         
         if(item != nullptr) {
             item->UseItem();
-            player.RemoveItem(item->id, 1);
         }
 
     }

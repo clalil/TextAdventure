@@ -21,7 +21,7 @@
 #include "items.hpp"
 
 enum ItemsCode {
-    Food, Scroll
+    Food, Teleport, Jewel
 };
 
 struct LocationChoice {

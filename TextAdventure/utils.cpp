@@ -33,7 +33,8 @@ std::vector<std::string> SplitString(const std::string& text) {
 
 const int StringToEnum(const std::string& string_value) {
     if (string_value == "food") return Food;
-    if (string_value == "teleport") return Scroll;
+    if (string_value == "teleport") return Teleport;
+    if (string_value == "jewel") return Jewel;
     
     return 0;
 }
