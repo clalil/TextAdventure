@@ -8,14 +8,19 @@
 #pragma once
 #include <string>
 
+enum ItemsCode {
+    Food, Teleport, Jewel
+};
+
 struct BaseItem {
     BaseItem(const std::string& item_id, const std::string& item_title);
 
     virtual ~BaseItem();
     virtual void UseItem(void) = 0;
-    virtual std::string GetItemTitle() { return title; }
-    virtual std::string GetItemId() { return id; }
+    std::string GetItemTitle() { return title; }
+    std::string GetItemId() { return id; }
 
+private:
     std::string id;
     std::string title;
 };

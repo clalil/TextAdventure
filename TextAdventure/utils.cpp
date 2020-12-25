@@ -5,6 +5,7 @@
 //  Created by Clarissa Liljander on 2020-12-20.
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
+#include "items.hpp"
 #include "game_data.hpp"
 #include "utils.hpp"
 

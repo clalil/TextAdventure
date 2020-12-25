@@ -49,7 +49,7 @@ const void Game::SaveGame(void) {
         save_file << "&" << player.moves << "\n";
         
         for(int i = 0; i < player.inventory.size(); ++i) {
-            save_file << "*" << player.inventory[i].item->id << ":" << player.inventory[i].inventory_amount << "\n";
+            save_file << "*" << player.inventory[i].item->GetItemId() << ":" << player.inventory[i].inventory_amount << "\n";
         }
         
         for(int i = 0; i < player.locations_visited.size(); ++i) {
@@ -184,7 +184,7 @@ const int Game::InventoryMenu(void) {
     std::cout << "You have the following items in your inventory:\n";
 
     for (int i = 0; i < Game::InstanceOf().player.inventory.size(); ++i) {
-        std::cout << "[" << i+1 << "] " << Game::InstanceOf().player.inventory[i].item->title << " (x" << Game::InstanceOf().player.inventory[i].inventory_amount << ")" << "\n";
+        std::cout << "[" << i+1 << "] " << Game::InstanceOf().player.inventory[i].item->GetItemTitle() << " (x" << Game::InstanceOf().player.inventory[i].inventory_amount << ")" << "\n";
     }
 
     std::cout << "[" << Game::InstanceOf().player.inventory.size()+1 << "] " << "Exit inventory\n";

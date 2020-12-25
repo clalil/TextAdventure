@@ -23,7 +23,7 @@ const void Player::ShowChoicesAndMenu(const int choice) const {
 
 const void Player::AddItem(const std::string& id, int amount) {
     for (int i = 0; i < inventory.size(); ++i) {
-        if (inventory[i].item->id == id) {
+        if (inventory[i].item->GetItemId() == id) {
             inventory[i].inventory_amount += amount;
             return;
         }
@@ -40,7 +40,7 @@ const void Player::AddItem(const std::string& id, int amount) {
 
 const void Player::RemoveItem(const std::string& id, int amount) {
     for (int i = 0; i < inventory.size(); ++i) {
-        if (inventory[i].item->id == id) {
+        if (inventory[i].item->GetItemId() == id) {
             inventory[i].inventory_amount -= amount;
             
             if (inventory[i].inventory_amount <= 0) {
@@ -67,7 +67,7 @@ const bool Player::HasVisitedLocation(void) const {
 
 const bool Player::HasItem(const std::string& id) const {
     for (size_t i = 0; i < inventory.size(); ++i) {
-        if (inventory[i].item->id == id) {
+        if (inventory[i].item->GetItemId() == id) {
             return true;
         }
     }

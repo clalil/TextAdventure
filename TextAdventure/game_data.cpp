@@ -69,7 +69,7 @@ const void GameData::ReducePlayerSatiety(void) {
 
 std::shared_ptr<BaseItem> GameData::GetItemById(const std::string& item_id) const {
     for (int i = 0; i < items.size(); ++i) {
-        if (items[i]->id == item_id) {
+        if (items[i]->GetItemId() == item_id) {
 
             return items[i];
         }
@@ -83,7 +83,7 @@ const void GameData::CheckForLocationItems(void) {
         std::shared_ptr<BaseItem> item = GetItemById(Game::InstanceOf().player.current_location->location_items[i]);
 
         if (item != nullptr) {
-            Game::InstanceOf().player.AddItem(item->id, 1);
+            Game::InstanceOf().player.AddItem(item->GetItemId(), 1);
         }
     }
 }
