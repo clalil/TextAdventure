@@ -69,7 +69,7 @@ const void GameData::ReducePlayerSatiety(void) {
 
 std::shared_ptr<BaseItem> GameData::GetItemById(const std::string& item_id) const {
     for (int i = 0; i < items.size(); ++i) {
-        if (items[i]->id == item_id) {
+        if (items[i]->GetItemId() == item_id) {
 
             return items[i];
         }
@@ -83,8 +83,7 @@ const void GameData::CheckForLocationItems(void) {
         std::shared_ptr<BaseItem> item = GetItemById(Game::InstanceOf().player.current_location->location_items[i]);
 
         if (item != nullptr) {
-            std::cout << "You found: " << item->title << "\n";
-            Game::InstanceOf().player.AddItem(item->id, 1);
+            Game::InstanceOf().player.AddItem(item->GetItemId(), 1);
         }
     }
 }
@@ -236,11 +235,16 @@ const int GameData::LoadItemData(const std::string path) {
                     items_added++;
                     break;
                 }
-                case Scroll: {
-                    std::shared_ptr<TeleportScroll> scroll = std::make_shared<TeleportScroll>(tokens[1], tokens[2], tokens[3]);
+                case Teleport: {
+                    std::shared_ptr<TeleportItem> scroll = std::make_shared<TeleportItem>(tokens[1], tokens[2], tokens[3]);
                     items.push_back(scroll);
                     items_added++;
                     break;
+                }
+                case Jewel: {
+                    std::shared_ptr<JewelItem> jewel = std::make_shared<JewelItem>(tokens[1], tokens[2], tokens[3]);
+                    items.push_back(jewel);
+                    items_added++;
                 }
                 default: {
                     break;

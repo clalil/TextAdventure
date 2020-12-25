@@ -1,3 +1,5 @@
 //Chapter One Items
-food | food01 | Apple | 10
+jewel | pendant01 | Pendant with a red glow | keyhole
+jewel | pendant02 | Small key | key
+food | food01 | Mouldy mushroom | 5
 teleport | scroll01 | Teleport Scroll | beginGame

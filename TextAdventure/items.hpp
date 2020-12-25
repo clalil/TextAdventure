@@ -8,21 +8,27 @@
 #pragma once
 #include <string>
 
+enum ItemsCode {
+    Food, Teleport, Jewel
+};
+
 struct BaseItem {
     BaseItem(const std::string& item_id, const std::string& item_title);
 
     virtual ~BaseItem();
     virtual void UseItem(void) = 0;
-    virtual std::string GetItemTitle() { return title; }
+    std::string GetItemTitle() { return title; }
+    std::string GetItemId() { return id; }
 
+private:
     std::string id;
     std::string title;
 };
 
-class TeleportScroll : public BaseItem {
+class TeleportItem : public BaseItem {
 
 public:
-    TeleportScroll(const std::string& item_id, const std::string& item_title, const std::string& location_id);
+    TeleportItem(const std::string& item_id, const std::string& item_title, const std::string& location_id);
     
     virtual void UseItem(void);
     
@@ -39,4 +45,15 @@ public:
     
 private:
     int food_satiety_level;
+};
+
+class JewelItem : public BaseItem {
+
+public:
+    JewelItem(const std::string& item_id, const std::string& item_title, const std::string& jewel_functionality);
+    
+    virtual void UseItem(void);
+
+private:
+    std::string jewel_magic;
 };

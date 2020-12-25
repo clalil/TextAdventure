@@ -20,10 +20,6 @@
 #include <unordered_map>
 #include "items.hpp"
 
-enum ItemsCode {
-    Food, Scroll
-};
-
 struct LocationChoice {
     LocationChoice(const std::string& choice_id, const std::string& choice_description);
 
