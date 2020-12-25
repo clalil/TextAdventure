@@ -19,8 +19,8 @@ public:
 
     virtual ~BaseItem();
     virtual void UseItem(void) = 0;
-    std::string GetItemTitle() { return title; }
-    std::string GetItemId() { return id; }
+    const std::string& GetItemTitle() const;
+    const std::string& GetItemId() const;
 
 private:
     std::string id;

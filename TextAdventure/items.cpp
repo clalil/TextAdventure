@@ -5,7 +5,6 @@
 //  Created by Clarissa Liljander on 2020-12-12.
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
-#include "globals.hpp"
 #include "game.hpp"
 #include "items.hpp"
 
@@ -16,6 +15,14 @@ BaseItem::BaseItem(const std::string& item_id, const std::string& item_title) {
 
 BaseItem::~BaseItem()
 { }
+
+const std::string& BaseItem::GetItemId() const {
+    return id;
+}
+
+const std::string& BaseItem::GetItemTitle() const {
+    return title;
+}
 
 TeleportItem::TeleportItem(const std::string& item_id, const std::string& item_title, const std::string& location_id) : BaseItem(item_id, item_title) {
     teleport_location_id = location_id;

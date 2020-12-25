@@ -4,7 +4,7 @@
 //
 //  Created by Clarissa Liljander on 2020-12-14.
 //
-#include "globals.hpp"
+#include "game.hpp"
 #include "player.hpp"
 
 const void Player::ShowChoicesAndMenu(const int choice) const {

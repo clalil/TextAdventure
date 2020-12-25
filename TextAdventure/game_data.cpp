@@ -6,7 +6,7 @@
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
 #include "utils.hpp"
-#include "globals.hpp"
+#include "game.hpp"
 #include "game_data.hpp"
 
 LocationChoice::LocationChoice(const std::string& choice_id, const std::string& choice_description) {
