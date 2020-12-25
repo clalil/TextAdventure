@@ -12,7 +12,7 @@ enum ItemsCode {
     Food, Teleport, Jewel
 };
 
-struct BaseItem {
+class BaseItem {
     BaseItem(const std::string& item_id, const std::string& item_title);
 
     virtual ~BaseItem();
