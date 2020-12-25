@@ -145,30 +145,13 @@ const void GameData::InitializeLocations(void) {
     }
 }
 
-const void GameData::InitializeItems() {
-    namespace fs = std::__fs::filesystem;
-    std::string directory_path = "Content/Items/";
-    fs::path path_to_load(directory_path);
-    
-    if (fs::exists(path_to_load)) {
-        for (const auto& entry : fs::directory_iterator(path_to_load)) {
-            std::string filename = entry.path().filename();
-            std::string file_to_load = directory_path + filename;
-
-            LoadItemData(file_to_load);
-        }
-
-    } else {
-        std::cout << "File(s) does not exist. If you're a Mac user, the path to the working directory might be incorrect.\n";
-    }
-}
-
 const int GameData::LoadLocationData(const std::string path) {
     int locations_added = 0;
     std::ifstream location_file(path);
     std::string line;
 
     if (location_file.is_open() == false) {
+        std::cout << "File " << path << " could not open.\n";
         return 0;
     }
 
@@ -214,10 +197,20 @@ const int GameData::LoadLocationData(const std::string path) {
     return locations_added;
 }
 
-const int GameData::LoadItemData(const std::string path) {
+const void GameData::InitializeItems() {
+    LoadItemData();
+    pairs = MapPairedItems();
+}
+
+const int GameData::LoadItemData(void) {
     int items_added = 0;
-    std::ifstream file(path);
+    std::ifstream file("Content/Items/game_items.txt");
     std::string line;
+    
+    if (file.is_open() == false) {
+        std::cout << "Items file could not open.\n";
+        return 0;
+    }
     
         while(std::getline(file, line)) {
             size_t match_location_comment = line.find("//");
@@ -253,6 +246,25 @@ const int GameData::LoadItemData(const std::string path) {
         }
 
     return items_added;
+}
+
+const std::map<std::string, std::string> GameData::MapPairedItems(void) const {
+    std::ifstream file("Content/Items/pairs.txt");
+    std::map<std::string, std::string> paired_items;
+    
+    if (file.is_open() == false) {
+        std::cout << "Pairs file could not open.\n";
+    }
+
+    if (file.is_open()) {
+        std::string key, val;
+        
+        while(std::getline(std::getline(file, key, ':') >> std::ws, val)) {
+            paired_items[key] = val;
+        }
+    }
+    
+    return paired_items;
 }
 
 //Code below only used for debugging purposes

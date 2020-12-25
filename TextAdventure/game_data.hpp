@@ -18,6 +18,7 @@
 #include <iostream>
 #include <memory>
 #include <unordered_map>
+#include <map>
 #include "items.hpp"
 
 struct LocationChoice {
@@ -50,6 +51,7 @@ public:
     const void ReducePlayerSatiety(void);
     const int ValidateUserInput(int& choice, const std::string& input) const;
     const void WaitAMinute(void) const;
+    const std::map<std::string, std::string> MapPairedItems(void) const;
 
     std::shared_ptr<BaseItem> GetItemById(const std::string& item_id) const;
     std::shared_ptr<Location> GetLocationById(const std::string& id);
@@ -58,11 +60,12 @@ public:
 private:
     const void InitializeItems(void);
     const void InitializeLocations(void);
-    const int LoadItemData(const std::string path);
+    const int LoadItemData(void);
     const bool LocationExistsWithId(const std::string id) const;
     const int LoadLocationData(const std::string path);
     
     std::vector<std::shared_ptr<BaseItem>> items;
     std::vector<std::shared_ptr<Location>> locations;
     std::unordered_map<std::string, std::shared_ptr<Location>> location_index;
+    std::map<std::string, std::string> pairs;
 };
