@@ -12,13 +12,18 @@ enum ItemsCode {
     Food, Teleport, Jewel
 };
 
-struct BaseItem {
+class BaseItem {
+
+public:
     BaseItem(const std::string& item_id, const std::string& item_title);
 
     virtual ~BaseItem();
     virtual void UseItem(void) = 0;
-    std::string GetItemTitle() { return title; }
-    std::string GetItemId() { return id; }
+
+    const std::string& GetTitle() const;
+    const std::string& GetId() const;
+    
+    static bool combined;
 
 private:
     std::string id;

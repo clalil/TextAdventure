@@ -4,7 +4,7 @@
 //
 //  Created by Clarissa Liljander on 2020-12-14.
 //
-#include "globals.hpp"
+#include "game.hpp"
 #include "player.hpp"
 
 const void Player::ShowChoicesAndMenu(const int choice) const {
@@ -23,7 +23,7 @@ const void Player::ShowChoicesAndMenu(const int choice) const {
 
 const void Player::AddItem(const std::string& id, int amount) {
     for (int i = 0; i < inventory.size(); ++i) {
-        if (inventory[i].item->GetItemId() == id) {
+        if (inventory[i].item->GetId() == id) {
             inventory[i].inventory_amount += amount;
             return;
         }
@@ -40,7 +40,7 @@ const void Player::AddItem(const std::string& id, int amount) {
 
 const void Player::RemoveItem(const std::string& id, int amount) {
     for (int i = 0; i < inventory.size(); ++i) {
-        if (inventory[i].item->GetItemId() == id) {
+        if (inventory[i].item->GetId() == id) {
             inventory[i].inventory_amount -= amount;
             
             if (inventory[i].inventory_amount <= 0) {
@@ -67,7 +67,7 @@ const bool Player::HasVisitedLocation(void) const {
 
 const bool Player::HasItem(const std::string& id) const {
     for (size_t i = 0; i < inventory.size(); ++i) {
-        if (inventory[i].item->GetItemId() == id) {
+        if (inventory[i].item->GetId() == id) {
             return true;
         }
     }
