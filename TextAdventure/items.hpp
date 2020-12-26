@@ -19,8 +19,11 @@ public:
 
     virtual ~BaseItem();
     virtual void UseItem(void) = 0;
-    const std::string& GetItemTitle() const;
-    const std::string& GetItemId() const;
+
+    const std::string& GetTitle() const;
+    const std::string& GetId() const;
+    
+    static bool combined;
 
 private:
     std::string id;

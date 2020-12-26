@@ -44,14 +44,15 @@ public:
     GameData();
 
     const void CheckForLocationItems(void);
+    const bool CompatibleItems(const std::string& item1, const std::string& item2);
     const void DebugLocations(void) const;
     const std::string GetPlayerName(std::string& user_name) const;
     const void Introduction(void) const;
+    const std::map<std::string, std::string> MapPairedItems(void) const;
     const std::string PersonalizeText(const std::string& player_name, std::string& location_text) const;
     const void ReducePlayerSatiety(void);
     const int ValidateUserInput(int& choice, const std::string& input) const;
     const void WaitAMinute(void) const;
-    const std::map<std::string, std::string> MapPairedItems(void) const;
 
     std::shared_ptr<BaseItem> GetItemById(const std::string& item_id) const;
     std::shared_ptr<Location> GetLocationById(const std::string& id);

@@ -69,7 +69,7 @@ const void GameData::ReducePlayerSatiety(void) {
 
 std::shared_ptr<BaseItem> GameData::GetItemById(const std::string& item_id) const {
     for (int i = 0; i < items.size(); ++i) {
-        if (items[i]->GetItemId() == item_id) {
+        if (items[i]->GetId() == item_id) {
 
             return items[i];
         }
@@ -83,7 +83,7 @@ const void GameData::CheckForLocationItems(void) {
         std::shared_ptr<BaseItem> item = GetItemById(Game::InstanceOf().player.current_location->location_items[i]);
 
         if (item != nullptr) {
-            Game::InstanceOf().player.AddItem(item->GetItemId(), 1);
+            Game::InstanceOf().player.AddItem(item->GetId(), 1);
         }
     }
 }
@@ -265,6 +265,35 @@ const std::map<std::string, std::string> GameData::MapPairedItems(void) const {
     }
     
     return paired_items;
+}
+
+const bool GameData::CompatibleItems(const std::string& item1, const std::string& item2) {
+    std::map<std::string, std::string>::iterator key_or_value1;
+    std::map<std::string, std::string>::iterator key_or_value2;
+
+    key_or_value1 = pairs.find(item1);
+    key_or_value2 = pairs.find(item2);
+
+    //returns true if input1 or input2 are valid keys in the 'pairs' map
+    if ((key_or_value1 != pairs.end()) || (key_or_value2 != pairs.end())) {
+
+        if ( key_or_value1->second == item2 ) {
+            //input2 is the value of input1 key
+            return true;
+
+            } else if (key_or_value2->second == item1) {
+                //input1 is the value of input2 key
+                return true;
+
+            } else {
+                //one or both values exists as keys but are not key-value pairs
+                return false;
+            }
+    
+    } else {
+        //not a key-value pair and may not exist in the map
+        return false;
+    }
 }
 
 //Code below only used for debugging purposes

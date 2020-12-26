@@ -49,7 +49,7 @@ const void Game::SaveGame(void) {
         save_file << "&" << player.moves << "\n";
         
         for(int i = 0; i < player.inventory.size(); ++i) {
-            save_file << "*" << player.inventory[i].item->GetItemId() << ":" << player.inventory[i].inventory_amount << "\n";
+            save_file << "*" << player.inventory[i].item->GetId() << ":" << player.inventory[i].inventory_amount << "\n";
         }
         
         for(int i = 0; i < player.locations_visited.size(); ++i) {
@@ -119,6 +119,8 @@ const void Game::MainMenu(void) {
             player.current_location = gamedata.GetStartLocation();
             player.moves = 0;
             game_mode = GameMode::IsRunning;
+            player.AddItem("pendant01", 1);
+            player.AddItem("food01", 1);
 
             Run();
             break;
@@ -171,6 +173,36 @@ const int Game::InGameMenu(void) {
     return 0;
 }
 
+const int Game::CombineItemsMenu(void) {
+    int choice1 = 0;
+    int choice2 = 0;
+    
+    while ((choice1 == 0) || (choice2 == 0)) {
+      std::string item1, item2;
+      std::cout << "Enter the number of the first item to combine.\n";
+      std::cin >> item1;
+      gamedata.ValidateUserInput(choice1, item1);
+        
+      std::cout << "Enter the number of the second item to combine.\n";
+      std::cin >> item2;
+      gamedata.ValidateUserInput(choice2, item2);
+    }
+    
+    std::string player_choice1 = player.inventory[choice1-1].item->GetId();
+    std::string player_choice2 = player.inventory[choice2-1].item->GetId();
+    
+    if (gamedata.CompatibleItems(player_choice1, player_choice2)) {
+        std::shared_ptr<BaseItem> item = player.inventory[choice1-1].item;
+        item->combined = true;
+        item->UseItem();
+
+    } else {
+        std::cout << "These items cannot be combined.\n";
+    }
+    
+    return 0;
+}
+
 const int Game::InventoryMenu(void) {
     int choice = 0;
     
@@ -184,10 +216,15 @@ const int Game::InventoryMenu(void) {
     std::cout << "You have the following items in your inventory:\n";
 
     for (int i = 0; i < Game::InstanceOf().player.inventory.size(); ++i) {
-        std::cout << "[" << i+1 << "] " << Game::InstanceOf().player.inventory[i].item->GetItemTitle() << " (x" << Game::InstanceOf().player.inventory[i].inventory_amount << ")" << "\n";
+        std::cout << "[" << i+1 << "] " << Game::InstanceOf().player.inventory[i].item->GetTitle() << " (x" << Game::InstanceOf().player.inventory[i].inventory_amount << ")" << "\n";
     }
 
     std::cout << "[" << Game::InstanceOf().player.inventory.size()+1 << "] " << "Exit inventory\n";
+    
+    // Combine Items Menu should not display unless player has more than one inventory item
+    if (Game::InstanceOf().player.inventory.size()+1 > 2) {
+        std::cout << "[" << Game::InstanceOf().player.inventory.size()+2 << "] " << "Combine items\n";
+    }
     std::cout << "=================\n";
     
     while (choice == 0) {
@@ -198,6 +235,10 @@ const int Game::InventoryMenu(void) {
     
     if (choice == Game::InstanceOf().player.inventory.size()+1) {
         return 0;
+    }
+    
+    if (choice == Game::InstanceOf().player.inventory.size()+2) {
+        CombineItemsMenu();
     }
 
     if (choice != 0 && (choice <= Game::InstanceOf().player.inventory.size())) {
