@@ -163,6 +163,7 @@ const int GameData::LoadLocationData(const std::string path) {
         size_t item_id = line.find("^");
         size_t loc_choice_id = line.find("&");
         size_t loc_choice_description = line.find(":");
+        size_t loc_only_visit_once = line.find("@");
         size_t loc_endline = line.find("=");
         
         if (loc_comment != std::string::npos) {
@@ -180,6 +181,9 @@ const int GameData::LoadLocationData(const std::string path) {
             current_location->choices.push_back(current_location_choice);
             
             current_location_choice = std::make_shared<LocationChoice>("", "");
+
+        } else if (loc_only_visit_once != std::string::npos) {
+            current_location->can_only_visit_once = true;
 
         } else if (loc_endline != std::string::npos) {
             locations.push_back(current_location);

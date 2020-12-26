@@ -33,6 +33,7 @@ struct Location {
 
     std::string location_id;
     std::string location_text;
+    bool can_only_visit_once = false;
     
     std::vector<std::shared_ptr<LocationChoice>> choices;
     std::vector<std::string> location_items;
