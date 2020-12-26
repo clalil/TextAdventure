@@ -6,7 +6,7 @@
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
 #include "utils.hpp"
-#include "globals.hpp"
+#include "game.hpp"
 #include "game_data.hpp"
 
 LocationChoice::LocationChoice(const std::string& choice_id, const std::string& choice_description) {
@@ -69,7 +69,7 @@ const void GameData::ReducePlayerSatiety(void) {
 
 std::shared_ptr<BaseItem> GameData::GetItemById(const std::string& item_id) const {
     for (int i = 0; i < items.size(); ++i) {
-        if (items[i]->GetItemId() == item_id) {
+        if (items[i]->GetId() == item_id) {
 
             return items[i];
         }
@@ -83,7 +83,7 @@ const void GameData::CheckForLocationItems(void) {
         std::shared_ptr<BaseItem> item = GetItemById(Game::InstanceOf().player.current_location->location_items[i]);
 
         if (item != nullptr) {
-            Game::InstanceOf().player.AddItem(item->GetItemId(), 1);
+            Game::InstanceOf().player.AddItem(item->GetId(), 1);
         }
     }
 }
@@ -145,30 +145,13 @@ const void GameData::InitializeLocations(void) {
     }
 }
 
-const void GameData::InitializeItems() {
-    namespace fs = std::__fs::filesystem;
-    std::string directory_path = "Content/Items/";
-    fs::path path_to_load(directory_path);
-    
-    if (fs::exists(path_to_load)) {
-        for (const auto& entry : fs::directory_iterator(path_to_load)) {
-            std::string filename = entry.path().filename();
-            std::string file_to_load = directory_path + filename;
-
-            LoadItemData(file_to_load);
-        }
-
-    } else {
-        std::cout << "File(s) does not exist. If you're a Mac user, the path to the working directory might be incorrect.\n";
-    }
-}
-
 const int GameData::LoadLocationData(const std::string path) {
     int locations_added = 0;
     std::ifstream location_file(path);
     std::string line;
 
     if (location_file.is_open() == false) {
+        std::cout << "File " << path << " could not open.\n";
         return 0;
     }
 
@@ -214,10 +197,20 @@ const int GameData::LoadLocationData(const std::string path) {
     return locations_added;
 }
 
-const int GameData::LoadItemData(const std::string path) {
+const void GameData::InitializeItems() {
+    LoadItemData();
+    pairs = MapPairedItems();
+}
+
+const int GameData::LoadItemData(void) {
     int items_added = 0;
-    std::ifstream file(path);
+    std::ifstream file("Content/Items/game_items.txt");
     std::string line;
+    
+    if (file.is_open() == false) {
+        std::cout << "Items file could not open.\n";
+        return 0;
+    }
     
         while(std::getline(file, line)) {
             size_t match_location_comment = line.find("//");
@@ -253,6 +246,54 @@ const int GameData::LoadItemData(const std::string path) {
         }
 
     return items_added;
+}
+
+const std::map<std::string, std::string> GameData::MapPairedItems(void) const {
+    std::ifstream file("Content/Items/pairs.txt");
+    std::map<std::string, std::string> paired_items;
+    
+    if (file.is_open() == false) {
+        std::cout << "Pairs file could not open.\n";
+    }
+
+    if (file.is_open()) {
+        std::string key, val;
+        
+        while(std::getline(std::getline(file, key, ':') >> std::ws, val)) {
+            paired_items[key] = val;
+        }
+    }
+    
+    return paired_items;
+}
+
+const bool GameData::CompatibleItems(const std::string& item1, const std::string& item2) {
+    std::map<std::string, std::string>::iterator key_or_value1;
+    std::map<std::string, std::string>::iterator key_or_value2;
+
+    key_or_value1 = pairs.find(item1);
+    key_or_value2 = pairs.find(item2);
+
+    //returns true if input1 or input2 are valid keys in the 'pairs' map
+    if ((key_or_value1 != pairs.end()) || (key_or_value2 != pairs.end())) {
+
+        if ( key_or_value1->second == item2 ) {
+            //input2 is the value of input1 key
+            return true;
+
+            } else if (key_or_value2->second == item1) {
+                //input1 is the value of input2 key
+                return true;
+
+            } else {
+                //one or both values exists as keys but are not key-value pairs
+                return false;
+            }
+    
+    } else {
+        //not a key-value pair and may not exist in the map
+        return false;
+    }
 }
 
 //Code below only used for debugging purposes
