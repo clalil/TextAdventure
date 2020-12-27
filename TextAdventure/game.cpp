@@ -277,6 +277,7 @@ const void Game::Run(void) {
             game_mode = GameMode::Exit;
 
         } else {
+            int valid_choices = (int)player.current_location->choices.size();
             bool is_valid_input = false;
             int choice = -1;
 
@@ -290,9 +291,9 @@ const void Game::Run(void) {
             }
             std::cout << "---\n";
 
-            while (is_valid_input || choice < 0 || choice >= player.current_location->choices.size()+1) {
+            while (is_valid_input || choice < 0 || ((choice >= player.current_location->choices.size()+1) || (choice > valid_choices))) {
 
-                player.ShowChoicesAndMenu(choice);
+                valid_choices = player.ShowChoicesAndMenu(choice);
 
                 std::string line;
                 std::getline(std::cin, line);

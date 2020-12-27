@@ -17,11 +17,13 @@ it's about 10 degrees celcius in these woods. You feel kind of cold...and hungry
 #stay
 You sit down on the cold, hard ground. Awaiting rescue that might never come. While sitting down you look up towards the sky. It must be a cloudy night because you see no stars. You start to shiver, it's really cold!
 &goNorth: You decide that enough is enough - you need to get going if you're ever going to get out of here.
+@
 ===
 #goNorth
 You start walking deeper into the woods. Feeling a slight drizzle of rain you pick up the pace. Suddenly you notice something glimmer in the darkness out of the corner of your eye.
 &lookCloser: You stop right in your tracks, and hesitate slightly, before taking a turn to the right. Towards the glimmering red light on the ground in the middle of the darkness.
 &lookAway: You decide not the get distracted by it and continue on forwards.
+&stay: should not show
 ===
 #lookCloser
 You approach the red light and bend down, upon taking a closer look at it, you notice that it is an oval pendant with large red stone on it. The stone is slightly glowing but feels cold to the touch. It has the shape of a keyhole on the back of it.

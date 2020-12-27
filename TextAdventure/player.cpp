@@ -22,7 +22,7 @@ const bool Player::CanVisitLocation(const std::string& upcoming_location) const 
     return true;
 }
 
-const void Player::ShowChoicesAndMenu(const int choice) const {
+const int Player::ShowChoicesAndMenu(const int choice) const {
     std::vector<std::string> valid_choices{};
 
     std::cout << "Where do you wish to proceed next?\n";
@@ -43,6 +43,8 @@ const void Player::ShowChoicesAndMenu(const int choice) const {
     std::cout << "[i] Inventory\n";
     std::cout << "[m] Menu\n";
     std::cout << "(Food HP): " << satiation << "\n";
+    
+    return (int)valid_choices.size();
 
 }
 
