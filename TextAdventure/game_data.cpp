@@ -30,6 +30,32 @@ const void GameData::Introduction(void) const {
     std::cout << "*******************\n";
 }
 
+const int GameData::ShowChoicesAndMenu(const int choice) const {
+    std::vector<std::string> valid_choices{};
+
+    std::cout << "Where do you wish to proceed next?\n\n";
+
+    for (int i = 0; i < Game::InstanceOf().player.current_location->choices.size(); ++i) {
+        bool can_visit_next_location = Game::InstanceOf().player.CanVisitLocation(Game::InstanceOf().player.current_location->choices[i]->next_location_id);
+
+        if (can_visit_next_location) {
+            valid_choices.push_back(Game::InstanceOf().player.current_location->choices[i]->next_location_text);
+        }
+    }
+    
+    for (int i = 0; i < valid_choices.size(); ++i) {
+        std::cout << "[" << i+1 << "] " << valid_choices[i] << "\n";
+    }
+    
+    std::cout << ".............\n";
+    std::cout << "[i] Inventory\n";
+    std::cout << "[m] Menu\n";
+    std::cout << "(Food HP): " << Game::InstanceOf().player.satiation << "\n";
+    
+    return (int)valid_choices.size();
+
+}
+
 const void GameData::WaitAMinute(void) const {
     std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
 }
