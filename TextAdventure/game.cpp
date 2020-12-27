@@ -40,7 +40,7 @@ const void Game::SaveGame(void) {
     if (save_file.is_open()) {
         save_file << player.name << "\n";
 
-        if(player.current_location != nullptr) {
+        if (player.current_location != nullptr) {
             save_file << "#" << player.current_location->location_id << "\n";
         } else {
             save_file << "#beginGame" << "\n";
@@ -48,11 +48,11 @@ const void Game::SaveGame(void) {
 
         save_file << "&" << player.moves << "\n";
         
-        for(int i = 0; i < player.inventory.size(); ++i) {
+        for (int i = 0; i < player.inventory.size(); ++i) {
             save_file << "*" << player.inventory[i].item->GetId() << ":" << player.inventory[i].inventory_amount << "\n";
         }
         
-        for(int i = 0; i < player.locations_visited.size(); ++i) {
+        for (int i = 0; i < player.locations_visited.size(); ++i) {
             save_file << "=" << player.locations_visited[i] << "\n";
         }
 
@@ -114,7 +114,7 @@ const void Game::MainMenu(void) {
 
     gamedata.ValidateUserInput(choice, line);
     
-    switch(choice) {
+    switch (choice) {
         case 1:
             player.current_location = gamedata.GetStartLocation();
             player.moves = 0;

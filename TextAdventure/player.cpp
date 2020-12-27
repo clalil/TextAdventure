@@ -7,11 +7,36 @@
 #include "game.hpp"
 #include "player.hpp"
 
+const bool Player::CanVisitLocation(const std::string& upcoming_location) const {
+    auto new_location = Game::InstanceOf().gamedata.GetLocationById(upcoming_location);
+
+    if (new_location->can_only_visit_once) {
+        if (std::find(locations_visited.begin(), locations_visited.end(), new_location->location_id) != locations_visited.end()) {
+            return false;
+
+        } else {
+            return true;
+        }
+    }
+    
+    return true;
+}
+
 const void Player::ShowChoicesAndMenu(const int choice) const {
+    std::vector<std::string> valid_choices{};
+
     std::cout << "Where do you wish to proceed next?\n";
 
-    for(int i = 0; i < current_location->choices.size(); ++i) {
-        std::cout << "[" << i+1 << "] " << current_location->choices[i]->next_location_text << "\n";
+    for (int i = 0; i < current_location->choices.size(); ++i) {
+        bool can_visit_next_location = CanVisitLocation(current_location->choices[i]->next_location_id);
+
+        if (can_visit_next_location) {
+            valid_choices.push_back(current_location->choices[i]->next_location_text);
+        }
+    }
+    
+    for (int i = 0; i < valid_choices.size(); ++i) {
+        std::cout << "[" << i+1 << "] " << valid_choices[i] << "\n";
     }
     
     std::cout << ".............\n";
