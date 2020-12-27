@@ -225,7 +225,7 @@ const int GameData::LoadItemData(void) {
 
             std::vector<std::string> tokens = SplitString(line);
             
-            switch(StringToEnum(tokens[0])) {
+            switch (StringToEnum(tokens[0])) {
                 case Food: {
                     std::shared_ptr<FoodItem> food = std::make_shared<FoodItem>(tokens[1], tokens[2], std::stoi(tokens[3]));
                     items.push_back(food);
@@ -263,7 +263,7 @@ const std::map<std::string, std::string> GameData::MapPairedItems(void) const {
     if (file.is_open()) {
         std::string key, val;
         
-        while(std::getline(std::getline(file, key, ':') >> std::ws, val)) {
+        while (std::getline(std::getline(file, key, ':') >> std::ws, val)) {
             paired_items[key] = val;
         }
     }
