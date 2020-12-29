@@ -26,6 +26,8 @@ struct LocationChoice {
 
     std::string next_location_id;
     std::string next_location_text;
+    std::string required_item_id;
+    std::string hidden_item_id;
 };
 
 struct Location {

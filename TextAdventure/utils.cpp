@@ -9,6 +9,13 @@
 #include "game_data.hpp"
 #include "utils.hpp"
 
+std::string FindString(const std::string& string_to_split, const std::string& first_separator, int first_index, const std::string& last_separstor, int last_index) {
+    size_t first = string_to_split.find(first_separator);
+    size_t last = string_to_split.find(last_separstor);
+    
+    return string_to_split.substr(first + 1, last - first - 1);
+}
+
 const int RandomSatietyDrop(void) {
     unsigned int seed = (unsigned int)std::chrono::system_clock::now().time_since_epoch().count();
     std::mt19937 random_generator = std::mt19937(seed);
