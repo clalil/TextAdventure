@@ -296,7 +296,7 @@ const void Game::Run(void) {
             }
             std::cout << "---\n";
 
-            while (is_valid_input || choice < 0 || ((choice >= player.current_location->choices.size()+1) || (choice > valid_choices))) {
+            while (is_valid_input || choice < 0 || (choice >= valid_choices)) {
 
                 valid_choices = gamedata.ShowChoicesAndMenu(choice);
 
@@ -314,9 +314,15 @@ const void Game::Run(void) {
                 } else {
                     is_valid_input = gamedata.ValidateUserInput(choice, line);
                 }
+                
+                if ((player.current_location->choices[choice-1]->required_item_id != "") && (player.HasItem(player.current_location->choices[choice-1]->required_item_id) == false)) {
+                    std::cout << "You do not have the required item to proceed with this choice.\n\n";
+
+                    choice = -1;
+                }
             }
             
-            if (choice >= 0 && choice < player.current_location->choices.size()+1) {
+            if (choice >= 0 && choice < valid_choices) {
                 const std::string& upcoming_location_id = player.current_location->choices[choice-1]->next_location_id;
                 player.current_location = gamedata.GetLocationById(upcoming_location_id);
                 

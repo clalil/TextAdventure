@@ -40,6 +40,11 @@ const int GameData::ShowChoicesAndMenu(const int choice) const {
 
         if (can_visit_next_location) {
             valid_choices.push_back(Game::InstanceOf().player.current_location->choices[i]->next_location_text);
+
+            //if hidden_item_id is not empty, but player the does not have that item yet it will not be displayed as a choice
+            if ((Game::InstanceOf().player.current_location->choices[i]->hidden_item_id != "") && (Game::InstanceOf().player.HasItem(Game::InstanceOf().player.current_location->choices[i]->hidden_item_id) == false)) {
+                valid_choices.pop_back();
+            }
         }
     }
     
@@ -52,7 +57,7 @@ const int GameData::ShowChoicesAndMenu(const int choice) const {
     std::cout << "[m] Menu\n";
     std::cout << "(Food HP): " << Game::InstanceOf().player.satiation << "\n";
     
-    return (int)valid_choices.size();
+    return ((int)valid_choices.size()+1);
 
 }
 

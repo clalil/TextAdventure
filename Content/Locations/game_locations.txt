@@ -2,7 +2,7 @@
 #start
 Hello %%NAME%%! You are about to embark on a great adventure.
 &beginGame%+: I'm psyched! Let's play 'House of the Haunted'.
-&exit%anItem+bronzeKey: No way - I'm too spooked already.
+&exit%pendant01+pendant01: No way - I'm too spooked already.
 ===
 #exit
 I guess the game ends before it begins then.
@@ -11,7 +11,7 @@ I guess the game ends before it begins then.
 You wake up in the middle of a forest, not remembering how you got there in the first place.
 You are wearing your favourite clothes: a t-shirt and shorts. Perhaps you shouldn't be - 
 it's about 10 degrees celcius in these woods. You feel kind of cold...and hungry, so hungry.
-&goNorth%+: The darkness is surrounding you, creeping you out. You decide to get a move on.
+&goNorth%pendant02+pendant01: The darkness is surrounding you, creeping you out. You decide to get a move on.
 &stay%+: You decide to stay where you are. Perhaps someone will come by soon and rescue you.
 ===
 #stay
