@@ -1,8 +1,8 @@
 //Chapter One Locations
 #start
 Hello %%NAME%%! You are about to embark on a great adventure.
-&beginGame%+: I'm psyched! Let's play 'House of the Haunted'.
-&exit%pendant01+pendant01: No way - I'm too spooked already.
+&beginGame|+: I'm psyched! Let's play 'House of the Haunted'.
+&exit|pendant01+pendant01: No way - I'm too spooked already.
 ===
 #exit
 I guess the game ends before it begins then.
@@ -11,48 +11,48 @@ I guess the game ends before it begins then.
 You wake up in the middle of a forest, not remembering how you got there in the first place.
 You are wearing your favourite clothes: a t-shirt and shorts. Perhaps you shouldn't be - 
 it's about 10 degrees celcius in these woods. You feel kind of cold...and hungry, so hungry.
-&goNorth%pendant02+pendant01: The darkness is surrounding you, creeping you out. You decide to get a move on.
-&stay%+: You decide to stay where you are. Perhaps someone will come by soon and rescue you.
+&goNorth|pendant02+pendant01: The darkness is surrounding you, creeping you out. You decide to get a move on.
+&stay|+: You decide to stay where you are. Perhaps someone will come by soon and rescue you.
 ===
 #stay
 You sit down on the cold, hard ground. Awaiting rescue that might never come. While sitting down you look up towards the sky. It must be a cloudy night because you see no stars. You start to shiver, it's really cold!
-&goNorth%+: You decide that enough is enough - you need to get going if you're ever going to get out of here.
+&goNorth|+: You decide that enough is enough - you need to get going if you're ever going to get out of here.
 @
 ===
 #goNorth
 You start walking deeper into the woods. Feeling a slight drizzle of rain you pick up the pace. Suddenly you notice something glimmer in the darkness out of the corner of your eye.
-&lookCloser%+: You stop right in your tracks, and hesitate slightly, before taking a turn to the right. Towards the glimmering red light on the ground in the middle of the darkness.
-&lookAway%+: You decide not the get distracted by it and continue on forwards.
-&stay%+: should not show
+&lookCloser|+: You stop right in your tracks, and hesitate slightly, before taking a turn to the right. Towards the glimmering red light on the ground in the middle of the darkness.
+&lookAway|+: You decide not the get distracted by it and continue on forwards.
+&stay|+: should not show
 ===
 #lookCloser
 You approach the red light and bend down, upon taking a closer look at it, you notice that it is an oval pendant with large red stone on it. The stone is slightly glowing but feels cold to the touch. It has the shape of a keyhole on the back of it.
-&pickUpPendant%+: You pick up the pendant and put it inside of your right pocket.
-&lookAway%+: You leave the pendant where it is.
+&pickUpPendant|+: You pick up the pendant and put it inside of your right pocket.
+&lookAway|+: You leave the pendant where it is.
 ===
 #pickUpPendant
-%pendant01
-&lookAway%+: You feel the warmth of the pendant coming from the inside of your pocket. Feeling a little more excited about the road ahead, you continue on forwards.
+|pendant01
+&lookAway|+: You feel the warmth of the pendant coming from the inside of your pocket. Feeling a little more excited about the road ahead, you continue on forwards.
 ===
 #lookAway
 It feels like you've been walking for hours, and perhaps you have, when you first lay eyes on it - an old house right in the middle of the forest. The house is stone bricks and the roof is green, its walls covered by what appears to be ivy. A light is flickering in the top right window on the second floor. Which is odd, the house seems abandoned by the looks of it: overgrown by the surrounding forest, ground windows covered in dust or filth and has clearly not been properly taken care of for years.
-&lookThroughWindow%+: You decide to peek through one of the windows on the ground floor.
-&tryFrontDoor%+: You decide to have a go at the front door. Perhaps it is unlocked.
-&examineMailBox%+: You decide to see if there is any recent mail in the owner's mailbox.
+&lookThroughWindow|+: You decide to peek through one of the windows on the ground floor.
+&tryFrontDoor|+: You decide to have a go at the front door. Perhaps it is unlocked.
+&examineMailBox|+: You decide to see if there is any recent mail in the owner's mailbox.
 ===
 #lookThroughWindow
 You slowly apporach one of the windows. It is quite filthy, the window sill being covered in some black guck. When you press your face against the glass, trying to peek inside, all you see is your own reflection.
-&tryFrontDoor%+: You decide to have a go at the front door. Perhaps it is unlocked.
+&tryFrontDoor|+: You decide to have a go at the front door. Perhaps it is unlocked.
 ===
 #tryFrontDoor
 You walk over to the front of the house, facing its front door. You find yourself comparing its odd shape to that of a tomb stone. It is made of wood, with a round glass window at the top of it - its glass beautifully crafted with lines in the shape of the diamond of a diamond card in a card deck. Below it is a small, rusty door bell handle in the shape of a lion with the ring in its open mouth. Finally, the door handle is on the right hand side of the door. You pull the door handle - but the door wont budge.
-&callOnDoorBell%+: You wrap your hands around the old door bell handle and use it to knock on the door.
-&lookThroughWindow%+: You decide to peek through one of the windows on the ground floor.
-&walkToBackOfHouse%+: You decide to go around to the backside of the house to look for another entrance.
+&callOnDoorBell|+: You wrap your hands around the old door bell handle and use it to knock on the door.
+&lookThroughWindow|+: You decide to peek through one of the windows on the ground floor.
+&walkToBackOfHouse|+: You decide to go around to the backside of the house to look for another entrance.
 ===
 #examineMailBox
 ^food01
 You approach the old looking mailbox stuck on the house wall, next to the entrance door. Although it is covered in dirt you can appreciate that is was probably once a very nice looking mailbox - it is made out of metal, has a red tint and what seems to be a faded image of a rose carved onto it. You open the mailbox only to find an old newspaper dated 1972, a postcard adressed to: "Marjourie Abstain, PokemonGo St. 432, CF35 Wales" and a mouldy mushroom. You decide to leave the newspaper and the postcard, but keep the mouldy mushroom - you are very hungry after all.
-&lookThroughWindow%+: You then decide to peek through one of the windows on the ground floor.
-&tryFrontDoor%+: You then decide to have a go at the front door. Perhaps it is unlocked.
+&lookThroughWindow|+: You then decide to peek through one of the windows on the ground floor.
+&tryFrontDoor|+: You then decide to have a go at the front door. Perhaps it is unlocked.
 ===
