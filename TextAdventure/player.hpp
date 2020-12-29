@@ -25,7 +25,6 @@ struct Player {
     const void AddItem(const std::string& id, int amount);
     const bool CanVisitLocation(const std::string& upcoming_location) const;
     const void RemoveItem(const std::string& id, int amount);
-    const void ShowChoicesAndMenu(const int choice) const;
     const bool HasVisitedLocation(void) const;
     const bool HasItem(const std::string& id) const;
 };

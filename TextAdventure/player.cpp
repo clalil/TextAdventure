@@ -22,30 +22,6 @@ const bool Player::CanVisitLocation(const std::string& upcoming_location) const 
     return true;
 }
 
-const void Player::ShowChoicesAndMenu(const int choice) const {
-    std::vector<std::string> valid_choices{};
-
-    std::cout << "Where do you wish to proceed next?\n";
-
-    for (int i = 0; i < current_location->choices.size(); ++i) {
-        bool can_visit_next_location = CanVisitLocation(current_location->choices[i]->next_location_id);
-
-        if (can_visit_next_location) {
-            valid_choices.push_back(current_location->choices[i]->next_location_text);
-        }
-    }
-    
-    for (int i = 0; i < valid_choices.size(); ++i) {
-        std::cout << "[" << i+1 << "] " << valid_choices[i] << "\n";
-    }
-    
-    std::cout << ".............\n";
-    std::cout << "[i] Inventory\n";
-    std::cout << "[m] Menu\n";
-    std::cout << "(Food HP): " << satiation << "\n";
-
-}
-
 const void Player::AddItem(const std::string& id, int amount) {
     for (int i = 0; i < inventory.size(); ++i) {
         if (inventory[i].item->GetId() == id) {

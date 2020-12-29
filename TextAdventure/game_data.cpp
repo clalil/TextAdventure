@@ -30,6 +30,37 @@ const void GameData::Introduction(void) const {
     std::cout << "*******************\n";
 }
 
+const int GameData::ShowChoicesAndMenu(const int choice) const {
+    std::vector<std::string> valid_choices{};
+
+    std::cout << "Where do you wish to proceed next?\n\n";
+
+    for (int i = 0; i < Game::InstanceOf().player.current_location->choices.size(); ++i) {
+        bool can_visit_next_location = Game::InstanceOf().player.CanVisitLocation(Game::InstanceOf().player.current_location->choices[i]->next_location_id);
+
+        if (can_visit_next_location) {
+            valid_choices.push_back(Game::InstanceOf().player.current_location->choices[i]->next_location_text);
+
+            //if hidden_item_id is not empty, but player the does not have that item yet it will not be displayed as a choice
+            if ((Game::InstanceOf().player.current_location->choices[i]->hidden_item_id != "") && (Game::InstanceOf().player.HasItem(Game::InstanceOf().player.current_location->choices[i]->hidden_item_id) == false)) {
+                valid_choices.pop_back();
+            }
+        }
+    }
+    
+    for (int i = 0; i < valid_choices.size(); ++i) {
+        std::cout << "[" << i+1 << "] " << valid_choices[i] << "\n";
+    }
+    
+    std::cout << ".............\n";
+    std::cout << "[i] Inventory\n";
+    std::cout << "[m] Menu\n";
+    std::cout << "(Food HP): " << Game::InstanceOf().player.satiation << "\n";
+    
+    return ((int)valid_choices.size()+1);
+
+}
+
 const void GameData::WaitAMinute(void) const {
     std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
 }
@@ -162,7 +193,6 @@ const int GameData::LoadLocationData(const std::string path) {
         size_t loc_id = line.find("#");
         size_t item_id = line.find("^");
         size_t loc_choice_id = line.find("&");
-        size_t loc_choice_description = line.find(":");
         size_t loc_only_visit_once = line.find("@");
         size_t loc_endline = line.find("=");
         
@@ -176,8 +206,11 @@ const int GameData::LoadLocationData(const std::string path) {
             current_location->location_items.push_back(line.substr(1));
 
         } else if (loc_choice_id != std::string::npos) {
-            std::shared_ptr<LocationChoice> current_location_choice = std::make_shared<LocationChoice>(line.substr(1, loc_choice_description - 1), line.substr(loc_choice_description + 2));
-            
+            std::shared_ptr<LocationChoice> current_location_choice = std::make_shared<LocationChoice>(FindString(line, "", 1, "|", 1), FindString(line, ":", 2, "", 1));
+
+            current_location_choice->required_item_id = FindString(line, "|", 1, "+", 1);
+            current_location_choice->hidden_item_id = FindString(line, "+", 1, ":", 1);
+
             current_location->choices.push_back(current_location_choice);
             
             current_location_choice = std::make_shared<LocationChoice>("", "");

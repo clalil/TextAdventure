@@ -26,6 +26,8 @@ struct LocationChoice {
 
     std::string next_location_id;
     std::string next_location_text;
+    std::string required_item_id;
+    std::string hidden_item_id;
 };
 
 struct Location {
@@ -52,6 +54,7 @@ public:
     const std::map<std::string, std::string> MapPairedItems(void) const;
     const std::string PersonalizeText(const std::string& player_name, std::string& location_text) const;
     const void ReducePlayerSatiety(void);
+    const int ShowChoicesAndMenu(const int choice) const;
     const int ValidateUserInput(int& choice, const std::string& input) const;
     const void WaitAMinute(void) const;
 

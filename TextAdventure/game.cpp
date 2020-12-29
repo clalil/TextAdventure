@@ -120,7 +120,7 @@ const void Game::MainMenu(void) {
             player.moves = 0;
             game_mode = GameMode::IsRunning;
             player.AddItem("pendant01", 1);
-            player.AddItem("food01", 1);
+            //player.AddItem("food01", 1);
 
             Run();
             break;
@@ -177,6 +177,11 @@ const int Game::CombineItemsMenu(void) {
     int choice1 = 0;
     int choice2 = 0;
     
+    if (player.inventory.size() < 2) {
+        std::cout << "You don't have enough items to combine.\n";
+        return 0;
+    }
+    
     while ((choice1 == 0) || (choice2 == 0)) {
       std::string item1, item2;
       std::cout << "Enter the number of the first item to combine.\n";
@@ -204,6 +209,7 @@ const int Game::CombineItemsMenu(void) {
 }
 
 const int Game::InventoryMenu(void) {
+    bool is_valid_input = false;
     int choice = 0;
     
     if (Game::InstanceOf().player.inventory.size() == 0) {
@@ -213,38 +219,37 @@ const int Game::InventoryMenu(void) {
     }
 
     std::cout << "=================\n";
-    std::cout << "You have the following items in your inventory:\n";
+    std::cout << "You have the following items in your inventory:\n\n";
 
     for (int i = 0; i < Game::InstanceOf().player.inventory.size(); ++i) {
         std::cout << "[" << i+1 << "] " << Game::InstanceOf().player.inventory[i].item->GetTitle() << " (x" << Game::InstanceOf().player.inventory[i].inventory_amount << ")" << "\n";
     }
+    
+    std::cout << "..................\n";
+    std::cout << "[c] " << "Combine items\n";
+    std::cout << "[e] " << "Exit inventory\n";
 
-    std::cout << "[" << Game::InstanceOf().player.inventory.size()+1 << "] " << "Exit inventory\n";
+    std::cout << "==================\n";
     
-    // Combine Items Menu should not display unless player has more than one inventory item
-    if (Game::InstanceOf().player.inventory.size()+1 > 2) {
-        std::cout << "[" << Game::InstanceOf().player.inventory.size()+2 << "] " << "Combine items\n";
-    }
-    std::cout << "=================\n";
-    
-    while (choice == 0) {
+    while (choice == 0 || is_valid_input == false) {
       std::string line;
       std::getline(std::cin, line);
-      gamedata.ValidateUserInput(choice, line);
-    }
-    
-    if (choice == Game::InstanceOf().player.inventory.size()+1) {
-        return 0;
-    }
-    
-    if (choice == Game::InstanceOf().player.inventory.size()+2) {
-        CombineItemsMenu();
+
+        if (line.size() > 0 && (line[0] == 'c' || line[0] == 'C')) {
+            CombineItemsMenu();
+
+        } else if (line.size() > 0 && (line[0] == 'e' || line[0] == 'E')) {
+            break;
+
+        } else {
+            is_valid_input = gamedata.ValidateUserInput(choice, line);
+        }
     }
 
     if (choice != 0 && (choice <= Game::InstanceOf().player.inventory.size())) {
         std::shared_ptr<BaseItem> item = player.inventory[choice-1].item;
         
-        if(item != nullptr) {
+        if (item != nullptr) {
             item->UseItem();
         }
 
@@ -277,6 +282,7 @@ const void Game::Run(void) {
             game_mode = GameMode::Exit;
 
         } else {
+            int valid_choices = (int)player.current_location->choices.size();
             bool is_valid_input = false;
             int choice = -1;
 
@@ -290,9 +296,9 @@ const void Game::Run(void) {
             }
             std::cout << "---\n";
 
-            while (is_valid_input || choice < 0 || choice >= player.current_location->choices.size()+1) {
+            while (is_valid_input || choice < 0 || (choice >= valid_choices)) {
 
-                player.ShowChoicesAndMenu(choice);
+                valid_choices = gamedata.ShowChoicesAndMenu(choice);
 
                 std::string line;
                 std::getline(std::cin, line);
@@ -308,9 +314,15 @@ const void Game::Run(void) {
                 } else {
                     is_valid_input = gamedata.ValidateUserInput(choice, line);
                 }
+                
+                if ((player.current_location->choices[choice-1]->required_item_id != "") && (player.HasItem(player.current_location->choices[choice-1]->required_item_id) == false)) {
+                    std::cout << "You do not have the required item to proceed with this choice.\n\n";
+
+                    choice = -1;
+                }
             }
             
-            if (choice >= 0 && choice < player.current_location->choices.size()+1) {
+            if (choice >= 0 && choice < valid_choices) {
                 const std::string& upcoming_location_id = player.current_location->choices[choice-1]->next_location_id;
                 player.current_location = gamedata.GetLocationById(upcoming_location_id);
                 
