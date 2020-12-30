@@ -119,7 +119,7 @@ const void Game::MainMenu(void) {
             player.current_location = gamedata.GetStartLocation();
             player.moves = 0;
             game_mode = GameMode::IsRunning;
-            player.AddItem("pendant01", 1);
+            player.AddItem("pendant02", 1);
             //player.AddItem("food01", 1);
 
             Run();
@@ -315,10 +315,16 @@ const void Game::Run(void) {
                     is_valid_input = gamedata.ValidateUserInput(choice, line);
                 }
                 
-                if ((player.current_location->choices[choice-1]->required_item_id != "") && (player.HasItem(player.current_location->choices[choice-1]->required_item_id) == false)) {
-                    std::cout << "You do not have the required item to proceed with this choice.\n\n";
+                if (choice < valid_choices) {
+                    if ((player.current_location->choices[choice-1]->required_item_id != "") && (player.HasItem(player.current_location->choices[choice-1]->required_item_id) == false)) {
+                        std::shared_ptr<BaseItem> item = gamedata.GetItemById(player.current_location->choices[choice-1]->required_item_id);
 
-                    choice = -1;
+                        if (item != nullptr) {
+                            std::cout << "You need the" << " [" << item->GetTitle() << "] " << "to proceed with this choice.\n\n";
+                        }
+
+                        choice = -1;
+                    }
                 }
             }
             

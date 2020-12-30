@@ -208,8 +208,8 @@ const int GameData::LoadLocationData(const std::string path) {
         } else if (loc_choice_id != std::string::npos) {
             std::shared_ptr<LocationChoice> current_location_choice = std::make_shared<LocationChoice>(FindString(line, "", 1, "|", 1), FindString(line, ":", 2, "", 1));
 
-            current_location_choice->required_item_id = FindString(line, "|", 1, "+", 1);
-            current_location_choice->hidden_item_id = FindString(line, "+", 1, ":", 1);
+            current_location_choice->hidden_item_id = FindString(line, "|", 1, "+", 1);
+            current_location_choice->required_item_id = FindString(line, "+", 1, ":", 1);
 
             current_location->choices.push_back(current_location_choice);
             
