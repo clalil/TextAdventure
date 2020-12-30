@@ -1,8 +1,8 @@
 //Chapter One Locations
 #start
-Hello %%NAME%%! You are about to embark on a great adventure.
+Your name is %%NAME%%. You're a singleton aged 28, and more of a cat than a dog person. You went out for a walk last night to clear your mind, as you always do when you can't get to sleep at night. The last thing you remember is that you kissed your cat 'Paws' on his forehead, turned off all of the lights but the bedroom window sill lamp and locked the door on your way out.
 &beginGame|+: I'm psyched! Let's play 'House of the Haunted'.
-&exit|pendant01+pendant01: No way - I'm too spooked already.
+&exit|+: No way - I'm too spooked already.
 ===
 #exit
 I guess the game ends before it begins then.
@@ -23,7 +23,6 @@ You sit down on the cold, hard ground. Awaiting rescue that might never come. Wh
 You start walking deeper into the woods. Feeling a slight drizzle of rain you pick up the pace. Suddenly you notice something glimmer in the darkness out of the corner of your eye.
 &lookCloser|+: You stop right in your tracks, and hesitate slightly, before taking a turn to the right. Towards the glimmering red light on the ground in the middle of the darkness.
 &lookAway|+: You decide not the get distracted by it and continue on forwards.
-&stay|+: should not show
 ===
 #lookCloser
 You approach the red light and bend down, upon taking a closer look at it, you notice that it is an oval pendant with large red stone on it. The stone is slightly glowing but feels cold to the touch. It has the shape of a keyhole on the back of it.
@@ -31,7 +30,7 @@ You approach the red light and bend down, upon taking a closer look at it, you n
 &lookAway|+: You leave the pendant where it is.
 ===
 #pickUpPendant
-|pendant01
+^pendant01
 &lookAway|+: You feel the warmth of the pendant coming from the inside of your pocket. Feeling a little more excited about the road ahead, you continue on forwards.
 ===
 #lookAway

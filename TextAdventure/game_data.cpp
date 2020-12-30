@@ -24,7 +24,7 @@ GameData::GameData() {
     InitializeItems();
 }
 
-const void GameData::Introduction(void) const {
+const void GameData::MainScreen(void) const {
     std::cout << "*******************\n";
     std::cout << "House of the Haunted\n";
     std::cout << "*******************\n";
@@ -33,7 +33,7 @@ const void GameData::Introduction(void) const {
 const int GameData::ShowChoicesAndMenu(const int choice) const {
     std::vector<std::string> valid_choices{};
 
-    std::cout << "Where do you wish to proceed next?\n\n";
+    std::cout << "What are you going to do?\n\n";
 
     for (int i = 0; i < Game::InstanceOf().player.current_location->choices.size(); ++i) {
         bool can_visit_next_location = Game::InstanceOf().player.CanVisitLocation(Game::InstanceOf().player.current_location->choices[i]->next_location_id);
@@ -61,7 +61,7 @@ const int GameData::ShowChoicesAndMenu(const int choice) const {
 
 }
 
-const void GameData::WaitAMinute(void) const {
+const void GameData::WaitASecond(void) const {
     std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
 }
 
@@ -114,6 +114,7 @@ const void GameData::CheckForLocationItems(void) {
         std::shared_ptr<BaseItem> item = GetItemById(Game::InstanceOf().player.current_location->location_items[i]);
 
         if (item != nullptr) {
+            std::cout << "You picked up:" << " [" << item->GetTitle() << "] " << "\n";
             Game::InstanceOf().player.AddItem(item->GetId(), 1);
         }
     }
@@ -139,6 +140,7 @@ std::shared_ptr<Location> GameData::GetLocationById(const std::string& id) {
 
 const std::string GameData::GetPlayerName(std::string& user_name) const {
     std::cout << "Please enter your name: \n";
+    std::cout << "> ";
     std::getline(std::cin, user_name);
     
     return user_name;
