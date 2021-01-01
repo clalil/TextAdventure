@@ -65,7 +65,7 @@ const void GameData::WaitASecond(void) const {
     std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
 }
 
-const int GameData::ValidateUserInput(int& choice, const std::string& input) const {
+const bool GameData::ValidateUserInput(int& choice, const std::string& input) const {
     // line is not a number, e.g. "abc" or "abc123", or the number is too big
     // to fit in an int, e.g. "11111111111111111111111111111111111"
     try {
@@ -76,10 +76,10 @@ const int GameData::ValidateUserInput(int& choice, const std::string& input) con
         std::cout << "You've entered an invalid input. Please try again." << "\n";
         std::cout << "\n";
 
-        return 1;
+        return true;
     }
     
-    return 0;
+    return false;
 }
 
 const void GameData::ReducePlayerSatiety(void) {

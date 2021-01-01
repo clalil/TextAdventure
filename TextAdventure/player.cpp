@@ -10,7 +10,7 @@
 const bool Player::CanVisitLocation(const std::string& upcoming_location) const {
     auto new_location = Game::InstanceOf().gamedata.GetLocationById(upcoming_location);
 
-    if (new_location->can_only_visit_once) {
+    if (new_location->can_only_visit_once == true) {
         if (std::find(locations_visited.begin(), locations_visited.end(), new_location->location_id) != locations_visited.end()) {
             return false;
 
@@ -35,7 +35,7 @@ const void Player::AddItem(const std::string& id, int amount) {
     new_item.inventory_amount = amount;
     
     if (new_item.item != nullptr) {
-        std::cout << "You picked up:" << " [" << new_item.item->GetTitle() << "] " << "\n";
+        std::cout << " [" << new_item.item->GetTitle() << "] was added to your inventory.\n";
         inventory.push_back(new_item);
     }
 }
@@ -52,7 +52,7 @@ const void Player::RemoveItem(const std::string& id, int amount) {
                 inventory.erase(remove_item);
             }
             
-            std::cout << "[" << inventory[i].item->GetTitle() << "] " << "was removed from " << name << "'s inventory.\n";
+            std::cout << "[" << inventory[i].item->GetTitle() << "] was removed from your inventory.\n";
 
             return;
         }

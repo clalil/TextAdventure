@@ -61,16 +61,16 @@ JewelItem::JewelItem(const std::string& item_id, const std::string& item_title, 
 
 void JewelItem::UseItem(void) {
     if (combined) {
-        std::cout << Game::InstanceOf().player.name << " inserts the tiny key into the keyhole of the glowing red pendant and hear a faint clicking sound.\n";
+        std::cout << "You insert the tiny key into the keyhole of the glowing red pendant and hear a faint clicking sound.\n";
         std::cout << "The pendant is open. Inside lies a tiny piece of paper with the words: '" << Game::InstanceOf().player.name << " : Teleport Scroll' written on it.\n";
-        std::cout << Game::InstanceOf().player.name << " put the scroll back inside of the pocket and decide to leave the pendant. There is no further use for it.\n";
+        std::cout << "You put the scroll back inside of the pocket and decide to leave the pendant. There is no further use for it.\n\n";
 
         Game::InstanceOf().player.RemoveItem("pendant01", 1);
         Game::InstanceOf().player.RemoveItem("pendant02", 1);
         Game::InstanceOf().player.AddItem("scroll01", 1);
 
     } else {
-        std::cout << "This item belongs to something and is of no use to " << Game::InstanceOf().player.name << " on its own.\n";
+        std::cout << "This item belongs to something and is of no use to you on its own.\n";
     }
 }
 
@@ -84,11 +84,11 @@ void ExpendableItem::UseItem(void) {
     }
     
     if ((Game::InstanceOf().player.HasItem("rock01")) && (item_power > 5)) {
-        std::cout << Game::InstanceOf().player.name << " uses the " << GetTitle() << " to smash the glass and it shatters.\n";
+        std::cout << "You use the " << GetTitle() << " to smash the glass and it shatters.\n\n";
         Game::InstanceOf().player.AddItem("brokenGlass01", 1);
         Game::InstanceOf().player.RemoveItem("rock01", 1);
     } else {
-        std::cout << "This rock seems to be broken because this glass sure ain't.\n";
+        std::cout << "This rock seems to be broken because this glass sure ain't.\n\n";
         Game::InstanceOf().player.RemoveItem("rock01", 1);
         Game::InstanceOf().player.AddItem("brokenRock01", 1);
     }

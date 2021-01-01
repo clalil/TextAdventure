@@ -116,27 +116,35 @@ const void Game::MainMenu(void) {
     gamedata.ValidateUserInput(choice, line);
     
     switch (choice) {
-        case 1:
+        case 1: {
+            std::string name = "";
+            player.name = gamedata.GetPlayerName(name);
+
             player.current_location = gamedata.GetStartLocation();
             player.moves = 0;
             game_mode = GameMode::IsRunning;
-            player.AddItem("pendant02", 1);
-            //player.AddItem("food01", 1);
+
+            //player.AddItem("pendant01", 1);
+            //player.AddItem("pendant02", 1);
 
             Run();
             break;
-        case 2:
+        }
+        case 2: {
             game_mode = GameMode::IsRunning;
 
             LoadGame();
             Run();
             break;
-        case 3:
+        }
+        case 3: {
             gamedata.DebugLocations();
             break;
-        default:
+        }
+        default: {
             game_mode = GameMode::Exit;
             break;
+        }
     }
 }
 
@@ -150,8 +158,8 @@ const int Game::InGameMenu(void) {
     std::cout << "=================\n";
 
     while (choice == 0) {
-      std::string line;
       std::cout << "> ";
+      std::string line;
       std::getline(std::cin, line);
       gamedata.ValidateUserInput(choice, line);
     }
@@ -185,14 +193,15 @@ const int Game::CombineItemsMenu(void) {
     }
     
     while ((choice1 == 0) || (choice2 == 0)) {
-      std::string item1, item2;
-      std::cout << "Enter the number of the first item to combine.\n";
       std::cout << "> ";
+      std::string item1;
+      std::cout << "Enter the number of the first item to combine.\n";
       std::cin >> item1;
       gamedata.ValidateUserInput(choice1, item1);
         
-      std::cout << "Enter the number of the second item to combine.\n";
       std::cout << "> ";
+      std::string item2;
+      std::cout << "Enter the number of the second item to combine.\n";
       std::cin >> item2;
       gamedata.ValidateUserInput(choice2, item2);
     }
@@ -215,7 +224,7 @@ const int Game::CombineItemsMenu(void) {
 }
 
 const int Game::InventoryMenu(void) {
-    bool is_valid_input = false;
+    bool invalid_input = true;
     int choice = 0;
     
     if (Game::InstanceOf().player.inventory.size() == 0) {
@@ -237,9 +246,9 @@ const int Game::InventoryMenu(void) {
 
     std::cout << "==================\n";
     
-    while (choice == 0 || is_valid_input == false) {
-      std::string line;
+    while (choice == 0 || invalid_input) {
       std::cout << "> ";
+      std::string line;
       std::getline(std::cin, line);
 
         if (line.size() > 0 && (line[0] == 'c' || line[0] == 'C')) {
@@ -249,7 +258,7 @@ const int Game::InventoryMenu(void) {
             break;
 
         } else {
-            is_valid_input = gamedata.ValidateUserInput(choice, line);
+            invalid_input = gamedata.ValidateUserInput(choice, line);
         }
     }
 
@@ -259,16 +268,14 @@ const int Game::InventoryMenu(void) {
         if (item != nullptr) {
             item->UseItem();
         }
-
+        
+        return 0;
     }
 
     return 0;
 }
 
 const void Game::Run(void) {
-    std::string name = "";
-    player.name = gamedata.GetPlayerName(name);
-
     gamedata.WaitASecond();
 
     while (game_mode == GameMode::IsRunning) {
@@ -290,7 +297,7 @@ const void Game::Run(void) {
 
         } else {
             int valid_choices = (int)player.current_location->choices.size();
-            bool is_valid_input = false;
+            bool invalid_input = true;
             int choice = -1;
 
             gamedata.WaitASecond();
@@ -306,24 +313,24 @@ const void Game::Run(void) {
             }
             std::cout << "---\n\n";
 
-            while (is_valid_input || choice < 0 || (choice >= valid_choices)) {
+            while (invalid_input || choice < 0 || (choice >= valid_choices)) {
 
                 valid_choices = gamedata.ShowChoicesAndMenu(choice);
 
-                std::string line;
                 std::cout << "> ";
+                std::string line;
                 std::getline(std::cin, line);
                 
                 if (line.size() > 0 && (line[0] == 'm' || line[0] == 'M')) {
                     InGameMenu();
-                    return;
+                    break;
 
                 } else if (line.size() > 0 && (line[0] == 'i' || line[0] == 'I')) {
                     InventoryMenu();
-                    return;
+                    break;
 
                 } else {
-                    is_valid_input = gamedata.ValidateUserInput(choice, line);
+                    invalid_input = gamedata.ValidateUserInput(choice, line);
                 }
                 
                 if (choice < valid_choices) {
