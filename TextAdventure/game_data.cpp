@@ -95,7 +95,7 @@ const void GameData::ReducePlayerSatiety(void) {
         std::cout << "You're about to starve to death and decide to go home and eat something.\n";
     }
 
-    Game::InstanceOf().player.satiation -= RandomSatietyDrop();
+    Game::InstanceOf().player.satiation -= RandomNumbers();
 }
 
 std::shared_ptr<BaseItem> GameData::GetItemById(const std::string& item_id) const {
@@ -114,7 +114,6 @@ const void GameData::CheckForLocationItems(void) {
         std::shared_ptr<BaseItem> item = GetItemById(Game::InstanceOf().player.current_location->location_items[i]);
 
         if (item != nullptr) {
-            std::cout << "You picked up:" << " [" << item->GetTitle() << "] " << "\n";
             Game::InstanceOf().player.AddItem(item->GetId(), 1);
         }
     }
@@ -277,6 +276,13 @@ const int GameData::LoadItemData(void) {
                     std::shared_ptr<JewelItem> jewel = std::make_shared<JewelItem>(tokens[1], tokens[2], tokens[3]);
                     items.push_back(jewel);
                     items_added++;
+                    break;
+                }
+                case Expendable: {
+                    std::shared_ptr<ExpendableItem> expendable = std::make_shared<ExpendableItem>(tokens[1], tokens[2], std::stoi(tokens[3]));
+                    items.push_back(expendable);
+                    items_added++;
+                    break;
                 }
                 default: {
                     break;

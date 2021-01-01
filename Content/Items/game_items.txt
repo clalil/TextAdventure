@@ -2,4 +2,7 @@
 jewel | pendant01 | Pendant with a red glow | keyhole
 jewel | pendant02 | Small key | key
 food | food01 | Mouldy mushroom | 5
-teleport | scroll01 | Teleport Scroll | beginGame
+teleport | scroll01 | Teleport scroll | beginGame
+expendable | rock01 | Rock | 0
+expendable | brokenRock01 | Broken rock | 5
+expendable | brokenGlass01 | Broken glass | 5

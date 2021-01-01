@@ -16,12 +16,12 @@ std::string FindString(const std::string& string_to_split, const std::string& fi
     return string_to_split.substr(first + 1, last - first - 1);
 }
 
-const int RandomSatietyDrop(void) {
+const int RandomNumbers(void) {
     unsigned int seed = (unsigned int)std::chrono::system_clock::now().time_since_epoch().count();
     std::mt19937 random_generator = std::mt19937(seed);
-    std::uniform_int_distribution<int> satiety_reduced_by(1, 10);
+    std::uniform_int_distribution<int> random_number(1, 10);
 
-    return satiety_reduced_by(random_generator);
+    return random_number(random_generator);
 }
 
 std::vector<std::string> SplitString(const std::string& text) {
@@ -40,9 +40,15 @@ std::vector<std::string> SplitString(const std::string& text) {
 }
 
 const int StringToEnum(const std::string& string_value) {
-    if (string_value == "food") return Food;
-    if (string_value == "teleport") return Teleport;
-    if (string_value == "jewel") return Jewel;
+    if (string_value == "food") {
+        return Food;
+    } else if (string_value == "teleport") {
+        return Teleport;
+    } else if (string_value == "jewel") {
+        return Jewel;
+    } else if (string_value == "expendable") {
+        return Expendable;
+    }
     
     return 0;
 }

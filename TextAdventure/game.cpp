@@ -197,6 +197,8 @@ const int Game::CombineItemsMenu(void) {
       gamedata.ValidateUserInput(choice2, item2);
     }
     
+    gamedata.WaitASecond();
+    
     std::string player_choice1 = player.inventory[choice1-1].item->GetId();
     std::string player_choice2 = player.inventory[choice2-1].item->GetId();
     
@@ -276,6 +278,7 @@ const void Game::Run(void) {
             game_mode = GameMode::Exit;
 
         } else if (player.current_location->choices.size() == 0) {
+            gamedata.WaitASecond();
             std::cout << "Game Over.\n";
             std::cout << "You made a total of " << player.moves << " moves and visited the following game locations: \n";
 
@@ -301,7 +304,7 @@ const void Game::Run(void) {
                 gamedata.CheckForLocationItems();
                 player.locations_visited.push_back(player.current_location->location_id);
             }
-            std::cout << "---\n";
+            std::cout << "---\n\n";
 
             while (is_valid_input || choice < 0 || (choice >= valid_choices)) {
 
