@@ -18,7 +18,6 @@ it's about 10 degrees celcius in these woods. You feel kind of cold...and hungry
 You sit down on the cold, hard ground. Awaiting rescue that might never come. While sitting down you look up towards the sky. It must be a cloudy night because you see no stars. You start to shiver, it's really cold!
 &goNorth|+: You decide that enough is enough - you need to get going if you're ever going to get out of here.
 &deathByHeadInjury|+: Nah, you'll take your chances on certain death.
-@
 ===
 #deathByHeadInjury
 All of sudden you hear a small crack. You look up just to glimpse a dark, heavy object falling down on you. Next thing you know, it cracks your skull. Everything goes dark.
@@ -56,14 +55,14 @@ You approach the old looking mailbox stuck on the house wall, next to the entran
 &tryFrontDoor|+: You decide to have a go at the front door. Perhaps it is unlocked.
 ===
 #lookThroughWindow
-You slowly apporach one of the windows. It is quite filthy, the window sill being covered in some black guck. When you press your face against the glass, trying to peek inside, all you see is your own reflection.
+You slowly apporach one of the windows. It is quite filthy, the window sill being covered in some black guck. When you press your face against the glass, trying to peek inside, all you see is your own reflection. The window is locked up tight.
 &tryFrontDoor|+: You decide to have a go at the front door. Perhaps it is unlocked.
-&smashWindow|+rock01: You try and force the window open.
+&smashWindow|rock01+: Try and force the window open.
 @
 ===
 #smashWindow
 Use your rock to see if the window will break.
-&smashWindow|brokenGlass01+brokenGlass01: You reach the hatch and open the window.
+&openWindow|brokenGlass01+: You reach the hatch and open the window.
 &tryFrontDoor|+: You decide to have a go at the front door. Perhaps it is unlocked.
 &walkToBackOfHouse|+: You decide to go around to the backside of the house to look for another entrance.
 ===
@@ -76,3 +75,6 @@ You walk over to the front of the house, facing its front door. You find yoursel
 ===
 #walkToBackOfHouse
 ===
+#openWindow
+===
+

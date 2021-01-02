@@ -148,13 +148,22 @@ const void Game::MainMenu(void) {
     }
 }
 
+const void Game::GameHints(void) const {
+    std::cout << "How to win this game:\n";
+    std::cout << "- Save your game progress frequently.\n";
+    std::cout << "- Keep an eye on your Food HP & don't let it go below 20.\n";
+    std::cout << "- Some locations can only be visited once, so be careful with your choices.\n";
+    std::cout << "- If you're stuck, try combining items in your inventory. It may reveal new choices.\n";
+}
+
 const int Game::InGameMenu(void) {
     int choice = 0;
     
     std::cout << "=================\n";
-    std::cout << "[1] Resume game\n";
-    std::cout << "[2] Save & resume game\n";
-    std::cout << "[3] Exit game\n";
+    std::cout << "[1] Game hints \n";
+    std::cout << "[2] Resume game\n";
+    std::cout << "[3] Save & resume game\n";
+    std::cout << "[4] Exit game\n";
     std::cout << "=================\n";
 
     while (choice == 0) {
@@ -164,17 +173,23 @@ const int Game::InGameMenu(void) {
       gamedata.ValidateUserInput(choice, line);
     }
     
-    if (choice == 1 ) {
+    if (choice == 1) {
+        GameHints();
+        gamedata.WaitASecond();
+        std::cout << "Closing menu... \n";
         return 0;
 
     } else if (choice == 2) {
+        return 0;
+
+    } else if (choice == 3) {
         std::cout << "Saving game...\n";
         gamedata.WaitASecond();
         SaveGame();
         std::cout << "Your game was saved. \n";
         return 0;
 
-    } else if (choice == 3) {
+    } else if (choice == 4) {
         std::cout << "Exiting game..\n";
         gamedata.WaitASecond();
         game_mode = GameMode::Exit;
