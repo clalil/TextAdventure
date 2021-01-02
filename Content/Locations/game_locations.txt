@@ -1,7 +1,7 @@
 //Chapter One Locations
 #start
 Your name is %%NAME%%. A medium once said that you are more of a cat than a dog person, but that might not be a too personal detail about yourself. Quite frankly, you can sometimes be the life of a private party and sometimes more like the character "Pyramid Head" in the Silent Hill series. You might not remember this, but you went out for a walk last night to clear your mind, as you always do when you can't get to sleep at night. The last thing you remember is that you kissed your cat 'Paws' on his forehead, turned off all of the lights but the bedroom window sill lamp and locked the door on your way out. The big question is - what will you do next?
-&lookAway|+: I'm psyched! Let's play 'House of the Haunted'.
+&beginGame|+: I'm psyched! Let's play 'House of the Haunted'.
 &exit|+: No way - I'm too spooked already.
 ===
 #exit
