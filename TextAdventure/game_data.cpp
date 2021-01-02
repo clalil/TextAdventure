@@ -24,7 +24,7 @@ GameData::GameData() {
     InitializeItems();
 }
 
-const void GameData::Introduction(void) const {
+const void GameData::MainScreen(void) const {
     std::cout << "*******************\n";
     std::cout << "House of the Haunted\n";
     std::cout << "*******************\n";
@@ -33,7 +33,7 @@ const void GameData::Introduction(void) const {
 const int GameData::ShowChoicesAndMenu(const int choice) const {
     std::vector<std::string> valid_choices{};
 
-    std::cout << "Where do you wish to proceed next?\n\n";
+    std::cout << "What are you going to do?\n\n";
 
     for (int i = 0; i < Game::InstanceOf().player.current_location->choices.size(); ++i) {
         bool can_visit_next_location = Game::InstanceOf().player.CanVisitLocation(Game::InstanceOf().player.current_location->choices[i]->next_location_id);
@@ -61,11 +61,11 @@ const int GameData::ShowChoicesAndMenu(const int choice) const {
 
 }
 
-const void GameData::WaitAMinute(void) const {
+const void GameData::WaitASecond(void) const {
     std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
 }
 
-const int GameData::ValidateUserInput(int& choice, const std::string& input) const {
+const bool GameData::ValidateUserInput(int& choice, const std::string& input) const {
     // line is not a number, e.g. "abc" or "abc123", or the number is too big
     // to fit in an int, e.g. "11111111111111111111111111111111111"
     try {
@@ -76,10 +76,10 @@ const int GameData::ValidateUserInput(int& choice, const std::string& input) con
         std::cout << "You've entered an invalid input. Please try again." << "\n";
         std::cout << "\n";
 
-        return 1;
+        return true;
     }
     
-    return 0;
+    return false;
 }
 
 const void GameData::ReducePlayerSatiety(void) {
@@ -95,7 +95,7 @@ const void GameData::ReducePlayerSatiety(void) {
         std::cout << "You're about to starve to death and decide to go home and eat something.\n";
     }
 
-    Game::InstanceOf().player.satiation -= RandomSatietyDrop();
+    Game::InstanceOf().player.satiation -= RandomNumbers();
 }
 
 std::shared_ptr<BaseItem> GameData::GetItemById(const std::string& item_id) const {
@@ -139,6 +139,7 @@ std::shared_ptr<Location> GameData::GetLocationById(const std::string& id) {
 
 const std::string GameData::GetPlayerName(std::string& user_name) const {
     std::cout << "Please enter your name: \n";
+    std::cout << "> ";
     std::getline(std::cin, user_name);
     
     return user_name;
@@ -275,6 +276,13 @@ const int GameData::LoadItemData(void) {
                     std::shared_ptr<JewelItem> jewel = std::make_shared<JewelItem>(tokens[1], tokens[2], tokens[3]);
                     items.push_back(jewel);
                     items_added++;
+                    break;
+                }
+                case Expendable: {
+                    std::shared_ptr<ExpendableItem> expendable = std::make_shared<ExpendableItem>(tokens[1], tokens[2], std::stoi(tokens[3]));
+                    items.push_back(expendable);
+                    items_added++;
+                    break;
                 }
                 default: {
                     break;

@@ -28,6 +28,7 @@ private:
     GameMode game_mode = GameMode::Menu;
 
     const int CombineItemsMenu(void);
+    const void GameHints(void) const;
     const int InGameMenu(void);
     const int InventoryMenu(void);
     const void LoadGame(void);

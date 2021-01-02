@@ -9,7 +9,7 @@
 #include <string>
 
 enum ItemsCode {
-    Food, Teleport, Jewel
+    Food, Teleport, Jewel, Expendable
 };
 
 class BaseItem {
@@ -49,7 +49,7 @@ public:
     virtual void UseItem(void);
     
 private:
-    int food_satiety_level;
+    int food_satiety_level = 0;
 };
 
 class JewelItem : public BaseItem {
@@ -61,4 +61,15 @@ public:
 
 private:
     std::string jewel_magic;
+};
+
+class ExpendableItem : public BaseItem {
+    
+public:
+    ExpendableItem(const std::string& item_id, const std::string& item_title, int item_power);
+    
+    virtual void UseItem(void);
+    
+private:
+    int item_power = 0;
 };

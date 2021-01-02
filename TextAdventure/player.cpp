@@ -35,6 +35,7 @@ const void Player::AddItem(const std::string& id, int amount) {
     new_item.inventory_amount = amount;
     
     if (new_item.item != nullptr) {
+        std::cout << " [" << new_item.item->GetTitle() << "] was added to your inventory.\n";
         inventory.push_back(new_item);
     }
 }
@@ -50,6 +51,8 @@ const void Player::RemoveItem(const std::string& id, int amount) {
                 auto remove_item = (inventory.begin() + i);
                 inventory.erase(remove_item);
             }
+            
+            std::cout << "[" << inventory[i].item->GetTitle() << "] was removed from your inventory.\n";
 
             return;
         }

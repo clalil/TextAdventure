@@ -15,7 +15,7 @@ Game& Game::InstanceOf() {
 }
 
 const void Game::GameStart(void) {
-    gamedata.Introduction();
+    gamedata.MainScreen();
 
     while (game_mode != GameMode::Exit) {
         switch(game_mode) {
@@ -108,6 +108,7 @@ const void Game::MainMenu(void) {
     std::cout << "[2] Load saved game\n";
     std::cout << "[3] Debug game locations\n";
     std::cout << "[4] Exit game\n";
+    std::cout << "> ";
 
     std::getline(std::cin, line);
     choice = std::stoi(line);
@@ -115,58 +116,82 @@ const void Game::MainMenu(void) {
     gamedata.ValidateUserInput(choice, line);
     
     switch (choice) {
-        case 1:
+        case 1: {
+            std::string name = "";
+            player.name = gamedata.GetPlayerName(name);
+
             player.current_location = gamedata.GetStartLocation();
             player.moves = 0;
             game_mode = GameMode::IsRunning;
-            player.AddItem("pendant02", 1);
-            //player.AddItem("food01", 1);
+
+            //player.AddItem("pendant01", 1);
+            //player.AddItem("pendant02", 1);
 
             Run();
             break;
-        case 2:
+        }
+        case 2: {
             game_mode = GameMode::IsRunning;
 
             LoadGame();
             Run();
             break;
-        case 3:
+        }
+        case 3: {
             gamedata.DebugLocations();
             break;
-        default:
+        }
+        default: {
             game_mode = GameMode::Exit;
             break;
+        }
     }
+}
+
+const void Game::GameHints(void) const {
+    std::cout << "How to win this game:\n";
+    std::cout << "- Save your game progress frequently.\n";
+    std::cout << "- Keep an eye on your Food HP & don't let it go below 20.\n";
+    std::cout << "- Some locations can only be visited once, so be careful with your choices.\n";
+    std::cout << "- If you're stuck, try combining items in your inventory. It may reveal new choices.\n";
 }
 
 const int Game::InGameMenu(void) {
     int choice = 0;
     
     std::cout << "=================\n";
-    std::cout << "[1] Resume game\n";
-    std::cout << "[2] Save & resume game\n";
-    std::cout << "[3] Exit game\n";
+    std::cout << "[1] Game hints \n";
+    std::cout << "[2] Resume game\n";
+    std::cout << "[3] Save & resume game\n";
+    std::cout << "[4] Exit game\n";
     std::cout << "=================\n";
 
     while (choice == 0) {
+      std::cout << "> ";
       std::string line;
       std::getline(std::cin, line);
       gamedata.ValidateUserInput(choice, line);
     }
     
-    if (choice == 1 ) {
+    if (choice == 1) {
+        GameHints();
+        gamedata.WaitASecond();
+        std::cout << "Closing menu... \n";
         return 0;
 
     } else if (choice == 2) {
+        return 0;
+
+    } else if (choice == 3) {
         std::cout << "Saving game...\n";
-        gamedata.WaitAMinute();
+        gamedata.WaitASecond();
         SaveGame();
         std::cout << "Your game was saved. \n";
         return 0;
 
-    } else if (choice == 3) {
+    } else if (choice == 4) {
         std::cout << "Exiting game..\n";
-        gamedata.WaitAMinute();
+        gamedata.WaitASecond();
         game_mode = GameMode::Exit;
     }
     
@@ -183,15 +208,20 @@ const int Game::CombineItemsMenu(void) {
     }
     
     while ((choice1 == 0) || (choice2 == 0)) {
-      std::string item1, item2;
+      std::cout << "> ";
+      std::string item1;
       std::cout << "Enter the number of the first item to combine.\n";
       std::cin >> item1;
       gamedata.ValidateUserInput(choice1, item1);
         
+      std::cout << "> ";
+      std::string item2;
       std::cout << "Enter the number of the second item to combine.\n";
       std::cin >> item2;
       gamedata.ValidateUserInput(choice2, item2);
     }
+    
+    gamedata.WaitASecond();
     
     std::string player_choice1 = player.inventory[choice1-1].item->GetId();
     std::string player_choice2 = player.inventory[choice2-1].item->GetId();
@@ -209,7 +239,7 @@ const int Game::CombineItemsMenu(void) {
 }
 
 const int Game::InventoryMenu(void) {
-    bool is_valid_input = false;
+    bool invalid_input = true;
     int choice = 0;
     
     if (Game::InstanceOf().player.inventory.size() == 0) {
@@ -231,7 +261,8 @@ const int Game::InventoryMenu(void) {
 
     std::cout << "==================\n";
     
-    while (choice == 0 || is_valid_input == false) {
+    while (choice == 0 || invalid_input) {
+      std::cout << "> ";
       std::string line;
       std::getline(std::cin, line);
 
@@ -242,7 +273,7 @@ const int Game::InventoryMenu(void) {
             break;
 
         } else {
-            is_valid_input = gamedata.ValidateUserInput(choice, line);
+            invalid_input = gamedata.ValidateUserInput(choice, line);
         }
     }
 
@@ -252,26 +283,24 @@ const int Game::InventoryMenu(void) {
         if (item != nullptr) {
             item->UseItem();
         }
-
+        
+        return 0;
     }
 
     return 0;
 }
 
 const void Game::Run(void) {
-    std::string name = "";
+    gamedata.WaitASecond();
 
     while (game_mode == GameMode::IsRunning) {
-        
-        if (player.name == "") {
-            player.name = gamedata.GetPlayerName(name);
-        }
 
         if (player.current_location == nullptr) {
             std::cout << "[ERROR] No such location. Ending game. \n";
             game_mode = GameMode::Exit;
 
         } else if (player.current_location->choices.size() == 0) {
+            gamedata.WaitASecond();
             std::cout << "Game Over.\n";
             std::cout << "You made a total of " << player.moves << " moves and visited the following game locations: \n";
 
@@ -283,36 +312,40 @@ const void Game::Run(void) {
 
         } else {
             int valid_choices = (int)player.current_location->choices.size();
-            bool is_valid_input = false;
+            bool invalid_input = true;
             int choice = -1;
 
-            gamedata.WaitAMinute();
+            gamedata.WaitASecond();
             std::cout << "---\n";
-            std::cout << "-> " << gamedata.PersonalizeText(player.name, player.current_location->location_text) << "\n";
+            if (gamedata.PersonalizeText(player.name, player.current_location->location_text) != "") {
+                std::cout << gamedata.PersonalizeText(player.name, player.current_location->location_text) << "\n";
+            }
+            gamedata.WaitASecond();
             
             if (player.HasVisitedLocation() == false) {
                 gamedata.CheckForLocationItems();
                 player.locations_visited.push_back(player.current_location->location_id);
             }
-            std::cout << "---\n";
+            std::cout << "---\n\n";
 
-            while (is_valid_input || choice < 0 || (choice >= valid_choices)) {
+            while (invalid_input || choice < 0 || (choice >= valid_choices)) {
 
                 valid_choices = gamedata.ShowChoicesAndMenu(choice);
 
+                std::cout << "> ";
                 std::string line;
                 std::getline(std::cin, line);
                 
                 if (line.size() > 0 && (line[0] == 'm' || line[0] == 'M')) {
                     InGameMenu();
-                    return;
+                    break;
 
                 } else if (line.size() > 0 && (line[0] == 'i' || line[0] == 'I')) {
                     InventoryMenu();
-                    return;
+                    break;
 
                 } else {
-                    is_valid_input = gamedata.ValidateUserInput(choice, line);
+                    invalid_input = gamedata.ValidateUserInput(choice, line);
                 }
                 
                 if (choice < valid_choices) {
