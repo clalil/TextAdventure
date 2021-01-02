@@ -36,7 +36,7 @@ A location can have multiple choices. Choices are preceeded by a '&' sign. Unles
 ```
 &locationChoice|+
 ```
-**A hidden item** is an item used to hide choices from the player until he/she has obtained it. **Required item** are needed in order to proceed with that particular choice. Locations may also have regular **items** for the player to pick up, to either be used alone or combined with another item.
+**A hidden item** is an item used to hide choices from the player until he/she has obtained it. **Required items** are needed in order to proceed with that particular choice. Locations may also have regular **items** for the player to pick up, to either be used alone or combined with another item.
 
 **IMPORTANT!**
 Due to how the code is currently written, all of the hidden choices (i.e. those with hiddenKeyItems) must be at the bottom of the locationChoice list or else the user's input will not work properly on some occasions.  
