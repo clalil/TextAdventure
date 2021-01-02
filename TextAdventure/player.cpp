@@ -10,7 +10,7 @@
 const bool Player::CanVisitLocation(const std::string& upcoming_location) const {
     auto new_location = Game::InstanceOf().gamedata.GetLocationById(upcoming_location);
 
-    if (new_location->can_only_visit_once == true) {
+    if (new_location->can_only_visit_once) {
         if (std::find(locations_visited.begin(), locations_visited.end(), new_location->location_id) != locations_visited.end()) {
             return false;
 
