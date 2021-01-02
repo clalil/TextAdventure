@@ -22,45 +22,36 @@ The game instructions are provided within the game itself.
 ## Contribute to the adventure!  
 I'm happy to accept pull requests to improve the story of this game. In order not to crash the game as it loads, or further down the gameplay road the following rules apply:
 
-__All game locations must begin with a '#'sign and are written in camelCase:__
+__All game locations must begin with a '#' sign. All locations, choices, items & keys are written in camelCase.__  
+An example of a possible valid location syntax:
 ```
+===
 #locationOne
+^anItemToPickUp
+&validLocationChoice|hiddenKeyItem+requiredKeyItem: This locationChoice's text.
+@
+===
 ```
-__Choices belonging to the locations are worded in camelCase and preceeded by a '&' sign, unless the choices have hidden keys or required keys they must be added in the following format:__
+A location can have multiple choices. Choices are preceeded by a '&' sign. Unless the choice have __hidden__ or __required__ keys they are written in the following format:
 ```
 &locationChoice|+
 ```
-__**Hidden items** are items are used to hide locationChoices from the player until he/she has the **required items** to proceed while required items are needed in order to proceed, but the player can still see the locationChoice it belongs to. The complete syntax for valid locationChoices with keys are:__
-```
-&validLocationChoice|hiddenKeyItem+requiredKeyItem: This locationChoice's text.
-```
-__Locations which may only be visited once should contain the '@' sign.__
-```
-#locationOne
-&oneLocationChoice|+: Once you leave locationOne you never come here again.
-@
-```
-__Items are added to a location by using the '^' sign:__
-```
-^anItemToPickUp
-```
-__An example of a possible valid location syntax:__
-```
-===
-#locationOne
-^anItemToPickUp
-&validLocationChoice|hiddenKeyItem+requiredKeyItem: This locationChoice's text.
-@
-===
-```
+**A hidden item** is an item used to hide choices from the player until he/she has obtained it. **Required item** are needed in order to proceed with that particular choice. Locations may also have regular **items** for the player to pick up, to either be used alone or combined with another item.
+
 **IMPORTANT!**
 Due to how the code is currently written, all of the hidden choices (i.e. those with hiddenKeyItems) must be at the bottom of the locationChoice list or else the user's input will not work properly on some occasions.  
 
+__Locations which may only be visited once should contain the '@' sign:__
+```
+#locationOne
+&locationChoice|+: Once you leave 'locationOne' you can never come back.
+@
+```
 You can add __game items__ inside of the game_items.txt file like this for it to parse correctly:
 ```
 itemType | itemId | Item title | power (string or int)
 ```
-Items can also be combined, if they are paired up inside of the pairs.txt file and have valid 'combination' options inside of the items.cpp, for example:
+Items can be combined if they are paired up inside of the pairs.txt file and have valid 'combination' options inside of the items.cpp, for example:
 ```
 itemToPairWith1:itemToPairWith2
 ```
