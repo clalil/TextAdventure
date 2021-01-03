@@ -84,11 +84,11 @@ void ExpendableItem::UseItem(void) {
     }
     
     if ((Game::InstanceOf().player.HasItem("rock01")) && (item_power > 5)) {
-        std::cout << "You use the " << GetTitle() << " to smash the glass and it shatters.\n\n";
+        std::cout << "You use the " << GetTitle() << " to smash the window and it shatters.\n\n";
         Game::InstanceOf().player.AddItem("brokenGlass01", 1);
         Game::InstanceOf().player.RemoveItem("rock01", 1);
     } else {
-        std::cout << "This rock seems to be broken because this glass sure ain't.\n\n";
+        std::cout << "This rock seems to be broken because this window sure ain't.\n\n";
         Game::InstanceOf().player.RemoveItem("rock01", 1);
         Game::InstanceOf().player.AddItem("brokenRock01", 1);
     }

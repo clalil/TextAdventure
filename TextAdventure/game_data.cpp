@@ -55,7 +55,7 @@ const int GameData::ShowChoicesAndMenu(const int choice) const {
     std::cout << ".............\n";
     std::cout << "[i] Inventory\n";
     std::cout << "[m] Menu\n";
-    std::cout << "(Food HP): " << Game::InstanceOf().player.satiation << "\n";
+    std::cout << "(Food HP: " << Game::InstanceOf().player.satiation << ")\n";
     
     return ((int)valid_choices.size()+1);
 
