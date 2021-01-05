@@ -335,8 +335,7 @@ void GameData::DebugLocations(void) const {
 
     std::cout << "Number of available locations: " << locations.size() << "\n";
 
-    for (int i = 0; i < locations.size(); ++i) {
-        std::shared_ptr<Location> location = locations[i];
+    for(std::shared_ptr<Location> location : locations) {
         location_ids.push_back(location->location_id);
 
         for (int j = 0; j < location->choices.size(); ++j) {
