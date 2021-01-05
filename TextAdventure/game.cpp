@@ -14,7 +14,7 @@ Game& Game::InstanceOf() {
     return game;
 }
 
-const void Game::GameStart(void) {
+void Game::GameStart(void) {
     gamedata.MainScreen();
 
     while (game_mode != GameMode::Exit) {
@@ -34,7 +34,7 @@ const void Game::GameStart(void) {
     
 }
 
-const void Game::SaveGame(void) {
+void Game::SaveGame(void) {
     std::ofstream save_file(GAME_SAVE_FILE, std::ios::trunc);
 
     if (save_file.is_open()) {
@@ -61,7 +61,7 @@ const void Game::SaveGame(void) {
     }
 }
 
-const void Game::LoadGame(void) {
+void Game::LoadGame(void) {
     std::ifstream load_file(GAME_SAVE_FILE);
     std::string line;
     
@@ -99,7 +99,7 @@ const void Game::LoadGame(void) {
     }
 }
 
-const void Game::MainMenu(void) {
+void Game::MainMenu(void) {
     std::string line;
     int choice;
 
@@ -148,7 +148,7 @@ const void Game::MainMenu(void) {
     }
 }
 
-const void Game::GameHints(void) const {
+void Game::GameHints(void) const {
     std::cout << "How to win this game:\n";
     std::cout << "- Save your game progress frequently.\n";
     std::cout << "- Keep an eye on your Food HP & don't let it go below 20.\n";
@@ -156,7 +156,7 @@ const void Game::GameHints(void) const {
     std::cout << "- If you're stuck, try combining items in your inventory. It may reveal new choices.\n";
 }
 
-const int Game::InGameMenu(void) {
+int Game::InGameMenu(void) {
     int choice = 0;
     
     std::cout << "=================\n";
@@ -198,7 +198,7 @@ const int Game::InGameMenu(void) {
     return 0;
 }
 
-const int Game::CombineItemsMenu(void) {
+int Game::CombineItemsMenu(void) {
     int choice1 = 0;
     int choice2 = 0;
     
@@ -238,7 +238,7 @@ const int Game::CombineItemsMenu(void) {
     return 0;
 }
 
-const int Game::InventoryMenu(void) {
+int Game::InventoryMenu(void) {
     bool invalid_input = true;
     int choice = 0;
     
@@ -290,7 +290,7 @@ const int Game::InventoryMenu(void) {
     return 0;
 }
 
-const void Game::Run(void) {
+void Game::Run(void) {
     gamedata.WaitASecond();
 
     while (game_mode == GameMode::IsRunning) {

@@ -22,17 +22,17 @@ public:
     GameData gamedata;
     Player player;
     
-    const void GameStart(void);
+    void GameStart(void);
     
 private:
     GameMode game_mode = GameMode::Menu;
 
-    const int CombineItemsMenu(void);
-    const void GameHints(void) const;
-    const int InGameMenu(void);
-    const int InventoryMenu(void);
-    const void LoadGame(void);
-    const void MainMenu(void);
-    const void SaveGame(void);
-    const void Run(void);
+    int CombineItemsMenu(void);
+    void GameHints(void) const;
+    int InGameMenu(void);
+    int InventoryMenu(void);
+    void LoadGame(void);
+    void MainMenu(void);
+    void SaveGame(void);
+    void Run(void);
 };

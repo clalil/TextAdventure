@@ -24,13 +24,13 @@ GameData::GameData() {
     InitializeItems();
 }
 
-const void GameData::MainScreen(void) const {
+void GameData::MainScreen(void) const {
     std::cout << "*******************\n";
     std::cout << "House of the Haunted\n";
     std::cout << "*******************\n";
 }
 
-const int GameData::ShowChoicesAndMenu(const int choice) const {
+int GameData::ShowChoicesAndMenu(const int choice) const {
     std::vector<std::string> valid_choices{};
 
     std::cout << "What are you going to do?\n\n";
@@ -61,11 +61,11 @@ const int GameData::ShowChoicesAndMenu(const int choice) const {
 
 }
 
-const void GameData::WaitASecond(void) const {
+void GameData::WaitASecond(void) const {
     std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
 }
 
-const bool GameData::ValidateUserInput(int& choice, const std::string& input) const {
+bool GameData::ValidateUserInput(int& choice, const std::string& input) const {
     // line is not a number, e.g. "abc" or "abc123", or the number is too big
     // to fit in an int, e.g. "11111111111111111111111111111111111"
     try {
@@ -82,7 +82,7 @@ const bool GameData::ValidateUserInput(int& choice, const std::string& input) co
     return false;
 }
 
-const void GameData::ReducePlayerSatiety(void) {
+void GameData::ReducePlayerSatiety(void) {
     auto hunger_level = Game::InstanceOf().player.satiation;
 
     if(hunger_level <= 50) {
@@ -109,7 +109,7 @@ std::shared_ptr<BaseItem> GameData::GetItemById(const std::string& item_id) cons
     return nullptr;
 }
 
-const void GameData::CheckForLocationItems(void) {
+void GameData::CheckForLocationItems(void) {
     for (size_t i = 0; i < Game::InstanceOf().player.current_location->location_items.size(); ++i) {
         std::shared_ptr<BaseItem> item = GetItemById(Game::InstanceOf().player.current_location->location_items[i]);
 
@@ -137,7 +137,7 @@ std::shared_ptr<Location> GameData::GetLocationById(const std::string& id) {
     return nullptr;
 }
 
-const std::string GameData::GetPlayerName(std::string& user_name) const {
+std::string GameData::GetPlayerName(std::string& user_name) const {
     std::cout << "Please enter your name: \n";
     std::cout << "> ";
     std::getline(std::cin, user_name);
@@ -145,7 +145,7 @@ const std::string GameData::GetPlayerName(std::string& user_name) const {
     return user_name;
 }
 
-const std::string GameData::PersonalizeText(const std::string& player_name, std::string& location_text) const {
+std::string GameData::PersonalizeText(const std::string& player_name, std::string& location_text) const {
     size_t match = location_text.find("%%NAME%%");
 
     if (match != std::string::npos) {
@@ -159,7 +159,7 @@ const std::string GameData::PersonalizeText(const std::string& player_name, std:
     return location_text;
 }
 
-const void GameData::InitializeLocations(void) {
+void GameData::InitializeLocations(void) {
     namespace fs = std::__fs::filesystem;
     std::string directory_path = "Content/Locations/";
     fs::path path_to_load(directory_path);
@@ -177,7 +177,7 @@ const void GameData::InitializeLocations(void) {
     }
 }
 
-const int GameData::LoadLocationData(const std::string path) {
+int GameData::LoadLocationData(const std::string path) {
     int locations_added = 0;
     std::ifstream location_file(path);
     std::string line;
@@ -235,12 +235,12 @@ const int GameData::LoadLocationData(const std::string path) {
     return locations_added;
 }
 
-const void GameData::InitializeItems() {
+void GameData::InitializeItems() {
     LoadItemData();
     pairs = MapPairedItems();
 }
 
-const int GameData::LoadItemData(void) {
+int GameData::LoadItemData(void) {
     int items_added = 0;
     std::ifstream file("Content/Items/game_items.txt");
     std::string line;
@@ -293,7 +293,7 @@ const int GameData::LoadItemData(void) {
     return items_added;
 }
 
-const std::map<std::string, std::string> GameData::MapPairedItems(void) const {
+std::map<std::string, std::string> GameData::MapPairedItems(void) const {
     std::ifstream file("Content/Items/pairs.txt");
     std::map<std::string, std::string> paired_items;
     
@@ -312,7 +312,7 @@ const std::map<std::string, std::string> GameData::MapPairedItems(void) const {
     return paired_items;
 }
 
-const bool GameData::CompatibleItems(const std::string& item1, const std::string& item2) {
+bool GameData::CompatibleItems(const std::string& item1, const std::string& item2) {
     std::map<std::string, std::string>::iterator key_or_value1;
     std::map<std::string, std::string>::iterator key_or_value2;
 
@@ -343,7 +343,7 @@ const bool GameData::CompatibleItems(const std::string& item1, const std::string
 
 //Code below only used for debugging purposes
 
-const bool GameData::LocationExistsWithId(const std::string id) const {
+bool GameData::LocationExistsWithId(const std::string id) const {
     if (location_index.find(id) != location_index.end()) {
         return true;
     }
@@ -351,7 +351,7 @@ const bool GameData::LocationExistsWithId(const std::string id) const {
     return false;
 }
 
-const void GameData::DebugLocations(void) const {
+void GameData::DebugLocations(void) const {
     std::vector<std::string> location_ids = {};
 
     std::cout << "Number of available locations: " << locations.size() << "\n";
