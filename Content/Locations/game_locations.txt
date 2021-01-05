@@ -37,14 +37,14 @@ You approach the red light and bend down, upon taking a closer look at it, you n
 &lookAway|+: You feel the warmth of the pendant coming from the inside of your pocket. Feeling a little more excited about the road ahead, you continue on forwards.
 ===
 #lookAway
-It feels like you've been walking for hours, and perhaps you have. It is starting to snow, and you realize you really should have worn some longer pants...or a jacket. You need to get out of the cold or you will (eventually) freeze to death. That's when you first lay eyes on it - an old house right in the middle of a glade in the forest. The house is made out of stone bricks and the roof is green, its walls covered by what appears to be ivy. A light is flickering in the top right window on the second floor. Which is odd, the house seems abandoned by the looks of it: overgrown by the surrounding forest, ground windows covered in dust and/or filth and the property has clearly not been properly taken care of for years.
+It feels like you've been walking for hours, and perhaps you have. It is starting to snow, and you realize you really should have worn some longer pants...or a jacket. You need to get out of the cold or you will (eventually) freeze to death. That's when you first lay eyes on it - an old house right in the middle of a glade in the forest. The house is made out of stone bricks and the roof is green, its walls covered by what appears to be ivy. A light is flickering in the top window from what appears to be an attic. Which is odd, the house seems abandoned by the looks of it: overgrown by the surrounding forest, ground windows covered in dust and/or filth and the property has clearly not been properly taken care of for years.
 &lookThroughWindow|+: You decide to peek through one of the windows on the ground floor.
 &tryFrontDoor|+: You decide to have a go at the front door. Perhaps it is unlocked.
 &examineMailBox|+: You decide to see if there is any recent mail in the owner's mailbox.
 ===
 #examineMailBox
 ^food01
-You approach the old looking mailbox stuck on the house wall, next to the entrance door. Although it is covered in dirt you can appreciate that is was probably once a very nice looking mailbox - it is made out of metal, has a red tint and what seems to be a faded image of a rose carved onto it. On top of it lies a medium sized rock. You open the mailbox only to find an old newspaper dated 1972, a postcard adressed to: "Ms Abstain, PokemonGo St. 432, CF35 Wales" and a mouldy mushroom. You decide to leave the newspaper and the postcard, but keep the mouldy mushroom - you are very hungry after all.
+You approach the old looking mailbox stuck on the house wall, next to the entrance door. Although it is covered in dirt you can appreciate that is was probably once a very nice looking mailbox - it is made out of metal, has a red tint and what seems to be a faded image of a rose carved onto it. On top of it lies a medium sized rock. You open the mailbox only to find an old newspaper dated 1972, a postcard adressed to: "Ms Abstain, PokemonGo St. 432, CF35 Wales" and a suspicious looking mushroom. You decide to leave the newspaper and the postcard, but keep the mushroom - you are very hungry after all.
 &pickUpRockFromMailbox|+: You pick up the rock from the top of the mailbox. It is a nice rock after all.
 &lookThroughWindow|+: You decide to peek through one of the windows on the ground floor.
 &tryFrontDoor|+: You decide to have a go at the front door. Perhaps it is unlocked.
@@ -66,15 +66,59 @@ Use your rock to see if the window will break.
 &tryFrontDoor|+: You decide to have a go at the front door. Perhaps it is unlocked.
 &walkToBackOfHouse|+: You decide to go around to the backside of the house to look for another entrance.
 ===
+#openWindow
+^bloodDrop
+You open the window and crawl inside. Ouch! You realize you've cut yourself on the glass while reaching the hatch. A droplet of your own blood is glistening on your right index finger. You start to look around, you seem to have stumbled right into the living room area. On your left lies what appears to be an old Nokia 3310. It's turned off. On your right is a small, worn out, leather couch, with a tiny rounded wooden table in front of it. On top of the table is a statue of a woman cradling a sleeping child. A large painting is hanging behind it of a beautiful creature surrounded by men praying. The painting causes chills to run down your spine. Something just seems off about it.
+&grabStatue|+: You decide to pick up the statue of the woman cradling her child.
+&deathByPainting|+: You decide to move closer to the painting and inspect it.
+&goToHallway|+: You decide to move towards the hallway.
+&goToKitchen|+: You decide to check out the kitchen area. Perhaps there is food there.
+===
+#deathByPainting
+You move closer to the painting, now standing straight in front of it. ...wait, did that creature just turn its head towards you. Mesmerized, you stare back into its twinkling eyes, now noticing how all of the praying men are slowly turning their heads towards you, stretcing their hands out from the painting... You suddenly feel their little hands around your neck. Tightening around it. You stumble backwards by surprise, fall, and hit the wooden table with the back of your neck. Everything goes dark.
+===
+#grabStatue
+When you try to lift the statue off of the table you notice that while the statue seems glued to it, the baby comes loose. You hear the faint cry from a baby coming from the floor above as you pick up the little stone baby. It looks as if it's bawling its eyes out. It's warm to the touch.
+&phoneRings|+: Feeling put off by the sound of a baby crying you put the baby statue back into its mothers arms.
+&keepStatue|+: You ignore the cry and put the baby statue inside of your pocket.
+===
+#keepStatue
+^babyStatue
+&phoneRings|+: It feels like your pockets are on fire. You could swear you could feel the stone baby moving a little.
+===
+#phoneRings
+You studdenly hear the phone on your left starting to sound. You turn around and slowly approach the now fully functioning mobile phone. It's battery symbol is blinking, indikating that the battery is nevertheless almost out. You hesitate, but pick up the phone. The voice of a woman with a hollow voice on the other end asks "Did you take my baby?".
+&tookBaby|babyStatue+: You answer "Yes I did."
+&didntTakeBaby|+: You answer "No, I did not."
+===
+#tookBaby
+The woman does not reply instantly, as if waiting for you to say something more, then replies in an ominous voice "Of course you didn't, dear." and the phone falls silent. Its battery dead. You suddenly feel like someone put an ice cube inside of your pockets. When your fingers close around the statue of the stone baby, it's ice cold to the touch. You pick it up. The baby is no longer crying, but instead staring at you with fully open eyes. It's mouth is closed.
+&goToHallway|+: You decide to move towards the hallway.
+&goToKitchen|+: You decide to check out the kitchen area. Perhaps there is food there.
+===
+#didntTakeBaby
+The woman does not reply instantly, as if waiting for you to say something more, then replies "Of course you didn't, dear." and the phone falls silent. Its battery dead.
+&goToHallway|+: You decide to move towards the hallway.
+&goToKitchen|+: You decide to check out the kitchen area. Perhaps there is food there.
+===
 #tryFrontDoor
 You walk over to the front of the house, facing its front door. You find yourself comparing its odd shape to that of a tomb stone. It is made of wood, with a round glass window at the top of it - its glass beautifully crafted with lines in the shape of the diamond of a diamond card in a card deck. Below it is a small, rusty door bell handle in the shape of a lion with the ring in its open mouth. Finally, the door handle is on the right hand side of the door. You pull the door handle - but the door wont budge.
 &callOnDoorBell|+: You wrap your hands around the old door bell handle and use it to knock on the door.
 &walkToBackOfHouse|+: You decide to go around to the backside of the house to look for another entrance.
 &lookThroughWindow|+: You decide to peek through one of the windows on the ground floor.
-@
+===
+#callOnDoorBell
+You knock on the door once...twice...when you suddenly hear some muffled voices coming from inside. After what seems like an eternity in the cold, you hear someone with a raspy voice saying "What is more useful when it is broken?" You think about it for a while then reply:
+&goToHallway+riddleClue01|: "An egg."
+&failedRiddleReply|+: "I don't know."
+===
+#failedRiddleReply
+The voice snorts and responds "Well, come back when you do." and falls silent.
+&walkToBackOfHouse|+: You decide to go around to the backside of the house to look for another entrance.
+&lookThroughWindow|+: You decide to peek through one of the windows on the ground floor.
 ===
 #walkToBackOfHouse
-===
-#openWindow
+The back of the house is even more covered in ivy than the front. There is a barricaded window, a broken ladder and a decorative gnome leaning towards the brick wall.
+@
 ===
 
