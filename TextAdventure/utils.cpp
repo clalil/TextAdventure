@@ -9,6 +9,27 @@
 #include "game_data.hpp"
 #include "utils.hpp"
 
+void WaitASecond(void) {
+    std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
+}
+
+bool ValidateUserInput(int& choice, const std::string& input) {
+    // line is not a number, e.g. "abc" or "abc123", or the number is too big
+    // to fit in an int, e.g. "11111111111111111111111111111111111"
+    try {
+        choice = std::stoi(input);
+
+    } catch (std::exception const& exc) {
+        std::cout << "\n";
+        std::cout << "You've entered an invalid input. Please try again." << "\n";
+        std::cout << "\n";
+
+        return true;
+    }
+    
+    return false;
+}
+
 std::string FindString(const std::string& string_to_split, const std::string& first_separator, int first_index, const std::string& last_separstor, int last_index) {
     size_t first = string_to_split.find(first_separator);
     size_t last = string_to_split.find(last_separstor);

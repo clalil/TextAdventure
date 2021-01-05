@@ -55,8 +55,6 @@ public:
     std::string PersonalizeText(const std::string& player_name, std::string& location_text) const;
     void ReducePlayerSatiety(void);
     int ShowChoicesAndMenu(const int choice) const;
-    bool ValidateUserInput(int& choice, const std::string& input) const;
-    void WaitASecond(void) const;
 
     std::shared_ptr<BaseItem> GetItemById(const std::string& item_id) const;
     std::shared_ptr<Location> GetLocationById(const std::string& id);

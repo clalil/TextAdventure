@@ -61,27 +61,6 @@ int GameData::ShowChoicesAndMenu(const int choice) const {
 
 }
 
-void GameData::WaitASecond(void) const {
-    std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
-}
-
-bool GameData::ValidateUserInput(int& choice, const std::string& input) const {
-    // line is not a number, e.g. "abc" or "abc123", or the number is too big
-    // to fit in an int, e.g. "11111111111111111111111111111111111"
-    try {
-        choice = std::stoi(input);
-
-    } catch (std::exception const& exc) {
-        std::cout << "\n";
-        std::cout << "You've entered an invalid input. Please try again." << "\n";
-        std::cout << "\n";
-
-        return true;
-    }
-    
-    return false;
-}
-
 void GameData::ReducePlayerSatiety(void) {
     auto hunger_level = Game::InstanceOf().player.satiation;
 

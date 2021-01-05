@@ -5,6 +5,7 @@
 //  Created by Clarissa Liljander on 2020-11-27.
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
+#include "utils.hpp"
 #include "game.hpp"
 
 const std::string GAME_SAVE_FILE = "Content/game_save.txt";
@@ -113,7 +114,7 @@ void Game::MainMenu(void) {
     std::getline(std::cin, line);
     choice = std::stoi(line);
 
-    gamedata.ValidateUserInput(choice, line);
+    ValidateUserInput(choice, line);
     
     switch (choice) {
         case 1: {
@@ -170,12 +171,12 @@ int Game::InGameMenu(void) {
       std::cout << "> ";
       std::string line;
       std::getline(std::cin, line);
-      gamedata.ValidateUserInput(choice, line);
+      ValidateUserInput(choice, line);
     }
     
     if (choice == 1) {
         GameHints();
-        gamedata.WaitASecond();
+        WaitASecond();
         std::cout << "Closing menu... \n";
         return 0;
 
@@ -184,14 +185,14 @@ int Game::InGameMenu(void) {
 
     } else if (choice == 3) {
         std::cout << "Saving game...\n";
-        gamedata.WaitASecond();
+        WaitASecond();
         SaveGame();
         std::cout << "Your game was saved. \n";
         return 0;
 
     } else if (choice == 4) {
         std::cout << "Exiting game..\n";
-        gamedata.WaitASecond();
+        WaitASecond();
         game_mode = GameMode::Exit;
     }
     
@@ -212,16 +213,16 @@ int Game::CombineItemsMenu(void) {
       std::string item1;
       std::cout << "Enter the number of the first item to combine.\n";
       std::cin >> item1;
-      gamedata.ValidateUserInput(choice1, item1);
+      ValidateUserInput(choice1, item1);
         
       std::cout << "> ";
       std::string item2;
       std::cout << "Enter the number of the second item to combine.\n";
       std::cin >> item2;
-      gamedata.ValidateUserInput(choice2, item2);
+      ValidateUserInput(choice2, item2);
     }
     
-    gamedata.WaitASecond();
+    WaitASecond();
     
     std::string player_choice1 = player.inventory[choice1-1].item->GetId();
     std::string player_choice2 = player.inventory[choice2-1].item->GetId();
@@ -273,7 +274,7 @@ int Game::InventoryMenu(void) {
             break;
 
         } else {
-            invalid_input = gamedata.ValidateUserInput(choice, line);
+            invalid_input = ValidateUserInput(choice, line);
         }
     }
 
@@ -291,7 +292,7 @@ int Game::InventoryMenu(void) {
 }
 
 void Game::Run(void) {
-    gamedata.WaitASecond();
+    WaitASecond();
 
     while (game_mode == GameMode::IsRunning) {
 
@@ -300,7 +301,7 @@ void Game::Run(void) {
             game_mode = GameMode::Exit;
 
         } else if (player.current_location->choices.size() == 0) {
-            gamedata.WaitASecond();
+            WaitASecond();
             std::cout << "Game Over.\n";
             std::cout << "You made a total of " << player.moves << " moves and visited the following game locations: \n";
 
@@ -315,12 +316,12 @@ void Game::Run(void) {
             bool invalid_input = true;
             int choice = -1;
 
-            gamedata.WaitASecond();
+            WaitASecond();
             std::cout << "---\n";
             if (gamedata.PersonalizeText(player.name, player.current_location->location_text) != "") {
                 std::cout << gamedata.PersonalizeText(player.name, player.current_location->location_text) << "\n";
             }
-            gamedata.WaitASecond();
+            WaitASecond();
             
             if (player.HasVisitedLocation() == false) {
                 gamedata.CheckForLocationItems();
@@ -345,7 +346,7 @@ void Game::Run(void) {
                     break;
 
                 } else {
-                    invalid_input = gamedata.ValidateUserInput(choice, line);
+                    invalid_input = ValidateUserInput(choice, line);
                 }
                 
                 if (choice < valid_choices) {
