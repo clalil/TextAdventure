@@ -83,7 +83,7 @@ void ExpendableItem::UseItem(void) {
         item_power = RandomNumbers();
     }
     
-    if ((Game::InstanceOf().player.HasItem("rock01")) && (item_power > 5)) {
+    if (this->GetId() == "rock01" && (item_power > 5)) {
         std::cout << "You use the " << GetTitle() << " to smash the window and it shatters.\n\n";
         Game::InstanceOf().player.AddItem("brokenGlass01", 1);
         Game::InstanceOf().player.RemoveItem("rock01", 1);
