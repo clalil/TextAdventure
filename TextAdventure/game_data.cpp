@@ -292,11 +292,8 @@ std::map<std::string, std::string> GameData::MapPairedItems(void) const {
 }
 
 bool GameData::CompatibleItems(const std::string& item1, const std::string& item2) {
-    std::map<std::string, std::string>::iterator key_or_value1;
-    std::map<std::string, std::string>::iterator key_or_value2;
-
-    key_or_value1 = pairs.find(item1);
-    key_or_value2 = pairs.find(item2);
+    std::map<std::string, std::string>::iterator key_or_value1 = pairs.find(item1);
+    std::map<std::string, std::string>::iterator key_or_value2 = pairs.find(item2);
 
     //returns true if input1 or input2 are valid keys in the 'pairs' map
     if ((key_or_value1 != pairs.end()) || (key_or_value2 != pairs.end())) {
