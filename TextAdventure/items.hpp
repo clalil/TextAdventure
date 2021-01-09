@@ -23,7 +23,7 @@ public:
     const std::string& GetTitle() const;
     const std::string& GetId() const;
     
-    bool combined;
+    bool combined = false;
 
 private:
     std::string id;

@@ -14,8 +14,6 @@ BaseItem::BaseItem(const std::string& item_id, const std::string& item_title) {
     title = item_title;
 }
 
-bool BaseItem::combined = false;
-
 BaseItem::~BaseItem()
 { }
 

@@ -3,6 +3,7 @@ jewel | pendant01 | Pendant with a red glow | keyhole
 jewel | pendant02 | Small key | key
 jewel | babyStatue | A small baby stone statue | key
 food | food01 | Suspicious mushroom | 5
+food | air01 | Oxygen | 0
 teleport | scroll01 | Teleport scroll | beginGame
 expendable | rock01 | Rock | 0
 expendable | brokenRock01 | Broken rock | 5

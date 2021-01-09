@@ -15,6 +15,7 @@
 #include <regex>
 #include <fstream>
 #include <filesystem>
+#include <sstream>
 #include <iostream>
 #include <memory>
 #include <unordered_map>
@@ -48,10 +49,11 @@ public:
 
     void CheckForLocationItems(void);
     bool CompatibleItems(const std::string& item1, const std::string& item2);
+    std::string CraftNewItem(std::string item1, std::string item2);
     void DebugLocations(void) const;
     std::string GetPlayerName(std::string& user_name) const;
     void MainScreen(void) const;
-    std::map<std::string, std::string> MapPairedItems(void) const;
+    std::map<std::pair<std::string, std::string>, std::string> MapPairedItems(void) const;
     std::string PersonalizeText(const std::string& player_name, std::string& location_text) const;
     void ReducePlayerSatiety(void);
     int ShowChoicesAndMenu(const int choice) const;
@@ -66,9 +68,9 @@ private:
     int LoadItemData(void);
     bool LocationExistsWithId(const std::string id) const;
     int LoadLocationData(const std::string path);
-    
+
     std::vector<std::shared_ptr<BaseItem>> items;
     std::vector<std::shared_ptr<Location>> locations;
     std::unordered_map<std::string, std::shared_ptr<Location>> location_index;
-    std::map<std::string, std::string> pairs;
+    std::map<std::pair<std::string, std::string>, std::string> pairs;
 };

@@ -236,7 +236,7 @@ int GameData::LoadItemData(void) {
                 continue;
             }
 
-            std::vector<std::string> tokens = SplitString(line);
+            std::vector<std::string> tokens = SplitString(line, " | ");
             
             switch (StringToEnum(tokens[0])) {
                 case Food: {
@@ -272,49 +272,51 @@ int GameData::LoadItemData(void) {
     return items_added;
 }
 
-std::map<std::string, std::string> GameData::MapPairedItems(void) const {
+std::map<std::pair<std::string, std::string>, std::string> GameData::MapPairedItems(void) const {
     std::ifstream file("Content/Items/pairs.txt");
-    std::map<std::string, std::string> paired_items;
+    std::map<std::pair<std::string, std::string>, std::string> mapping;
     
     if (file.is_open() == false) {
         std::cout << "Pairs file could not open.\n";
     }
 
     if (file.is_open()) {
-        std::string key, val;
+        std::string line;
         
-        while (std::getline(std::getline(file, key, ':') >> std::ws, val)) {
-            paired_items[key] = val;
+        while (std::getline(file, line)) {
+            std::vector<std::string> tokens = SplitString(line, " : ");
+
+            mapping.insert({ std::make_pair(tokens[0], tokens[1]), tokens[2]});
         }
     }
     
-    return paired_items;
+    //first -> first (key), second -> (value), second -> valye of pair
+    
+    return mapping;
+}
+
+std::string GameData::CraftNewItem(std::string input1, std::string input2) {
+    for (const auto &entry: pairs) {
+        auto key_pair = entry.first;
+        
+        if ((key_pair.first == input1 && key_pair.second == input2) || (key_pair.first == input2 && key_pair.second == input1)) {
+            return entry.second;
+        }
+    }
+
+    //if for some random reason code reaches this point
+    return "itemFail";
 }
 
 bool GameData::CompatibleItems(const std::string& item1, const std::string& item2) {
-    std::map<std::string, std::string>::iterator key_or_value1 = pairs.find(item1);
-    std::map<std::string, std::string>::iterator key_or_value2 = pairs.find(item2);
 
-    //returns true if input1 or input2 are valid keys in the 'pairs' map
-    if ((key_or_value1 != pairs.end()) || (key_or_value2 != pairs.end())) {
+        if (pairs.count(std::make_pair(item2, item1)) || pairs.count(std::make_pair(item1, item2))) {
+            std::cout << "These belong to a key pair value" << "\n";
 
-        if ( key_or_value1->second == item2 ) {
-            //input2 is the value of input1 key
             return true;
+        }
 
-            } else if (key_or_value2->second == item1) {
-                //input1 is the value of input2 key
-                return true;
-
-            } else {
-                //one or both values exists as keys but are not key-value pairs
-                return false;
-            }
-    
-    } else {
-        //not a key-value pair and may not exist in the map
-        return false;
-    }
+    return false;
 }
 
 //Code below only used for debugging purposes

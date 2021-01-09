@@ -1,1 +1,3 @@
-pendant01:pendant02
+test01 : test02 : test03
+pendant01 : pendant02 : scroll01
+key01 : key02 : key03

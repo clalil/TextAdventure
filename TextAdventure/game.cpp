@@ -124,6 +124,8 @@ void Game::MainMenu(void) {
             player.current_location = gamedata.GetStartLocation();
             player.moves = 0;
             game_mode = GameMode::IsRunning;
+            player.AddItem("pendant01", 1);
+            player.AddItem("pendant02", 1);
 
             Run();
             break;
@@ -225,9 +227,16 @@ int Game::CombineItemsMenu(void) {
     std::string player_choice2 = player.inventory[choice2-1].item->GetId();
     
     if (gamedata.CompatibleItems(player_choice1, player_choice2)) {
-        std::shared_ptr<BaseItem> item = player.inventory[choice1-1].item;
-        item->combined = true;
-        item->UseItem();
+        std::string new_item = gamedata.CraftNewItem(player_choice1, player_choice2);
+
+        if (new_item != "itemFail") {
+            std::cout << "You've successfully combined" << " [" << player.inventory[choice1-1].item->GetTitle() << "] " << "with [" << player.inventory[choice1-1].item->GetTitle() << "].\n";
+
+            player.RemoveItem(player_choice1, 1);
+            player.RemoveItem(player_choice2, 1);
+            
+            player.AddItem(new_item, 1);
+        }
 
     } else {
         std::cout << "These items cannot be combined.\n";

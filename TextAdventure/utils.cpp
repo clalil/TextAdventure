@@ -45,8 +45,7 @@ const int RandomNumbers(void) {
     return random_number(random_generator);
 }
 
-std::vector<std::string> SplitString(const std::string& text) {
-    std::string separator = " | ";
+std::vector<std::string> SplitString(const std::string& text, const std::string& separator) {
     std::vector<std::string> result;
     size_t start = 0, end = 0;
     
