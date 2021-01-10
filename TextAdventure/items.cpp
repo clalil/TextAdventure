@@ -63,10 +63,6 @@ void JewelItem::UseItem(void) {
         std::cout << "The pendant is open. Inside lies a tiny piece of paper with the words: '" << Game::InstanceOf().player.name << " : Teleport Scroll' written on it.\n";
         std::cout << "You put the scroll back inside of the pocket and decide to leave the pendant. There is no further use for it.\n\n";
 
-        Game::InstanceOf().player.RemoveItem("pendant01", 1);
-        Game::InstanceOf().player.RemoveItem("pendant02", 1);
-        Game::InstanceOf().player.AddItem("scroll01", 1);
-
     } else {
         std::cout << "This item belongs to something and is of no use to you on its own.\n";
     }

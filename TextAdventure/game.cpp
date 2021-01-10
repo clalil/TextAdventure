@@ -230,8 +230,6 @@ int Game::CombineItemsMenu(void) {
         std::string new_item = gamedata.CraftNewItem(player_choice1, player_choice2);
 
         if (new_item != "itemFail") {
-            std::cout << "You've successfully combined" << " [" << player.inventory[choice1-1].item->GetTitle() << "] " << "with [" << player.inventory[choice1-1].item->GetTitle() << "].\n";
-
             player.RemoveItem(player_choice1, 1);
             player.RemoveItem(player_choice2, 1);
             
