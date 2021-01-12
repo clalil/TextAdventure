@@ -54,7 +54,7 @@ public:
     void DebugLocations(void) const;
     std::string GetPlayerName(std::string& user_name) const;
     void MainScreen(void) const;
-    std::map<std::pair<std::string, std::string>, std::string> MapPairedItems(void) const;
+    void MapPairedItems(void);
     std::string PersonalizeText(const std::string& player_name, std::string& location_text) const;
     void ReducePlayerSatiety(void);
     int ShowChoicesAndMenu(const int choice) const;

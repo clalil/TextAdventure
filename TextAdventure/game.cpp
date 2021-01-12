@@ -258,7 +258,7 @@ int Game::InventoryMenu(void) {
 
         if (line.size() > 0 && (line[0] == 'c' || line[0] == 'C')) {
             CombineItemsMenu();
-            return 0;
+            break;
 
         } else if (line.size() > 0 && (line[0] == 'e' || line[0] == 'E')) {
             break;
@@ -319,7 +319,7 @@ void Game::Run(void) {
             }
             std::cout << "---\n\n";
 
-            while (invalid_input || choice < 0 || (choice >= valid_choices)) {
+            while (invalid_input || choice < 0 || choice >= valid_choices) {
 
                 valid_choices = gamedata.ShowChoicesAndMenu(choice);
 
@@ -329,10 +329,12 @@ void Game::Run(void) {
                 
                 if (line.size() > 0 && (line[0] == 'm' || line[0] == 'M')) {
                     InGameMenu();
+                    choice = -1;
                     return;
 
                 } else if (line.size() > 0 && (line[0] == 'i' || line[0] == 'I')) {
                     InventoryMenu();
+                    choice = -1;
                     return;
 
                 } else {

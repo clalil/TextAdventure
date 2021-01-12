@@ -216,7 +216,7 @@ int GameData::LoadLocationData(const std::string path) {
 
 void GameData::InitializeItems() {
     LoadItemData();
-    pairs = MapPairedItems();
+    MapPairedItems();
 }
 
 int GameData::LoadItemData(void) {
@@ -272,9 +272,8 @@ int GameData::LoadItemData(void) {
     return items_added;
 }
 
-std::map<std::pair<std::string, std::string>, std::string> GameData::MapPairedItems(void) const {
+void GameData::MapPairedItems(void) {
     std::ifstream file("Content/Items/pairs.txt");
-    std::map<std::pair<std::string, std::string>, std::string> items;
     
     if (file.is_open() == false) {
         std::cout << "Pairs file could not open.\n";
@@ -286,11 +285,9 @@ std::map<std::pair<std::string, std::string>, std::string> GameData::MapPairedIt
         while (std::getline(file, line)) {
             std::vector<std::string> tokens = SplitString(line, " : ");
 
-            items.insert({ std::make_pair(tokens[0], tokens[1]), tokens[2]});
+            pairs.insert({ std::make_pair(tokens[0], tokens[1]), tokens[2]});
         }
     }
-
-    return items;
 }
 
 std::string GameData::CraftNewItem(std::string input1, std::string input2) {

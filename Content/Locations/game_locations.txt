@@ -109,7 +109,7 @@ You walk over to the front of the house, facing its front door. You find yoursel
 ===
 #callOnDoorBell
 You knock on the door once...twice...when you suddenly hear some muffled voices coming from inside. After what seems like an eternity in the cold, you hear someone with a raspy voice saying "What is more useful when it is broken?" You think about it for a while then reply:
-&goToHallway+riddleClue01|: "An egg."
+&goToHallway|+riddleClue01: "An egg."
 &failedRiddleReply|+: "I don't know."
 ===
 #failedRiddleReply
@@ -121,4 +121,12 @@ The voice snorts and responds "Well, come back when you do." and falls silent.
 The back of the house is even more covered in ivy than the front. There is a barricaded window, a broken ladder and a decorative gnome leaning towards the brick wall.
 @
 ===
-
+#failedRiddleReply
+This locationChoice isn't finished yet.
+===
+#goToHallway
+This locationChoice isn't finished yet.
+===
+#goToKitchen
+This locationChoice isn't finished yet.
+===
