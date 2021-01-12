@@ -9,9 +9,10 @@
 #include "utils.hpp"
 #include "items.hpp"
 
-BaseItem::BaseItem(const std::string& item_id, const std::string& item_title) {
+BaseItem::BaseItem(const std::string& item_id, const std::string& item_title, const std::string& item_description) {
     id = item_id;
     title = item_title;
+    description = item_description;
 }
 
 BaseItem::~BaseItem()
@@ -25,7 +26,11 @@ const std::string& BaseItem::GetTitle() const {
     return title;
 }
 
-TeleportItem::TeleportItem(const std::string& item_id, const std::string& item_title, const std::string& location_id) : BaseItem(item_id, item_title) {
+const std::string& BaseItem::GetDescription() const {
+    return description;
+}
+
+TeleportItem::TeleportItem(const std::string& item_id, const std::string& item_title, const std::string& item_description, const std::string& location_id) : BaseItem(item_id, item_title, item_description) {
     teleport_location_id = location_id;
 };
 
@@ -41,7 +46,7 @@ void TeleportItem::UseItem(void) {
     }
 }
 
-FoodItem::FoodItem(const std::string& item_id, const std::string& item_title, int satiety_level) : BaseItem(item_id, item_title) {
+FoodItem::FoodItem(const std::string& item_id, const std::string& item_title, const std::string& item_description, int satiety_level) : BaseItem(item_id, item_title, item_description) {
     food_satiety_level = satiety_level;
 }
 
@@ -53,22 +58,15 @@ void FoodItem::UseItem(void) {
     Game::InstanceOf().player.RemoveItem(GetId(), 1);
 }
 
-JewelItem::JewelItem(const std::string& item_id, const std::string& item_title, const std::string& jewel_functionality) : BaseItem(item_id, item_title) {
+JewelItem::JewelItem(const std::string& item_id, const std::string& item_title, const std::string& item_description, const std::string& jewel_functionality) : BaseItem(item_id, item_title, item_description) {
     jewel_magic = jewel_functionality;
 }
 
 void JewelItem::UseItem(void) {
-    if (combined) {
-        std::cout << "You insert the tiny key into the keyhole of the glowing red pendant and hear a faint clicking sound.\n";
-        std::cout << "The pendant is open. Inside lies a tiny piece of paper with the words: '" << Game::InstanceOf().player.name << " : Teleport Scroll' written on it.\n";
-        std::cout << "You put the scroll back inside of the pocket and decide to leave the pendant. There is no further use for it.\n\n";
-
-    } else {
-        std::cout << "This item belongs to something and is of no use to you on its own.\n";
-    }
+    std::cout << "This item belongs to something and is of no use to you on its own.\n";
 }
 
-ExpendableItem::ExpendableItem(const std::string& item_id, const std::string& item_title, int item_power_amount) : BaseItem(item_id, item_title) {
+ExpendableItem::ExpendableItem(const std::string& item_id, const std::string& item_title, const std::string& item_description, int item_power_amount) : BaseItem(item_id, item_title, item_description) {
     item_power = item_power_amount;
 }
 

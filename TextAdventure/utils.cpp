@@ -26,7 +26,7 @@ bool ValidateUserInput(int& choice, const std::string& input) {
 
         return true;
     }
-    
+    //returns false if input is valid
     return false;
 }
 

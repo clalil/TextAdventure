@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:/Users/clalil/boot_camp/games_by_her/TextAdventure/TextAdventure/globals.h">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/clalil/boot_camp/games_by_her/TextAdventure/TextAdventure/player.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/clalil/boot_camp/games_by_her/TextAdventure/TextAdventure/items.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/clalil/boot_camp/games_by_her/TextAdventure/TextAdventure/items.hpp">
+   </FileRef>
+   <FileRef
+      location = "self:">
+   </FileRef>
+</Workspace>

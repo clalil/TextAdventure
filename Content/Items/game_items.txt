@@ -1,11 +1,11 @@
 //Chapter One Items
-jewel | pendant01 | Pendant with a red glow | keyhole
-jewel | pendant02 | Small key | key
-jewel | babyStatue | A small baby stone statue | key
-food | food01 | Suspicious mushroom | 5
-food | air01 | Oxygen | 0
-teleport | scroll01 | Teleport scroll | beginGame
-expendable | rock01 | Rock | 0
-expendable | brokenRock01 | Broken rock | 5
-expendable | brokenGlass01 | Broken glass | 5
-expendable | bloodDrop | A droplet of blod | 0
+jewel | pendant01 | Pendant with a red glow | keyhole | none
+jewel | pendant02 | Small key | key | none
+jewel | babyStatue | A small baby stone statue | key | none
+food | food01 | Suspicious mushroom | 5 | none
+food | air01 | Oxygen | 0 | none
+teleport | scroll01 | Teleport scroll | beginGame | You insert the tiny key into the keyhole of the glowing red pendant and hear a faint clicking sound. The pendant is open. Inside lies a tiny piece of paper with the words: ‘Teleport Scroll' written on it. You put the scroll back inside of the pocket and decide to leave the pendant. There is no further use for it.
+expendable | rock01 | Rock | 0 | none
+expendable | brokenRock01 | Broken rock | 5 | none
+expendable | brokenGlass01 | Broken glass | 5 | none
+expendable | bloodDrop | A droplet of blod | 0 | none

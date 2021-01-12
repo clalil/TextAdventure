@@ -222,23 +222,8 @@ int Game::CombineItemsMenu(void) {
     }
     
     WaitASecond();
-    
-    std::string player_choice1 = player.inventory[choice1-1].item->GetId();
-    std::string player_choice2 = player.inventory[choice2-1].item->GetId();
-    
-    if (gamedata.CompatibleItems(player_choice1, player_choice2)) {
-        std::string new_item = gamedata.CraftNewItem(player_choice1, player_choice2);
 
-        if (new_item != "itemFail") {
-            player.RemoveItem(player_choice1, 1);
-            player.RemoveItem(player_choice2, 1);
-            
-            player.AddItem(new_item, 1);
-        }
-
-    } else {
-        std::cout << "These items cannot be combined.\n";
-    }
+    gamedata.CheckCompatibility(player.inventory[choice1-1].item->GetId(), player.inventory[choice2-1].item->GetId());
     
     return 0;
 }
@@ -273,6 +258,7 @@ int Game::InventoryMenu(void) {
 
         if (line.size() > 0 && (line[0] == 'c' || line[0] == 'C')) {
             CombineItemsMenu();
+            return 0;
 
         } else if (line.size() > 0 && (line[0] == 'e' || line[0] == 'E')) {
             break;
@@ -343,17 +329,17 @@ void Game::Run(void) {
                 
                 if (line.size() > 0 && (line[0] == 'm' || line[0] == 'M')) {
                     InGameMenu();
-                    break;
+                    return;
 
                 } else if (line.size() > 0 && (line[0] == 'i' || line[0] == 'I')) {
                     InventoryMenu();
-                    break;
+                    return;
 
                 } else {
                     invalid_input = ValidateUserInput(choice, line);
                 }
                 
-                if (choice < valid_choices) {
+                if (choice < valid_choices && choice >= 0) {
                     if ((player.current_location->choices[choice-1]->required_item_id != "") && (player.HasItem(player.current_location->choices[choice-1]->required_item_id) == false)) {
                         std::shared_ptr<BaseItem> item = gamedata.GetItemById(player.current_location->choices[choice-1]->required_item_id);
 

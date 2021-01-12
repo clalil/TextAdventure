@@ -240,25 +240,25 @@ int GameData::LoadItemData(void) {
             
             switch (StringToEnum(tokens[0])) {
                 case Food: {
-                    std::shared_ptr<FoodItem> food = std::make_shared<FoodItem>(tokens[1], tokens[2], std::stoi(tokens[3]));
+                    std::shared_ptr<FoodItem> food = std::make_shared<FoodItem>(tokens[1], tokens[2], tokens[4], std::stoi(tokens[3]));
                     items.push_back(food);
                     items_added++;
                     break;
                 }
                 case Teleport: {
-                    std::shared_ptr<TeleportItem> scroll = std::make_shared<TeleportItem>(tokens[1], tokens[2], tokens[3]);
+                    std::shared_ptr<TeleportItem> scroll = std::make_shared<TeleportItem>(tokens[1], tokens[2], tokens[4], tokens[3]);
                     items.push_back(scroll);
                     items_added++;
                     break;
                 }
                 case Jewel: {
-                    std::shared_ptr<JewelItem> jewel = std::make_shared<JewelItem>(tokens[1], tokens[2], tokens[3]);
+                    std::shared_ptr<JewelItem> jewel = std::make_shared<JewelItem>(tokens[1], tokens[2], tokens[4], tokens[3]);
                     items.push_back(jewel);
                     items_added++;
                     break;
                 }
                 case Expendable: {
-                    std::shared_ptr<ExpendableItem> expendable = std::make_shared<ExpendableItem>(tokens[1], tokens[2], std::stoi(tokens[3]));
+                    std::shared_ptr<ExpendableItem> expendable = std::make_shared<ExpendableItem>(tokens[1], tokens[2], tokens[4], std::stoi(tokens[3]));
                     items.push_back(expendable);
                     items_added++;
                     break;
@@ -274,7 +274,7 @@ int GameData::LoadItemData(void) {
 
 std::map<std::pair<std::string, std::string>, std::string> GameData::MapPairedItems(void) const {
     std::ifstream file("Content/Items/pairs.txt");
-    std::map<std::pair<std::string, std::string>, std::string> mapping;
+    std::map<std::pair<std::string, std::string>, std::string> items;
     
     if (file.is_open() == false) {
         std::cout << "Pairs file could not open.\n";
@@ -286,16 +286,15 @@ std::map<std::pair<std::string, std::string>, std::string> GameData::MapPairedIt
         while (std::getline(file, line)) {
             std::vector<std::string> tokens = SplitString(line, " : ");
 
-            mapping.insert({ std::make_pair(tokens[0], tokens[1]), tokens[2]});
+            items.insert({ std::make_pair(tokens[0], tokens[1]), tokens[2]});
         }
     }
-    
-    //first -> first (key), second -> (value), second -> valye of pair
-    
-    return mapping;
+
+    return items;
 }
 
 std::string GameData::CraftNewItem(std::string input1, std::string input2) {
+    //find pairs & return value aka new item
     for (const auto &entry: pairs) {
         auto key_pair = entry.first;
         
@@ -304,19 +303,36 @@ std::string GameData::CraftNewItem(std::string input1, std::string input2) {
         }
     }
 
-    //if for some random reason code reaches this point
+    //if for some random reason code reaches this point although this function should not be called unless pairs exists
     return "itemFail";
 }
 
 bool GameData::CompatibleItems(const std::string& item1, const std::string& item2) {
-
+    //if the items suggested by player are indeed valid key-value pairs
         if (pairs.count(std::make_pair(item2, item1)) || pairs.count(std::make_pair(item1, item2))) {
-            std::cout << "These belong to a key pair value" << "\n";
-
             return true;
         }
 
     return false;
+}
+
+void GameData::CheckCompatibility(const std::string& player_choice1, const std::string& player_choice2) {
+    if (CompatibleItems(player_choice1, player_choice2)) {
+        std::string new_item = CraftNewItem(player_choice1, player_choice2);
+
+        if (new_item != "itemFail") {
+            Game::InstanceOf().player.RemoveItem(player_choice1, 1);
+            Game::InstanceOf().player.RemoveItem(player_choice2, 1);
+            
+            Game::InstanceOf().player.AddItem(new_item, 1);
+
+            int n = (int)Game::InstanceOf().player.inventory.size();
+            std::cout << "\n" << Game::InstanceOf().player.inventory[n-1].item->GetDescription() << "\n";
+        }
+
+    } else {
+        std::cout << "These items cannot be combined.\n";
+    }
 }
 
 //Code below only used for debugging purposes

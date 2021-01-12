@@ -47,6 +47,7 @@ class GameData {
 public:
     GameData();
 
+    void CheckCompatibility(const std::string& item1, const std::string& item2);
     void CheckForLocationItems(void);
     bool CompatibleItems(const std::string& item1, const std::string& item2);
     std::string CraftNewItem(std::string item1, std::string item2);
