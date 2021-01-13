@@ -6,9 +6,6 @@
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
 #pragma once
-#include <chrono>
-#include <random>
-#include <thread>
 #include <algorithm>
 #include <vector>
 #include <string>

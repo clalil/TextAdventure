@@ -30,6 +30,19 @@ const std::string& BaseItem::GetDescription() const {
     return description;
 }
 
+StringToItemsCode BaseItem::StringToEnum(const std::string& str) {
+    if (str == "food") {
+        return Food;
+    } else if (str == "teleport") {
+        return Teleport;
+    } else if (str == "jewel") {
+        return Jewel;
+    } else if (str == "expendable") {
+        return Expendable;
+    }
+    return Food;
+}
+
 TeleportItem::TeleportItem(const std::string& item_id, const std::string& item_title, const std::string& item_description, const std::string& location_id) : BaseItem(item_id, item_title, item_description) {
     teleport_location_id = location_id;
 };

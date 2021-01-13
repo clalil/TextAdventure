@@ -238,7 +238,7 @@ int GameData::LoadItemData(void) {
 
             std::vector<std::string> tokens = SplitString(line, " | ");
             
-            switch (StringToEnum(tokens[0])) {
+            switch (BaseItem::StringToEnum(tokens[0])) {
                 case Food: {
                     std::shared_ptr<FoodItem> food = std::make_shared<FoodItem>(tokens[1], tokens[2], tokens[4], std::stoi(tokens[3]));
                     items.push_back(food);

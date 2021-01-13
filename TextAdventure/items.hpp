@@ -8,8 +8,11 @@
 #pragma once
 #include <string>
 
-enum ItemsCode {
-    Food, Teleport, Jewel, Expendable
+enum StringToItemsCode {
+    Food,
+    Teleport,
+    Jewel,
+    Expendable
 };
 
 class BaseItem {
@@ -23,6 +26,7 @@ public:
     const std::string& GetTitle() const;
     const std::string& GetId() const;
     const std::string& GetDescription() const;
+    static StringToItemsCode StringToEnum(const std::string& str);
 
 private:
     std::string id;

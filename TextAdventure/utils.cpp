@@ -5,8 +5,6 @@
 //  Created by Clarissa Liljander on 2020-12-20.
 //  Copyright © 2020 Clarissa Liljander. All rights reserved.
 //
-#include "items.hpp"
-#include "game_data.hpp"
 #include "utils.hpp"
 
 void WaitASecond(void) {
@@ -57,18 +55,4 @@ std::vector<std::string> SplitString(const std::string& text, const std::string&
     result.push_back(text.substr(start));
 
     return result;
-}
-
-const int StringToEnum(const std::string& string_value) {
-    if (string_value == "food") {
-        return Food;
-    } else if (string_value == "teleport") {
-        return Teleport;
-    } else if (string_value == "jewel") {
-        return Jewel;
-    } else if (string_value == "expendable") {
-        return Expendable;
-    }
-    
-    return 0;
 }
