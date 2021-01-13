@@ -199,6 +199,7 @@ int Game::InGameMenu(void) {
 }
 
 int Game::CombineItemsMenu(void) {
+    bool invalid_input = true;
     int choice1 = 0;
     int choice2 = 0;
     
@@ -207,18 +208,18 @@ int Game::CombineItemsMenu(void) {
         return 0;
     }
     
-    while ((choice1 == 0) || (choice2 == 0)) {
-      std::cout << "> ";
-      std::string item1;
+    while ((choice1 == 0) || (choice2 == 0) || invalid_input) {
       std::cout << "Enter the number of the first item to combine.\n";
-      std::cin >> item1;
-      ValidateUserInput(choice1, item1);
-        
       std::cout << "> ";
-      std::string item2;
+      std::string line1;
+      std::getline(std::cin, line1);
+      invalid_input = ValidateUserInput(choice1, line1);
+
       std::cout << "Enter the number of the second item to combine.\n";
-      std::cin >> item2;
-      ValidateUserInput(choice2, item2);
+      std::cout << "> ";
+      std::string line2;
+      std::getline(std::cin, line2);
+      invalid_input = ValidateUserInput(choice2, line2);
     }
     
     WaitASecond();
