@@ -312,6 +312,7 @@ void Game::Run(void) {
             if (gamedata.PersonalizeText(player.name, player.current_location->location_text) != "") {
                 std::cout << gamedata.PersonalizeText(player.name, player.current_location->location_text) << "\n";
             }
+
             WaitASecond();
             
             if (player.HasVisitedLocation() == false) {

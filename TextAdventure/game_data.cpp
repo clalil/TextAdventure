@@ -100,7 +100,7 @@ void GameData::CheckForLocationItems(void) {
 
 std::shared_ptr<Location> GameData::GetStartLocation(void) const {
     if (locations.size() != 0) {
-        return locations.front();
+        return locations.at("start");
     }
     
     std::cout << "[ERROR] The game locations did not load properly. \n";
@@ -109,8 +109,8 @@ std::shared_ptr<Location> GameData::GetStartLocation(void) const {
 }
 
 std::shared_ptr<Location> GameData::GetLocationById(const std::string& id) {
-    if (location_index.find(id) != location_index.end()) {
-        return location_index[id];
+    if (locations.find(id) != locations.end()) {
+        return locations[id];
     }
     
     return nullptr;
@@ -181,6 +181,7 @@ int GameData::LoadLocationData(const std::string path) {
 
         } else if (loc_id != std::string::npos) {
             current_location->location_id = line.substr(1);
+            debug_location_ids.push_back(line.substr(1));
 
         } else if (item_id != std::string::npos) {
             current_location->location_items.push_back(line.substr(1));
@@ -199,8 +200,7 @@ int GameData::LoadLocationData(const std::string path) {
             current_location->can_only_visit_once = true;
 
         } else if (loc_endline != std::string::npos) {
-            locations.push_back(current_location);
-            location_index[current_location->location_id] = current_location;
+            locations[current_location->location_id] = current_location;
 
             current_location = std::make_shared<Location>("", "");
             locations_added++;
@@ -285,14 +285,14 @@ void GameData::MapPairedItems(void) {
         while (std::getline(file, line)) {
             std::vector<std::string> tokens = SplitString(line, " : ");
 
-            pairs.insert({ std::make_pair(tokens[0], tokens[1]), tokens[2]});
+            item_pairs.insert({ std::make_pair(tokens[0], tokens[1]), tokens[2]});
         }
     }
 }
 
 std::string GameData::CraftNewItem(std::string input1, std::string input2) {
     //find pairs & return value aka new item
-    for (const auto &entry: pairs) {
+    for (const auto &entry: item_pairs) {
         auto key_pair = entry.first;
         
         if ((key_pair.first == input1 && key_pair.second == input2) || (key_pair.first == input2 && key_pair.second == input1)) {
@@ -306,7 +306,7 @@ std::string GameData::CraftNewItem(std::string input1, std::string input2) {
 
 bool GameData::CompatibleItems(const std::string& item1, const std::string& item2) {
     //if the items suggested by player are indeed valid key-value pairs
-        if (pairs.count(std::make_pair(item2, item1)) || pairs.count(std::make_pair(item1, item2))) {
+        if (item_pairs.count(std::make_pair(item2, item1)) || item_pairs.count(std::make_pair(item1, item2))) {
             return true;
         }
 
@@ -335,33 +335,35 @@ void GameData::CheckCompatibility(const std::string& player_choice1, const std::
 //Code below only used for debugging purposes
 
 bool GameData::LocationExistsWithId(const std::string id) const {
-    if (location_index.find(id) != location_index.end()) {
+    if (locations.find(id) != locations.end()) {
         return true;
     }
 
     return false;
 }
 
-void GameData::DebugLocations(void) const {
-    std::vector<std::string> location_ids = {};
+bool GameData::CheckForDuplicateLocations(const std::string& location_id) {
+    if (std::count (debug_location_ids.begin(), debug_location_ids.end(), location_id) > 1) {
+        return true;
+    }
+    
+    return false;
+}
 
+void GameData::DebugLocations(void) {
     std::cout << "Number of available locations: " << locations.size() << "\n";
 
-    for(std::shared_ptr<Location> location : locations) {
-        location_ids.push_back(location->location_id);
+    for (std::pair<std::string, std::shared_ptr<Location>> map_entry : locations) {
+        if (CheckForDuplicateLocations(map_entry.second->location_id)) {
+            std::cout << "[WARNING] An ID named '" << map_entry.second->location_id << "' is a duplicate." << "\n";
+        }
 
-        for (int j = 0; j < location->choices.size(); ++j) {
-            std::shared_ptr<LocationChoice> choice = location->choices[j];
+        for (int j = 0; j < map_entry.second->choices.size(); ++j) {
+            std::shared_ptr<LocationChoice> choice = map_entry.second->choices[j];
 
             if (LocationExistsWithId(choice->next_location_id) == false) {
-                std::cout << "[WARNING] Choice '" << (j+1) << "' on location '" << location->location_id << "' points to '" << choice->next_location_id << "' which doesn't exist.\n";
+                std::cout << "[WARNING] Choice '" << (j+1) << "' on location '" << map_entry.second->location_id << "' points to '" << choice->next_location_id << "' which doesn't exist.\n";
             }
         }
-    }
-
-    const auto duplicate = std::adjacent_find(location_ids.begin(), location_ids.end());
-
-    if (duplicate != location_ids.end()) {
-        std::cout << "[WARNING] An ID named '" << *duplicate << "' is a duplicate." << "\n";
     }
 }

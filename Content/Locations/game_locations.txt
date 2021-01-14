@@ -121,9 +121,6 @@ The voice snorts and responds "Well, come back when you do." and falls silent.
 The back of the house is even more covered in ivy than the front. There is a barricaded window, a broken ladder and a decorative gnome leaning towards the brick wall.
 @
 ===
-#failedRiddleReply
-This locationChoice isn't finished yet.
-===
 #goToHallway
 This locationChoice isn't finished yet.
 ===

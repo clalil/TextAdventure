@@ -45,10 +45,11 @@ public:
     GameData();
 
     void CheckCompatibility(const std::string& item1, const std::string& item2);
+    bool CheckForDuplicateLocations(const std::string& id);
     void CheckForLocationItems(void);
     bool CompatibleItems(const std::string& item1, const std::string& item2);
     std::string CraftNewItem(std::string item1, std::string item2);
-    void DebugLocations(void) const;
+    void DebugLocations(void);
     std::string GetPlayerName(std::string& user_name) const;
     void MainScreen(void) const;
     void MapPairedItems(void);
@@ -68,7 +69,7 @@ private:
     int LoadLocationData(const std::string path);
 
     std::vector<std::shared_ptr<BaseItem>> items;
-    std::vector<std::shared_ptr<Location>> locations;
-    std::unordered_map<std::string, std::shared_ptr<Location>> location_index;
-    std::map<std::pair<std::string, std::string>, std::string> pairs;
+    std::vector<std::string> debug_location_ids;
+    std::unordered_map<std::string, std::shared_ptr<Location>> locations;
+    std::map<std::pair<std::string, std::string>, std::string> item_pairs;
 };
