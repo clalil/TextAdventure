@@ -124,8 +124,6 @@ void Game::MainMenu(void) {
             player.current_location = gamedata.GetStartLocation();
             player.moves = 0;
             game_mode = GameMode::IsRunning;
-            player.AddItem("pendant01", 1);
-            player.AddItem("pendant02", 1);
 
             Run();
             break;

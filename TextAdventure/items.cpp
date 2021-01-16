@@ -39,8 +39,10 @@ StringToItemsCode BaseItem::StringToEnum(const std::string& str) {
         return Jewel;
     } else if (str == "expendable") {
         return Expendable;
+    } else if (str == "note") {
+        return Note;
     }
-    return Food;
+    return Note;
 }
 
 TeleportItem::TeleportItem(const std::string& item_id, const std::string& item_title, const std::string& item_description, const std::string& location_id) : BaseItem(item_id, item_title, item_description) {
@@ -97,4 +99,12 @@ void ExpendableItem::UseItem(void) {
         Game::InstanceOf().player.RemoveItem("rock01", 1);
         Game::InstanceOf().player.AddItem("brokenRock01", 1);
     }
+}
+
+NoteItem::NoteItem(const std::string& item_id, const std::string& item_title, const std::string& item_description, const std::string& item_text) : BaseItem(item_id, item_title, item_description) {
+    text = item_text;
+};
+
+void NoteItem::UseItem(void) {
+    std::cout << "You unfold the note with trembling hands, it says: " << text << "\n";
 }

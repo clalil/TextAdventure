@@ -9,3 +9,4 @@ expendable | rock01 | Rock | 0 | none
 expendable | brokenRock01 | Broken rock | 5 | none
 expendable | brokenGlass01 | Broken glass | 5 | none
 expendable | bloodDrop | A droplet of blod | 0 | none
+note | riddleClue01 | A note | "An egg." | none

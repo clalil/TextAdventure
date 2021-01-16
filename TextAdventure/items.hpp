@@ -12,7 +12,8 @@ enum StringToItemsCode {
     Food,
     Teleport,
     Jewel,
-    Expendable
+    Expendable,
+    Note
 };
 
 class BaseItem {
@@ -76,4 +77,15 @@ public:
     
 private:
     int item_power = 0;
+};
+
+class NoteItem : public BaseItem {
+
+public:
+    NoteItem(const std::string& item_id, const std::string& item_title, const std::string& item_description, const std::string& item_text);
+    
+    virtual void UseItem(void);
+    
+private:
+    std::string text;
 };

@@ -88,11 +88,11 @@ When you try to lift the statue off of the table you notice that while the statu
 ===
 #phoneRings
 You studdenly hear the phone on your left starting to sound. You turn around and slowly approach the now fully functioning mobile phone. It's battery symbol is blinking, indikating that the battery is nevertheless almost out. You hesitate, but pick up the phone. The voice of a woman with a hollow voice on the other end asks "Did you take my baby?".
-&tookBaby|babyStatue+: You answer "Yes I did."
 &didntTakeBaby|+: You answer "No, I did not."
+&tookBaby|babyStatue+: You answer "Yes I did."
 ===
 #tookBaby
-The woman does not reply instantly, as if waiting for you to say something more, then replies in an ominous voice "Of course you didn't, dear." and the phone falls silent. Its battery dead. You suddenly feel like someone put an ice cube inside of your pockets. When your fingers close around the statue of the stone baby, it's ice cold to the touch. You pick it up. The baby is no longer crying, but instead staring at you with fully open eyes. It's mouth is closed.
+The woman does not reply instantly, as if waiting for you to say something more, then replies in an ominous voice "Of course you didn't, dear." and the phone falls silent. Its battery dead. You suddenly feel like someone put an ice cube inside of your pockets. When your fingers close around the statue of the stone baby, it's ice cold to the touch. You pick it up. The baby is no longer crying, but instead staring at you with fully open eyes. Its mouth closed.
 &goToHallway|+: You decide to move towards the hallway.
 &goToKitchen|+: You decide to check out the kitchen area. Perhaps there is food there.
 ===
@@ -109,8 +109,8 @@ You walk over to the front of the house, facing its front door. You find yoursel
 ===
 #callOnDoorBell
 You knock on the door once...twice...when you suddenly hear some muffled voices coming from inside. After what seems like an eternity in the cold, you hear someone with a raspy voice saying "What is more useful when it is broken?" You think about it for a while then reply:
-&goToHallway|+riddleClue01: "An egg."
 &failedRiddleReply|+: "I don't know."
+&goToHallway|+riddleClue01: "An egg."
 ===
 #failedRiddleReply
 The voice snorts and responds "Well, come back when you do." and falls silent.
@@ -118,8 +118,32 @@ The voice snorts and responds "Well, come back when you do." and falls silent.
 &lookThroughWindow|+: You decide to peek through one of the windows on the ground floor.
 ===
 #walkToBackOfHouse
-The back of the house is even more covered in ivy than the front. There is a barricaded window, a broken ladder and a decorative gnome leaning towards the brick wall.
+The back of the house is even more covered in ivy than the front. There is a barricaded window, a broken ladder made out of wood and a decorative gnome leaning towards the brick wall.
+&lookAtWall|+: You decide to pull the ivy aside to take a closer look at the wall.
+&inspectGnome|+: You decide to inspect the decorative gnome.
+&brokenLadder|+: You decide to attempt to climb the broken ladder.
 @
+===
+^riddleClue01
+#lookAtWall
+You step closer to the ivy and stares at it. Suddenly you notice some tiny scribble on the far left of the wall. The scribble is written in what appears to be black charcoal. It says "%%NAME%% was here.". You stumble backwards, terrified. You slowly approach the wall again, it now reads "Marjourie was here.". You now notice a tiny piece of paper is stuck between two of the bricks. You pull the piece of paper out and read the words out loud, as to comfort yourself, then put the note back inside of your pocket.
+&tryFrontDoor|+: You decide to go back and try your luck with the front door again.
+&inspectGnome|+: You decide to inspect the decorative gnome.
+&brokenLadder|+: You decide to attempt to climb the broken ladder.
+===
+#inspectGnome
+You walk up to the gnome. It has a red pointy hat, a gray shirt and gray pants. It stands on its bare feet and has a sad look on its face, as if someone just took his last lollipop.
+&pickUpGnome|+: You pick up the gnome to take a closer look.
+&tryFrontDoor|+: You decide to go back and try your luck with the front door again.
+&brokenLadder|+: You decide to attempt to climb the broken ladder.
+===
+#pickUpGnome
+When you place your fingers around the gnome's little neck it starts to scream. You hastily put it back on the ground again, and it goes silent.
+&tryFrontDoor|+: You decide to go back and try your luck with the front door again.
+&brokenLadder|+: You decide to attempt to climb the broken ladder.
+===
+#brokenLadder
+You start climbing up the ladder, towards the rooftop of the house. As you put your foot on the final step you hear a crack as the wooden ladder falls into pieces. You fall backwards, waving your arms in panic before hitting the ground with a loud crack. Oh no! Your back is broken. Guess you're stuck here for now.
 ===
 #goToHallway
 This locationChoice isn't finished yet.

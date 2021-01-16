@@ -263,6 +263,12 @@ int GameData::LoadItemData(void) {
                     items_added++;
                     break;
                 }
+                case Note: {
+                    std::shared_ptr<NoteItem> expendable = std::make_shared<NoteItem>(tokens[1], tokens[2], tokens[4], tokens[3]);
+                    items.push_back(expendable);
+                    items_added++;
+                    break;
+                    }
                 default: {
                     break;
                 }
@@ -362,7 +368,7 @@ void GameData::DebugLocations(void) {
             std::shared_ptr<LocationChoice> choice = map_entry.second->choices[j];
 
             if (LocationExistsWithId(choice->next_location_id) == false) {
-                std::cout << "[WARNING] Choice '" << (j+1) << "' on location '" << map_entry.second->location_id << "' points to '" << choice->next_location_id << "' which doesn't exist.\n";
+                std::cout << "[WARNING] Choice '" << (j+1) << "' on location '" << map_entry.second->location_id << "' points to '" << choice->next_location_id << "' which doesn't exist (or has an invalid format).\n";
             }
         }
     }
