@@ -7,7 +7,7 @@
 #include "game.hpp"
 #include "player.hpp"
 
-const bool Player::CanVisitLocation(const std::string& upcoming_location) const {
+bool Player::CanVisitLocation(const std::string& upcoming_location) const {
     auto new_location = Game::InstanceOf().gamedata.GetLocationById(upcoming_location);
 
     if (new_location->can_only_visit_once) {
@@ -22,7 +22,7 @@ const bool Player::CanVisitLocation(const std::string& upcoming_location) const 
     return true;
 }
 
-const void Player::AddItem(const std::string& id, int amount) {
+void Player::AddItem(const std::string& id, int amount) {
     for (int i = 0; i < inventory.size(); ++i) {
         if (inventory[i].item->GetId() == id) {
             inventory[i].inventory_amount += amount;
@@ -35,15 +35,17 @@ const void Player::AddItem(const std::string& id, int amount) {
     new_item.inventory_amount = amount;
     
     if (new_item.item != nullptr) {
-        std::cout << " [" << new_item.item->GetTitle() << "] was added to your inventory.\n";
+        std::cout << "[" << new_item.item->GetTitle() << "] was added to your inventory.\n";
         inventory.push_back(new_item);
     }
 }
 
-const void Player::RemoveItem(const std::string& id, int amount) {
+void Player::RemoveItem(const std::string& id, int amount) {
     for (int i = 0; i < inventory.size(); ++i) {
         if (inventory[i].item->GetId() == id) {
             inventory[i].inventory_amount -= amount;
+            
+        std::cout << "[" << inventory[i].item->GetTitle() << "] was removed from your inventory.\n";
             
             if (inventory[i].inventory_amount <= 0) {
                 inventory[i].inventory_amount = 0;
@@ -51,15 +53,13 @@ const void Player::RemoveItem(const std::string& id, int amount) {
                 auto remove_item = (inventory.begin() + i);
                 inventory.erase(remove_item);
             }
-            
-            std::cout << "[" << inventory[i].item->GetTitle() << "] was removed from your inventory.\n";
 
             return;
         }
     }
 }
 
-const bool Player::HasVisitedLocation(void) const {
+bool Player::HasVisitedLocation(void) const {
     for (size_t i = 0; i < locations_visited.size(); ++i) {
         if (locations_visited[i] == current_location->location_id) {
             return true;
@@ -69,7 +69,7 @@ const bool Player::HasVisitedLocation(void) const {
     return false;
 }
 
-const bool Player::HasItem(const std::string& id) const {
+bool Player::HasItem(const std::string& id) const {
     for (size_t i = 0; i < inventory.size(); ++i) {
         if (inventory[i].item->GetId() == id) {
             return true;

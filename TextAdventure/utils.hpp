@@ -8,10 +8,14 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <chrono>
+#include <random>
+#include <thread>
 #include <iostream>
 using namespace std::chrono_literals;
 
 std::string FindString(const std::string& string_to_split, const std::string& first_separator, int first_index, const std::string& last_separstor, int last_index);
 const int RandomNumbers(void);
-const int StringToEnum(const std::string& string_value);
-std::vector<std::string> SplitString(const std::string& text);
+std::vector<std::string> SplitString(const std::string& text, const std::string& separator);
+bool ValidateUserInput(int& choice, const std::string& input);
+void WaitASecond(void);

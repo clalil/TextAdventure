@@ -1,4 +1,4 @@
-# [WIP] A text based adventure game
+# A text based adventure game
 
 ## Built with  
 **Programming language:** C++  
@@ -8,13 +8,20 @@
 [Clarissa Liljander](https://github.com/clalil)  
 
 ## The code  
-...
+This is my second experience coding in C++, taking advantage of it's manual memory management with an OOP approach.  
 
 ## Dependencies  
 * Xcode  
 
 ## Setup  
-...
+In order to successfully load the game files you need to tell Xcode to use the Project Directory as the working directory. To update the default settings, follow these steps:
+
+1. Open your project and go to “Product -> Scheme -> Edit Scheme”.
+2. Select “Run” on the left hand side. This is where you can change the settings that Xcode will use when it runs your application directly from the Play button.
+3. Go to the [Options] tab and check “Working Directory: Use Custom Working Directory”
+4. In the text box below, type ${PROJECT_DIR}
+
+It is highly recommended that you run the debug command before starting a new game to ensure a pleasant gaming experience.  
 
 ## Instructions  
 The game instructions are provided within the game itself.  

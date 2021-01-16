@@ -8,32 +8,37 @@
 #pragma once
 #include <string>
 
-enum ItemsCode {
-    Food, Teleport, Jewel, Expendable
+enum StringToItemsCode {
+    Food,
+    Teleport,
+    Jewel,
+    Expendable,
+    Note
 };
 
 class BaseItem {
 
 public:
-    BaseItem(const std::string& item_id, const std::string& item_title);
+    BaseItem(const std::string& item_id, const std::string& item_title, const std::string& item_description);
 
     virtual ~BaseItem();
     virtual void UseItem(void) = 0;
 
     const std::string& GetTitle() const;
     const std::string& GetId() const;
-    
-    static bool combined;
+    const std::string& GetDescription() const;
+    static StringToItemsCode StringToEnum(const std::string& str);
 
 private:
     std::string id;
+    std::string description;
     std::string title;
 };
 
 class TeleportItem : public BaseItem {
 
 public:
-    TeleportItem(const std::string& item_id, const std::string& item_title, const std::string& location_id);
+    TeleportItem(const std::string& item_id, const std::string& item_title, const std::string& item_description, const std::string& location_id);
     
     virtual void UseItem(void);
     
@@ -44,7 +49,7 @@ private:
 class FoodItem : public BaseItem {
 
 public:
-    FoodItem(const std::string& item_id, const std::string& item_title, int satiety_level);
+    FoodItem(const std::string& item_id, const std::string& item_title, const std::string& item_description, int satiety_level);
 
     virtual void UseItem(void);
     
@@ -55,7 +60,7 @@ private:
 class JewelItem : public BaseItem {
 
 public:
-    JewelItem(const std::string& item_id, const std::string& item_title, const std::string& jewel_functionality);
+    JewelItem(const std::string& item_id, const std::string& item_title, const std::string& item_description, const std::string& jewel_functionality);
     
     virtual void UseItem(void);
 
@@ -66,10 +71,21 @@ private:
 class ExpendableItem : public BaseItem {
     
 public:
-    ExpendableItem(const std::string& item_id, const std::string& item_title, int item_power);
+    ExpendableItem(const std::string& item_id, const std::string& item_title, const std::string& item_description, int item_power);
     
     virtual void UseItem(void);
     
 private:
     int item_power = 0;
+};
+
+class NoteItem : public BaseItem {
+
+public:
+    NoteItem(const std::string& item_id, const std::string& item_title, const std::string& item_description, const std::string& item_text);
+    
+    virtual void UseItem(void);
+    
+private:
+    std::string text;
 };

@@ -24,13 +24,13 @@ GameData::GameData() {
     InitializeItems();
 }
 
-const void GameData::MainScreen(void) const {
+void GameData::MainScreen(void) const {
     std::cout << "*******************\n";
     std::cout << "House of the Haunted\n";
     std::cout << "*******************\n";
 }
 
-const int GameData::ShowChoicesAndMenu(const int choice) const {
+int GameData::ShowChoicesAndMenu(const int choice) const {
     std::vector<std::string> valid_choices{};
 
     std::cout << "What are you going to do?\n\n";
@@ -61,28 +61,7 @@ const int GameData::ShowChoicesAndMenu(const int choice) const {
 
 }
 
-const void GameData::WaitASecond(void) const {
-    std::this_thread::sleep_until(std::chrono::system_clock::now() + 1s);
-}
-
-const bool GameData::ValidateUserInput(int& choice, const std::string& input) const {
-    // line is not a number, e.g. "abc" or "abc123", or the number is too big
-    // to fit in an int, e.g. "11111111111111111111111111111111111"
-    try {
-        choice = std::stoi(input);
-
-    } catch (std::exception const& exc) {
-        std::cout << "\n";
-        std::cout << "You've entered an invalid input. Please try again." << "\n";
-        std::cout << "\n";
-
-        return true;
-    }
-    
-    return false;
-}
-
-const void GameData::ReducePlayerSatiety(void) {
+void GameData::ReducePlayerSatiety(void) {
     auto hunger_level = Game::InstanceOf().player.satiation;
 
     if(hunger_level <= 50) {
@@ -109,7 +88,7 @@ std::shared_ptr<BaseItem> GameData::GetItemById(const std::string& item_id) cons
     return nullptr;
 }
 
-const void GameData::CheckForLocationItems(void) {
+void GameData::CheckForLocationItems(void) {
     for (size_t i = 0; i < Game::InstanceOf().player.current_location->location_items.size(); ++i) {
         std::shared_ptr<BaseItem> item = GetItemById(Game::InstanceOf().player.current_location->location_items[i]);
 
@@ -121,7 +100,7 @@ const void GameData::CheckForLocationItems(void) {
 
 std::shared_ptr<Location> GameData::GetStartLocation(void) const {
     if (locations.size() != 0) {
-        return locations.front();
+        return locations.at("start");
     }
     
     std::cout << "[ERROR] The game locations did not load properly. \n";
@@ -130,14 +109,14 @@ std::shared_ptr<Location> GameData::GetStartLocation(void) const {
 }
 
 std::shared_ptr<Location> GameData::GetLocationById(const std::string& id) {
-    if (location_index.find(id) != location_index.end()) {
-        return location_index[id];
+    if (locations.find(id) != locations.end()) {
+        return locations[id];
     }
     
     return nullptr;
 }
 
-const std::string GameData::GetPlayerName(std::string& user_name) const {
+std::string GameData::GetPlayerName(std::string& user_name) const {
     std::cout << "Please enter your name: \n";
     std::cout << "> ";
     std::getline(std::cin, user_name);
@@ -145,7 +124,7 @@ const std::string GameData::GetPlayerName(std::string& user_name) const {
     return user_name;
 }
 
-const std::string GameData::PersonalizeText(const std::string& player_name, std::string& location_text) const {
+std::string GameData::PersonalizeText(const std::string& player_name, std::string& location_text) const {
     size_t match = location_text.find("%%NAME%%");
 
     if (match != std::string::npos) {
@@ -159,7 +138,7 @@ const std::string GameData::PersonalizeText(const std::string& player_name, std:
     return location_text;
 }
 
-const void GameData::InitializeLocations(void) {
+void GameData::InitializeLocations(void) {
     namespace fs = std::__fs::filesystem;
     std::string directory_path = "Content/Locations/";
     fs::path path_to_load(directory_path);
@@ -177,7 +156,7 @@ const void GameData::InitializeLocations(void) {
     }
 }
 
-const int GameData::LoadLocationData(const std::string path) {
+int GameData::LoadLocationData(const std::string path) {
     int locations_added = 0;
     std::ifstream location_file(path);
     std::string line;
@@ -202,6 +181,7 @@ const int GameData::LoadLocationData(const std::string path) {
 
         } else if (loc_id != std::string::npos) {
             current_location->location_id = line.substr(1);
+            debug_location_ids.push_back(line.substr(1));
 
         } else if (item_id != std::string::npos) {
             current_location->location_items.push_back(line.substr(1));
@@ -220,8 +200,7 @@ const int GameData::LoadLocationData(const std::string path) {
             current_location->can_only_visit_once = true;
 
         } else if (loc_endline != std::string::npos) {
-            locations.push_back(current_location);
-            location_index[current_location->location_id] = current_location;
+            locations[current_location->location_id] = current_location;
 
             current_location = std::make_shared<Location>("", "");
             locations_added++;
@@ -235,12 +214,12 @@ const int GameData::LoadLocationData(const std::string path) {
     return locations_added;
 }
 
-const void GameData::InitializeItems() {
+void GameData::InitializeItems() {
     LoadItemData();
-    pairs = MapPairedItems();
+    MapPairedItems();
 }
 
-const int GameData::LoadItemData(void) {
+int GameData::LoadItemData(void) {
     int items_added = 0;
     std::ifstream file("Content/Items/game_items.txt");
     std::string line;
@@ -257,33 +236,39 @@ const int GameData::LoadItemData(void) {
                 continue;
             }
 
-            std::vector<std::string> tokens = SplitString(line);
+            std::vector<std::string> tokens = SplitString(line, " | ");
             
-            switch (StringToEnum(tokens[0])) {
+            switch (BaseItem::StringToEnum(tokens[0])) {
                 case Food: {
-                    std::shared_ptr<FoodItem> food = std::make_shared<FoodItem>(tokens[1], tokens[2], std::stoi(tokens[3]));
+                    std::shared_ptr<FoodItem> food = std::make_shared<FoodItem>(tokens[1], tokens[2], tokens[4], std::stoi(tokens[3]));
                     items.push_back(food);
                     items_added++;
                     break;
                 }
                 case Teleport: {
-                    std::shared_ptr<TeleportItem> scroll = std::make_shared<TeleportItem>(tokens[1], tokens[2], tokens[3]);
+                    std::shared_ptr<TeleportItem> scroll = std::make_shared<TeleportItem>(tokens[1], tokens[2], tokens[4], tokens[3]);
                     items.push_back(scroll);
                     items_added++;
                     break;
                 }
                 case Jewel: {
-                    std::shared_ptr<JewelItem> jewel = std::make_shared<JewelItem>(tokens[1], tokens[2], tokens[3]);
+                    std::shared_ptr<JewelItem> jewel = std::make_shared<JewelItem>(tokens[1], tokens[2], tokens[4], tokens[3]);
                     items.push_back(jewel);
                     items_added++;
                     break;
                 }
                 case Expendable: {
-                    std::shared_ptr<ExpendableItem> expendable = std::make_shared<ExpendableItem>(tokens[1], tokens[2], std::stoi(tokens[3]));
+                    std::shared_ptr<ExpendableItem> expendable = std::make_shared<ExpendableItem>(tokens[1], tokens[2], tokens[4], std::stoi(tokens[3]));
                     items.push_back(expendable);
                     items_added++;
                     break;
                 }
+                case Note: {
+                    std::shared_ptr<NoteItem> expendable = std::make_shared<NoteItem>(tokens[1], tokens[2], tokens[4], tokens[3]);
+                    items.push_back(expendable);
+                    items_added++;
+                    break;
+                    }
                 default: {
                     break;
                 }
@@ -293,85 +278,98 @@ const int GameData::LoadItemData(void) {
     return items_added;
 }
 
-const std::map<std::string, std::string> GameData::MapPairedItems(void) const {
+void GameData::MapPairedItems(void) {
     std::ifstream file("Content/Items/pairs.txt");
-    std::map<std::string, std::string> paired_items;
     
     if (file.is_open() == false) {
         std::cout << "Pairs file could not open.\n";
     }
 
     if (file.is_open()) {
-        std::string key, val;
+        std::string line;
         
-        while (std::getline(std::getline(file, key, ':') >> std::ws, val)) {
-            paired_items[key] = val;
+        while (std::getline(file, line)) {
+            std::vector<std::string> tokens = SplitString(line, " : ");
+
+            item_pairs.insert({ std::make_pair(tokens[0], tokens[1]), tokens[2]});
         }
     }
-    
-    return paired_items;
 }
 
-const bool GameData::CompatibleItems(const std::string& item1, const std::string& item2) {
-    std::map<std::string, std::string>::iterator key_or_value1;
-    std::map<std::string, std::string>::iterator key_or_value2;
+std::string GameData::CraftNewItem(std::string input1, std::string input2) {
+    //find pairs & return value aka new item
+    for (const auto &entry: item_pairs) {
+        auto key_pair = entry.first;
+        
+        if ((key_pair.first == input1 && key_pair.second == input2) || (key_pair.first == input2 && key_pair.second == input1)) {
+            return entry.second;
+        }
+    }
 
-    key_or_value1 = pairs.find(item1);
-    key_or_value2 = pairs.find(item2);
+    //if for some random reason code reaches this point although this function should not be called unless pairs exists
+    return "itemFail";
+}
 
-    //returns true if input1 or input2 are valid keys in the 'pairs' map
-    if ((key_or_value1 != pairs.end()) || (key_or_value2 != pairs.end())) {
-
-        if ( key_or_value1->second == item2 ) {
-            //input2 is the value of input1 key
+bool GameData::CompatibleItems(const std::string& item1, const std::string& item2) {
+    //if the items suggested by player are indeed valid key-value pairs
+        if (item_pairs.count(std::make_pair(item2, item1)) || item_pairs.count(std::make_pair(item1, item2))) {
             return true;
+        }
 
-            } else if (key_or_value2->second == item1) {
-                //input1 is the value of input2 key
-                return true;
+    return false;
+}
 
-            } else {
-                //one or both values exists as keys but are not key-value pairs
-                return false;
-            }
-    
+void GameData::CheckCompatibility(const std::string& player_choice1, const std::string& player_choice2) {
+    if (CompatibleItems(player_choice1, player_choice2)) {
+        std::string new_item = CraftNewItem(player_choice1, player_choice2);
+
+        if (new_item != "itemFail") {
+            Game::InstanceOf().player.RemoveItem(player_choice1, 1);
+            Game::InstanceOf().player.RemoveItem(player_choice2, 1);
+            
+            Game::InstanceOf().player.AddItem(new_item, 1);
+
+            int n = (int)Game::InstanceOf().player.inventory.size();
+            std::cout << "\n" << Game::InstanceOf().player.inventory[n-1].item->GetDescription() << "\n";
+        }
+
     } else {
-        //not a key-value pair and may not exist in the map
-        return false;
+        std::cout << "These items cannot be combined.\n";
     }
 }
 
 //Code below only used for debugging purposes
 
-const bool GameData::LocationExistsWithId(const std::string id) const {
-    if (location_index.find(id) != location_index.end()) {
+bool GameData::LocationExistsWithId(const std::string id) const {
+    if (locations.find(id) != locations.end()) {
         return true;
     }
 
     return false;
 }
 
-const void GameData::DebugLocations(void) const {
-    std::vector<std::string> location_ids = {};
+bool GameData::CheckForDuplicateLocations(const std::string& location_id) {
+    if (std::count (debug_location_ids.begin(), debug_location_ids.end(), location_id) > 1) {
+        return true;
+    }
+    
+    return false;
+}
 
+void GameData::DebugLocations(void) {
     std::cout << "Number of available locations: " << locations.size() << "\n";
 
-    for (int i = 0; i < locations.size(); ++i) {
-        std::shared_ptr<Location> location = locations[i];
-        location_ids.push_back(location->location_id);
+    for (std::pair<std::string, std::shared_ptr<Location>> map_entry : locations) {
+        if (CheckForDuplicateLocations(map_entry.second->location_id)) {
+            std::cout << "[WARNING] An ID named '" << map_entry.second->location_id << "' is a duplicate." << "\n";
+        }
 
-        for (int j = 0; j < location->choices.size(); ++j) {
-            std::shared_ptr<LocationChoice> choice = location->choices[j];
+        for (int j = 0; j < map_entry.second->choices.size(); ++j) {
+            std::shared_ptr<LocationChoice> choice = map_entry.second->choices[j];
 
             if (LocationExistsWithId(choice->next_location_id) == false) {
-                std::cout << "[WARNING] Choice '" << (j+1) << "' on location '" << location->location_id << "' points to '" << choice->next_location_id << "' which doesn't exist.\n";
+                std::cout << "[WARNING] Choice '" << (j+1) << "' on location '" << map_entry.second->location_id << "' points to '" << choice->next_location_id << "' which doesn't exist (or has an invalid format).\n";
             }
         }
-    }
-
-    const auto duplicate = std::adjacent_find(location_ids.begin(), location_ids.end());
-
-    if (duplicate != location_ids.end()) {
-        std::cout << "[WARNING] An ID named '" << *duplicate << "' is a duplicate." << "\n";
     }
 }
