@@ -56,7 +56,7 @@ __Locations which may only be visited once should contain the '@' sign:__
 ```
 You can add __game items__ inside of the game_items.txt file like this for it to parse correctly:
 ```
-itemType | itemId | Item title | power (string or int)
+itemType | itemId | Item title | power (string or int) | description (used when combining items)
 ```
 Items can be combined if they are paired up inside of the pairs.txt file and have valid 'combination' options inside of the items.cpp, for example:
 ```
